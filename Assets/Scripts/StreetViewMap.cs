@@ -10,7 +10,7 @@ public class StreetViewMap : MonoBehaviour
     [SerializeField] private double searchCenterLat = 52.5200;
     [SerializeField] private double searchCenterLon = 13.4040;
 
-    private List<GameObject> streets;
+    private List<GameObject> streets = new List<GameObject>();
 
     // Beispielkoordinaten (Berlin)
     private double minLat = 0;
@@ -64,6 +64,11 @@ public class StreetViewMap : MonoBehaviour
                     Vector3 pos = LatLonToUnity(lat, lon);
                     nodes[id] = pos;
                 }
+            }
+
+            foreach (GameObject go in this.streets)
+            {
+                Destroy(go);
             }
 
             // Streets as lines

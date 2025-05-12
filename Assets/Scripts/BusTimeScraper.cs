@@ -14,15 +14,31 @@ public class BusTimeScraper : MonoBehaviour
     private string busStopSearchURL = "https://netzplan.swhl.de/api/v1/stationboards/hafas/9057765";
     // URL to fetch specific busstop with hafas
     private string busStopURL = "";
+    // representation of bus stop with data aboput location etc.
+    private BusStop busStopData;
 
     private List<Bus> busses;
+
+    private GameManager gameManager;
 
 
     void Start()
     {
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.busStopSearchURL = "https://swhl.vercel.app/api/stops?search="+ this.busstop +"&luebeckOnly=true";
         StartCoroutine(FetchBusStopHafas());
    
+    }
+
+    private void Update()
+    {
+        UpdateGameManagerBusList();
+    }
+
+    // Updates bus list of gamemanager, to grant access to other components
+    private void UpdateGameManagerBusList()
+    {
+        this.gameManager.busses = this.busses;
     }
 
     // Load for specific busstop
@@ -31,6 +47,12 @@ public class BusTimeScraper : MonoBehaviour
         this.busstop = busstop;
         this.busStopSearchURL = "https://swhl.vercel.app/api/stops?search=" + this.busstop + "&luebeckOnly=true";
         StartCoroutine(FetchBusStopHafas());
+    }
+
+    // fetch new bus information and update list accordingly
+    public void UpdateBusInformation()
+    {
+        StartCoroutine(UpdateBusStopInformation());
     }
 
     // Get hafas number for searched busstop
@@ -54,23 +76,68 @@ public class BusTimeScraper : MonoBehaviour
                     if(i== 0)
                     {
                         // get hafas of first element in search
+                        this.busStopData = new BusStop(data["data"][i]["lat"], data["data"][i]["lon"]);
                         this.hafas = data["data"][i]["extId"];
                         this.busstopActual = data["data"][i]["name"];
                     }
                 }
                 Debug.Log(this.busstopActual+ ": " +this.hafas);
 
+                // Load Bus Information
                 StartCoroutine(FetchBusStopInformation());
+                // Update map so bus stop is centered
+                this.gameManager.SearchStreetsAroundCenter(this.busStopData.lat, this.busStopData.lon);
             }
         }
+    }
+
+    // Fetch Busstop information like departure of each bus and update current list
+    IEnumerator UpdateBusStopInformation()
+    {
+        this.busStopURL = "https://netzplan.swhl.de/api/v1/stationboards/hafas/" + this.hafas;
+
+        // fetch result for busstop
+        UnityWebRequest request = UnityWebRequest.Get(this.busStopURL);
+        yield return request.SendWebRequest();
+        {
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Fehler beim Laden: " + request.error);
+            }
+            else
+            {
+                // Parse json return
+                JSONNode data = JSON.Parse(request.downloadHandler.text);
+                List<Bus> bussesTemp = new List<Bus>();
+                for (int i = 0; i < data["data"].AsArray.Count; i++)
+                {
+                    // add busses to List
+                    bussesTemp.Add(new Bus(data["data"][i]["line"]["name"], data["data"][i]["headsign"], data["data"][i]["time"], data["data"][i]["realtime"]));
+                    //Debug.Log(this.busses[i].line + ": Richtung: " + this.busses[i].headsign + " kommt um: " + System.DateTimeOffset.FromUnixTimeSeconds(this.busses[i].realtime).LocalDateTime.TimeOfDay);
+                    
+                    
+                }
+
+                // loop through new bus information and update bus list
+                for (int i=0; i <bussesTemp.Count; i++){
+                    for (int j = 0; j < this.busses.Count; j++)
+                    {
+                        if (bussesTemp[i].line == this.busses[j].line && bussesTemp[i].time == this.busses[j].time)
+                        {
+                            this.busses[j] = bussesTemp[i];
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     // Fetch Busstop information like departure of each bus
     IEnumerator FetchBusStopInformation()
     {
         this.busStopURL = "https://netzplan.swhl.de/api/v1/stationboards/hafas/" + this.hafas;
-
-        Debug.Log(this.hafas);
 
         // fetch result for busstop
         UnityWebRequest request = UnityWebRequest.Get(this.busStopURL);
@@ -90,12 +157,13 @@ public class BusTimeScraper : MonoBehaviour
                 {
                     // add busses to List
                     this.busses.Add(new Bus(data["data"][i]["line"]["name"], data["data"][i]["headsign"], data["data"][i]["time"], data["data"][i]["realtime"]));
-                    Debug.Log(this.busses[i].line + ": Richtung: " + this.busses[i].headsign + " kommt um: " + System.DateTimeOffset.FromUnixTimeSeconds(this.busses[i].realtime).LocalDateTime.TimeOfDay);
-                    
-                    
+                    //Debug.Log(this.busses[i].line + ": Richtung: " + this.busses[i].headsign + " kommt um: " + System.DateTimeOffset.FromUnixTimeSeconds(this.busses[i].realtime).LocalDateTime.TimeOfDay);
+
+
                 }
             }
         }
+
     }
 
 }
