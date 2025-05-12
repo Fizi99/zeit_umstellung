@@ -38,6 +38,19 @@ public class BusTimeScraper : MonoBehaviour
     // Updates bus list of gamemanager, to grant access to other components
     private void UpdateGameManagerBusList()
     {
+        // update data of selected bus
+        if (this.gameManager.selectedBus != null)
+        {
+            for (int i = 0; i < this.busses.Count; i++)
+            {
+                if (this.gameManager.selectedBus.line == this.busses[i].line && this.gameManager.selectedBus.time == this.busses[i].time)
+                {
+                    this.gameManager.selectedBus = this.busses[i];
+                }
+            }
+        }
+
+   
         this.gameManager.busses = this.busses;
     }
 
@@ -119,7 +132,7 @@ public class BusTimeScraper : MonoBehaviour
                     
                 }
 
-                // loop through new bus information and update bus list
+                // loop through new bus information and update bus list.
                 for (int i=0; i <bussesTemp.Count; i++){
                     for (int j = 0; j < this.busses.Count; j++)
                     {

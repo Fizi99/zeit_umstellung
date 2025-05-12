@@ -11,6 +11,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gridLayout;
     [SerializeField] private GameObject busSelectorBtnPrefab;
 
+    [SerializeField] private GameObject startLevelBtn;
+    [SerializeField] private GameObject endLevelBtn;
+
     private GameManager gameManager;
     private List<Bus> busses;
     private List<GameObject> busSelectionBtns = new List<GameObject>();
@@ -66,12 +69,63 @@ public class UIManager : MonoBehaviour
         {
             return;
         }
+        string text = "";
         TimeSpan timeSpan = (System.DateTimeOffset.FromUnixTimeSeconds(this.selectedBus.realtime).LocalDateTime - System.DateTime.Now);
-        Debug.Log(System.DateTimeOffset.FromUnixTimeSeconds(this.selectedBus.realtime).LocalDateTime-System.DateTime.Now);
-        string text = $"{timeSpan:hh':'mm':'ss}";
+        // handle countdown if bus already departed
+        if(timeSpan.Seconds < 0)
+        {
+            // if player is playing and bus departs, finish level, else dont allow levelstart
+            if(this.gameManager.gameState == GameState.LEVELPLAYING)
+            {
+                text = "Bus departed! Level finished!";
 
+            }
+            else
+            {
+                text = "Bus already departed. pick another";
+            }
+            this.countdown.fontSize = 12;
+        }
+        else
+        {
+            text = $"{timeSpan:hh':'mm':'ss}";
+            this.countdown.fontSize = 36;
+        }
+
+        // show countdown
         this.countdown.text = text;
 
+    }
+
+    public void StartLevel()
+    {
+        // dont want to start level, if selected bus already departed
+        TimeSpan timeSpan = (System.DateTimeOffset.FromUnixTimeSeconds(this.selectedBus.realtime).LocalDateTime - System.DateTime.Now);
+        if (timeSpan.Seconds < 0)
+        {
+            return;
+        }
+        // empty bus selection list
+        foreach (GameObject busSelectionBtn in this.busSelectionBtns)
+        {
+            Destroy(busSelectionBtn);
+        }
+
+        this.busSearchInputField.gameObject.SetActive(false);
+        this.endLevelBtn.SetActive(true);
+        this.startLevelBtn.SetActive(false);
+        this.gameManager.StartLevel();
+    }
+
+    public void EndLevel()
+    {
+        // when level is ended, regenerate bus selection: TODO: LATER CHANGE SO SHOWN UI DEPENDS ON GAMESTATE
+        GenerateBusSelection();
+
+        this.busSearchInputField.gameObject.SetActive(true);
+        this.endLevelBtn.SetActive(false);
+        this.startLevelBtn.SetActive(true);
+        this.gameManager.EndLevel();
     }
 
     // call, when busstop is searched in searchfield
