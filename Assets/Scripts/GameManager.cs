@@ -27,14 +27,9 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void StartLevel()
+    public void ChangeGameState(GameState gameState)
     {
-        this.gameState = GameState.LEVELPLAYING;
-    }
-
-    public void EndLevel()
-    {
-        this.gameState = GameState.LEVELSELECTION;
+        this.gameState = gameState;
     }
 
 

@@ -7,12 +7,14 @@ public class UIManager : MonoBehaviour
 {
 
     [SerializeField] private TMP_InputField busSearchInputField;
-    [SerializeField] private TMP_Text countdown;
+    [SerializeField] private List<TMP_Text> countdown;
     [SerializeField] private GameObject gridLayout;
     [SerializeField] private GameObject busSelectorBtnPrefab;
 
-    [SerializeField] private GameObject startLevelBtn;
-    [SerializeField] private GameObject endLevelBtn;
+    [SerializeField] private GameObject lvlSelectionPanel;
+    [SerializeField] private GameObject lvlPlayingPanel;
+    [SerializeField] private GameObject startMenuPanel;
+    [SerializeField] private GameObject upgradingMenuPanel;
 
     private GameManager gameManager;
     private List<Bus> busses;
@@ -84,17 +86,53 @@ public class UIManager : MonoBehaviour
             {
                 text = "Bus already departed. pick another";
             }
-            this.countdown.fontSize = 12;
+            foreach(TMP_Text countdownDisplay in this.countdown)
+                countdownDisplay.fontSize = 12;
         }
         else
         {
             text = $"{timeSpan:hh':'mm':'ss}";
-            this.countdown.fontSize = 36;
+            foreach (TMP_Text countdownDisplay in this.countdown)
+                countdownDisplay.fontSize = 36;
         }
 
         // show countdown
-        this.countdown.text = text;
+        foreach (TMP_Text countdownDisplay in this.countdown)
+            countdownDisplay.text = text;
 
+    }
+
+    public void UpdateUI()
+    {
+        switch (this.gameManager.gameState)
+        {
+            case GameState.LEVELSELECTION:
+                this.lvlSelectionPanel.SetActive(true);
+                this.lvlPlayingPanel.SetActive(false);
+                this.startMenuPanel.SetActive(false);
+                this.upgradingMenuPanel.SetActive(false);
+                break;
+
+            case GameState.LEVELPLAYING:
+                this.lvlSelectionPanel.SetActive(false);
+                this.lvlPlayingPanel.SetActive(true);
+                this.startMenuPanel.SetActive(false);
+                this.upgradingMenuPanel.SetActive(false);
+                break;
+
+            case GameState.UPGRADING:
+                this.lvlSelectionPanel.SetActive(false);
+                this.lvlPlayingPanel.SetActive(false);
+                this.startMenuPanel.SetActive(false);
+                this.upgradingMenuPanel.SetActive(true);
+                break;
+            case GameState.MAINMENU:
+                this.lvlSelectionPanel.SetActive(false);
+                this.lvlPlayingPanel.SetActive(false);
+                this.startMenuPanel.SetActive(true);
+                this.upgradingMenuPanel.SetActive(false);
+                break;
+        }
     }
 
     public void StartLevel()
@@ -111,10 +149,30 @@ public class UIManager : MonoBehaviour
             Destroy(busSelectionBtn);
         }
 
-        this.busSearchInputField.gameObject.SetActive(false);
-        this.endLevelBtn.SetActive(true);
-        this.startLevelBtn.SetActive(false);
-        this.gameManager.StartLevel();
+        // Update UI
+        this.gameManager.ChangeGameState(GameState.LEVELPLAYING);
+        UpdateUI();
+    }
+
+    public void NavigateToForge()
+    {
+        // Update UI
+        this.gameManager.ChangeGameState(GameState.UPGRADING);
+        UpdateUI();
+    }
+
+    public void NavigateToLevelSelection()
+    {
+        // Update UI
+        this.gameManager.ChangeGameState(GameState.LEVELSELECTION);
+        UpdateUI();
+    }
+
+    public void NavigateToMainMenu()
+    {
+        // Update UI
+        this.gameManager.ChangeGameState(GameState.MAINMENU);
+        UpdateUI();
     }
 
     public void EndLevel()
@@ -122,10 +180,10 @@ public class UIManager : MonoBehaviour
         // when level is ended, regenerate bus selection: TODO: LATER CHANGE SO SHOWN UI DEPENDS ON GAMESTATE
         GenerateBusSelection();
 
-        this.busSearchInputField.gameObject.SetActive(true);
-        this.endLevelBtn.SetActive(false);
-        this.startLevelBtn.SetActive(true);
-        this.gameManager.EndLevel();
+        // Update UI
+        this.gameManager.ChangeGameState(GameState.MAINMENU);
+        UpdateUI();
+
     }
 
     // call, when busstop is searched in searchfield
