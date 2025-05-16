@@ -18,8 +18,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        this.gameState = GameState.LEVELSELECTION;
+        this.gameState = GameState.MAINMENU;
         InvokeRepeating("UpdateBusInformation", 1, 5);
+        //LocationService location = new LocationService();
+        //location.Start();
+        //Debug.Log(location.status);
     }
 
     private void Update()
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour
     public void ChangeGameState(GameState gameState)
     {
         this.gameState = gameState;
+        this.uiManager.UpdateUI();
     }
 
 
@@ -46,6 +50,5 @@ public class GameManager : MonoBehaviour
     public void UpdateBusInformation()
     {
         this.busTimeScraper.UpdateBusInformation();
-        Debug.Log("update");
     }
 }

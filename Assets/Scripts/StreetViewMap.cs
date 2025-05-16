@@ -10,6 +10,10 @@ public class StreetViewMap : MonoBehaviour
     [SerializeField] private double searchCenterLat = 52.5200;
     [SerializeField] private double searchCenterLon = 13.4040;
 
+    [SerializeField] private GameObject busStopPrefab;
+
+
+    private GameObject busStop;
     private List<GameObject> streets = new List<GameObject>();
 
     // Beispielkoordinaten (Berlin)
@@ -94,6 +98,8 @@ public class StreetViewMap : MonoBehaviour
                     this.streets.Add(road);
                 }
             }
+
+            DrawBusStop();
         }
         else
         {
@@ -108,5 +114,18 @@ public class StreetViewMap : MonoBehaviour
         float x = (float)((lon - minLon) * scale);
         float z = (float)((lat - minLat) * scale);
         return new Vector3(x, 0, z);
+    }
+
+    // Draw rectangle at bus stop location
+    private void DrawBusStop()
+    {
+        Vector3 location = LatLonToUnity(searchCenterLat, searchCenterLon);
+
+        if(this.busStop != null)
+        {
+            Destroy(this.busStop);
+        }
+        this.busStop = GameObject.Instantiate(busStopPrefab);
+        this.busStop.transform.position = location + new Vector3(0,1,0);
     }
 }

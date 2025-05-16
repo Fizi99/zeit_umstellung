@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject lvlPlayingPanel;
     [SerializeField] private GameObject startMenuPanel;
     [SerializeField] private GameObject upgradingMenuPanel;
+
+    [SerializeField] private GameObject debugText;
 
     private GameManager gameManager;
     private List<Bus> busses;
@@ -38,6 +41,17 @@ public class UIManager : MonoBehaviour
         {
             GenerateBusSelection();
         }
+    }
+
+    public void ShowDebug(string msg)
+    {
+        this.debugText.GetComponent<TMP_Text>().text = msg;
+        Invoke("HideDebug", 5);
+    }
+
+    private void HideDebug()
+    {
+        this.debugText.GetComponent<TMP_Text>().text = "";
     }
 
     // check if bus information got updated for example to update bus selection buttons or countdown. use value later
@@ -137,7 +151,11 @@ public class UIManager : MonoBehaviour
 
     public void StartLevel()
     {
-        // dont want to start level, if selected bus already departed
+        // dont want to start level, if selected bus already departed or no bus is selected
+        if(this.selectedBus == null)
+        {
+            return;
+        }
         TimeSpan timeSpan = (System.DateTimeOffset.FromUnixTimeSeconds(this.selectedBus.realtime).LocalDateTime - System.DateTime.Now);
         if (timeSpan.Seconds < 0)
         {
@@ -151,28 +169,24 @@ public class UIManager : MonoBehaviour
 
         // Update UI
         this.gameManager.ChangeGameState(GameState.LEVELPLAYING);
-        UpdateUI();
     }
 
     public void NavigateToForge()
     {
         // Update UI
         this.gameManager.ChangeGameState(GameState.UPGRADING);
-        UpdateUI();
     }
 
     public void NavigateToLevelSelection()
     {
         // Update UI
         this.gameManager.ChangeGameState(GameState.LEVELSELECTION);
-        UpdateUI();
     }
 
     public void NavigateToMainMenu()
     {
         // Update UI
         this.gameManager.ChangeGameState(GameState.MAINMENU);
-        UpdateUI();
     }
 
     public void EndLevel()
@@ -182,7 +196,6 @@ public class UIManager : MonoBehaviour
 
         // Update UI
         this.gameManager.ChangeGameState(GameState.MAINMENU);
-        UpdateUI();
 
     }
 
@@ -207,6 +220,12 @@ public class UIManager : MonoBehaviour
             btn.transform.SetParent(this.gridLayout.transform);
             btn.GetComponent<BusSelectorBtn>().bus = this.gameManager.busses[i];
             btn.GetComponentInChildren<TMP_Text>().text = this.gameManager.busses[i].line + " Richtung: " + this.gameManager.busses[i].headsign + " um " + System.DateTimeOffset.FromUnixTimeSeconds(this.busses[i].realtime).LocalDateTime.TimeOfDay;
+            
+            // change color of button of selected bus
+            if(this.gameManager.selectedBus != null && this.gameManager.busses[i].line == this.gameManager.selectedBus.line && this.gameManager.busses[i].time == this.gameManager.selectedBus.time)
+            {
+                btn.GetComponent<Button>().Select();
+            }
             this.busSelectionBtns.Add(btn);
 
         } 

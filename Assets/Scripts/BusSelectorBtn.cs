@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BusSelectorBtn : MonoBehaviour
 {
@@ -10,19 +11,11 @@ public class BusSelectorBtn : MonoBehaviour
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void OnClick()
     {
         this.gameManager.selectedBus = bus;
-        Debug.Log(this.bus.line + " Richtung: " + this.bus.headsign + " um " + System.DateTimeOffset.FromUnixTimeSeconds(this.bus.realtime).LocalDateTime.TimeOfDay);
     }
 
 }
