@@ -92,6 +92,7 @@ public class BusTimeScraper : MonoBehaviour
                         this.busStopData = new BusStop(data["data"][i]["lat"], data["data"][i]["lon"]);
                         this.hafas = data["data"][i]["extId"];
                         this.busstopActual = data["data"][i]["name"];
+                        this.gameManager.busStop = this.busStopData;
                     }
                 }
                 Debug.Log(this.busstopActual+ ": " +this.hafas);

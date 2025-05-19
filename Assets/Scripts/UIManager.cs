@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject lvlPlayingPanel;
     [SerializeField] private GameObject startMenuPanel;
     [SerializeField] private GameObject upgradingMenuPanel;
+    [SerializeField] private GameObject distanceToStopText;
 
     [SerializeField] private GameObject debugText;
 
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
     private List<Bus> busses;
     private List<GameObject> busSelectionBtns = new List<GameObject>();
     private bool busInfoUpdated = false;
+    private double distanceToStop = 0;
 
     private Bus selectedBus;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -151,7 +153,7 @@ public class UIManager : MonoBehaviour
 
     public void StartLevel()
     {
-        // dont want to start level, if selected bus already departed or no bus is selected
+        // dont want to start level, if selected bus already departed or no bus is selected or player is too far away from busstop
         if(this.selectedBus == null)
         {
             return;
@@ -161,8 +163,12 @@ public class UIManager : MonoBehaviour
         {
             return;
         }
-        // empty bus selection list
-        foreach (GameObject busSelectionBtn in this.busSelectionBtns)
+        if (this.distanceToStop > this.gameManager.GetDistanceThreshhold())
+        {
+            return;
+        }
+            // empty bus selection list
+            foreach (GameObject busSelectionBtn in this.busSelectionBtns)
         {
             Destroy(busSelectionBtn);
         }
@@ -207,6 +213,8 @@ public class UIManager : MonoBehaviour
 
     private void GenerateBusSelection()
     {
+        UpdateDistanceToStopText();
+
         // empty bus selection list
         foreach (GameObject busSelectionBtn in this.busSelectionBtns)
         {
@@ -229,6 +237,32 @@ public class UIManager : MonoBehaviour
             this.busSelectionBtns.Add(btn);
 
         } 
+    }
+
+    private void UpdateDistanceToStopText()
+    {
+
+       
+            //double pLat = this.gameManager.GetPlayerLat();
+            //double pLon = this.gameManager.GetPlayerLon();
+            double pLat = 53.837951;
+            double pLon = 10.700337;
+            double sLat = this.gameManager.busStop.lat;
+            double sLon = this.gameManager.busStop.lon;
+            this.distanceToStop = this.gameManager.CalcDistanceBetweenCordsInM(pLat, pLon, sLat, sLon);
+            
+            if (this.distanceToStop > this.gameManager.GetDistanceThreshhold())
+            {
+                distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m, please get closer to the bus stop.";
+            }
+            else
+            {
+                distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m";
+            }
+            
+        
+        
+
     }
 
 
