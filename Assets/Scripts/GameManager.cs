@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public TMP_InputField busSearchInputField;
     [SerializeField] public UIManager uiManager;
     [SerializeField] public GPSTracker gpsTracker;
+    [SerializeField] public WaveSpawner waveSpawner;
 
 
     void Start()
@@ -39,7 +40,11 @@ public class GameManager : MonoBehaviour
         this.uiManager.UpdateUI();
     }
 
-
+    public void SetStreets(List<GameObject> streets)
+    {
+        this.streets = streets;
+        this.waveSpawner.setAmountOfRoutes(streets.Count);
+    }
     public void SearchBusStop(string busStop)
     {
         this.busTimeScraper.SearchBusStop(busStop);

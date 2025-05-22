@@ -901,7 +901,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -927,7 +927,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 100, y: 10, z: 100}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1177,6 +1177,57 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &576400593
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 576400595}
+  - component: {fileID: 576400594}
+  m_Layer: 0
+  m_Name: WaveSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &576400594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576400593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e40853a319c4748ad2607d587034e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab1: {fileID: 6446975306276922648, guid: ab51a67d937083f4aa82cd74dc810d4b, type: 3}
+  enemyPrefab2: {fileID: 3881856927585364605, guid: 69150263d259e7f4bb9bf41bb501156c, type: 3}
+  enemyPrefab3: {fileID: 4725726051768412984, guid: ce7d3f30f5bcedb42b5c7e0bb63f2c74, type: 3}
+  timeBetweenWaves: 5
+  countdown: 3
+  amountOfRoutes: 0
+  targetList: []
+--- !u!4 &576400595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576400593}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.7117114, y: -10.72265, z: 0.03798223}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &606096691
 GameObject:
   m_ObjectHideFlags: 0
@@ -3169,6 +3220,7 @@ MonoBehaviour:
   busSearchInputField: {fileID: 1530871556}
   uiManager: {fileID: 772188669}
   gpsTracker: {fileID: 169364148}
+  waveSpawner: {fileID: 576400594}
 --- !u!4 &1517589945
 Transform:
   m_ObjectHideFlags: 0
@@ -3974,7 +4026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b46c2d3cbb0c5b9458124ae241796845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchRadius: 0.01
+  searchRadius: 800
   searchCenterLat: 52.52
   searchCenterLon: 13.404
   busStopPrefab: {fileID: 8908154604200637098, guid: ddd190dae65e1cf4889fbb9c759aa6a3, type: 3}
@@ -4572,3 +4624,4 @@ SceneRoots:
   - {fileID: 969628452}
   - {fileID: 358339841}
   - {fileID: 169364147}
+  - {fileID: 576400595}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WaveSpawner : MonoBehaviour
@@ -17,15 +18,18 @@ public class WaveSpawner : MonoBehaviour
 
     public Transform[] targetList;
 
+    private GameManager gameManager;
+
     void Start()
     {
-        amountOfRoutes = routeManager.routeList.Length;
+        //amountOfRoutes = routeManager.routeList.Length;
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(countdown <=0)
+        if(countdown <=0 && this.gameManager.gameState == GameState.LEVELPLAYING)
         {
             SpawnWave();
             countdown = timeBetweenWaves;
@@ -42,7 +46,7 @@ public class WaveSpawner : MonoBehaviour
                 SpawnEnemy1(i);
             }
         }
-        else if (waveNumber == 2)
+        /*else if (waveNumber == 2)
         {
             for (int i = 0; i < amountOfRoutes; i++)
             {
@@ -55,39 +59,45 @@ public class WaveSpawner : MonoBehaviour
             {
                 SpawnEnemy3(i);
             }
-        }
+        }*/
         else
         {
             for (int i = 0; i < amountOfRoutes; i++)
             {
-                if (i == 1)
+                SpawnEnemy1(i);
+               /* if (i == 1)
                 {
                     SpawnEnemy1(i);
                 }
                 else
                 {
                     SpawnEnemy3(i);
-                }
+                }*/
             }
         }
         waveNumber++;
         Debug.Log("Wave Incoming!");
     }
 
-    void setAmountOfRoutes(int amountOfRoutes)
+    public void setAmountOfRoutes(int amountOfRoutes)
     {
         this.amountOfRoutes = amountOfRoutes;
     }
 
     void SpawnEnemy1(int routeIndex)
     {
-        Transform[] targets = routeManager.routeList[routeIndex].GetComponent<enemyAI>().waypoints;
+        List<Transform> targets = gameManager.streets[routeIndex].GetComponent<Street>().waypoints;
         Transform newEnemy = Instantiate(enemyPrefab1, targets[0].position, targets[0].rotation);
         newEnemy.GetComponent<whereToGo>().targets = targets;
         newEnemy.GetComponent<whereToGo>().currentTarget = newEnemy.GetComponent<whereToGo>().targets[1];
+
+        /*Transform[] targets = routeManager.routeList[routeIndex].GetComponent<enemyAI>().waypoints;
+        Transform newEnemy = Instantiate(enemyPrefab1, targets[0].position, targets[0].rotation);
+        newEnemy.GetComponent<whereToGo>().targets = targets;
+        newEnemy.GetComponent<whereToGo>().currentTarget = newEnemy.GetComponent<whereToGo>().targets[1];*/
     }
 
-    void SpawnEnemy2(int routeIndex)
+    /*void SpawnEnemy2(int routeIndex)
     {
         Transform[] targets = routeManager.routeList[routeIndex].GetComponent<enemyAI>().waypoints;
         Transform newEnemy = Instantiate(enemyPrefab2, targets[0].position, targets[0].rotation);
@@ -101,6 +111,6 @@ public class WaveSpawner : MonoBehaviour
         Transform newEnemy = Instantiate(enemyPrefab3, targets[0].position, targets[0].rotation);
         newEnemy.GetComponent<whereToGo>().targets = targets;
         newEnemy.GetComponent<whereToGo>().currentTarget = newEnemy.GetComponent<whereToGo>().targets[1];
-    }
+    }*/
 
 }

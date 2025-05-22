@@ -1,14 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class whereToGo : MonoBehaviour
 {
     public float speed = 3f;
 
-    public Transform[] targets;
+    public List<Transform> targets;
     public Transform currentTarget;
     private int waypointIndex = 0;
 
-    void setTargetList(Transform[] targetList)
+    void setTargetList(List<Transform> targetList)
     {
         targets = targetList;
         currentTarget = targetList[waypointIndex];
@@ -28,7 +29,7 @@ public class whereToGo : MonoBehaviour
 
     void GetNextWaypoint()
     {
-        if (waypointIndex >= targets.Length - 1)
+        if (waypointIndex >= targets.Count - 1)
         {
             Destroy(gameObject);
             return;
