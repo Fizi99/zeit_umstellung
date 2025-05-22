@@ -6,7 +6,7 @@ using SimpleJSON;
 
 public class StreetViewMap : MonoBehaviour
 {
-    [SerializeField] private double searchRadius = 0.001;
+    [SerializeField] private double searchRadius = 100;
     [SerializeField] private double searchCenterLat = 52.5200;
     [SerializeField] private double searchCenterLon = 13.4040;
 
@@ -15,6 +15,7 @@ public class StreetViewMap : MonoBehaviour
 
     private GameObject busStop;
     private List<GameObject> streets = new List<GameObject>();
+
 
     // Beispielkoordinaten (Berlin)
     private double minLat = 0;
@@ -42,13 +43,16 @@ public class StreetViewMap : MonoBehaviour
         this.maxLat = searchCenterLat + searchRadius;
         this.maxLon = searchCenterLon + searchRadius;
         // so toString method converts decimal point correctly (1.2 instead of 1,2)
+        string searchCenterLatStr = searchCenterLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+        string searchCenterLonStr = searchCenterLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+        string searchRadiusStr = searchRadius.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
         string minLatString = minLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
         string minLonString = minLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
         string maxLatString = maxLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
         string maxLonString = maxLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
 
         // WebRequest to Open Street View as JSON in specified area
-        string url = "https://overpass-api.de/api/interpreter?data=[out:json];way['highway'](" + minLatString +","+ minLonString + ","+ maxLatString + ","+ maxLonString + ");(._;>;);out;";
+        string url = "https://overpass-api.de/api/interpreter?data=[out:json];way['highway'](around:"+ searchRadiusStr +","+ searchCenterLatStr + ","+ searchCenterLonStr + ");(._;>;);out;";
 
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
@@ -111,8 +115,8 @@ public class StreetViewMap : MonoBehaviour
     Vector3 LatLonToUnity(double lat, double lon)
     {
         float scale = 10000f;
-        float x = (float)((lon - minLon) * scale);
-        float z = (float)((lat - minLat) * scale);
+        float x = (float)((lon - searchCenterLon) * scale);
+        float z = (float)((lat - searchCenterLat) * scale);
         return new Vector3(x, 0, z);
     }
 
