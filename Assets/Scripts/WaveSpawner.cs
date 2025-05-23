@@ -13,9 +13,6 @@ public class WaveSpawner : MonoBehaviour
     public int amountOfRoutes = 0;
     private int waveNumber = 1;
 
-    private int j = 9;
-    private int k = 0;
-
     public Transform[] targetList;
 
     private GameManager gameManager;

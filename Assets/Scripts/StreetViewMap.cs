@@ -16,13 +16,6 @@ public class StreetViewMap : MonoBehaviour
     private GameObject busStop;
     private List<GameObject> streets = new List<GameObject>();
 
-
-    // Beispielkoordinaten (Berlin)
-    private double minLat = 0;
-    private double minLon = 0;
-    private double maxLat = 0;
-    private double maxLon = 0;
-
     private GameManager gameManager;
 
     void Start()
@@ -41,18 +34,11 @@ public class StreetViewMap : MonoBehaviour
 
     IEnumerator DownloadOSMData()
     {
-        this.minLat = searchCenterLat - searchRadius;
-        this.minLon = searchCenterLon - searchRadius;
-        this.maxLat = searchCenterLat + searchRadius;
-        this.maxLon = searchCenterLon + searchRadius;
+  
         // so toString method converts decimal point correctly (1.2 instead of 1,2)
         string searchCenterLatStr = searchCenterLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
         string searchCenterLonStr = searchCenterLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
         string searchRadiusStr = searchRadius.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string minLatString = minLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string minLonString = minLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string maxLatString = maxLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string maxLonString = maxLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
 
         // WebRequest to Open Street View as JSON in specified area
         string url = "https://overpass-api.de/api/interpreter?data=[out:json];way['highway'](around:" + searchRadiusStr + "," + searchCenterLatStr + "," + searchCenterLonStr + ");(._;>;);out;";
@@ -139,7 +125,8 @@ public class StreetViewMap : MonoBehaviour
             Destroy(this.busStop);
         }
         this.busStop = GameObject.Instantiate(busStopPrefab);
-        this.busStop.transform.position = location + new Vector3(0, 1, 0);
+        this.busStop.transform.position = location + new Vector3(0, 0, 0);
+        this.gameManager.UpdateBusStopGameObject(this.busStop);
     }
 
     /*
