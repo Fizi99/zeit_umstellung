@@ -59,15 +59,18 @@ public class GameManager : MonoBehaviour
     public void SetStreets(List<GameObject> streets)
     {
         this.streets = streets;
-        this.waveSpawner.setAmountOfRoutes(streets.Count);
-        // draw line between closest point on street and bus stop
-        foreach(GameObject street in streets)
-        {
-            street.GetComponent<Street>().GetClosestPointToBusStop();
-        }
+        ConvertStreetsToRoutes();
+    }
 
-        DrawClosestStreet();
-        this.routeManager.AddLastWaypointToRoutes(this.streets);
+    public void ConvertStreetsToRoutes()
+    {
+        // init waves for enemies
+        // TODO: put at end, so only eligable routes are used (now every street spawns enemies)
+        this.waveSpawner.setAmountOfRoutes(streets.Count);
+
+        this.routeManager.CalcClosestStreetToBusStop();
+
+        //this.routeManager.AddLastWaypointToRoutes(this.streets);
     }
     public void SearchBusStop(string busStop)
     {
@@ -124,36 +127,5 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Gets closest street to bus stop and draws sphere at position
-    public void DrawClosestStreet()
-    {
-        GameObject closestStreet = null;
-        double shortestDistance = 9999999;
-        foreach(GameObject street in streets)
-        {
-            if(street.GetComponent<Street>().distance < shortestDistance)
-            {
-                closestStreet = street;
-                shortestDistance = street.GetComponent<Street>().distance;
-            }
-                   
-        }
 
-
-        this.routeManager.lastWaypointPos = closestStreet.GetComponent<Street>().closestPointOnStreet;
-
-        GameObject point = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        point.transform.position = closestStreet.GetComponent<Street>().closestPointOnStreet;
-        point.transform.localScale = Vector3.one * 0.2f;
-
-        // Optional: Farbe setzen
-        var renderer = point.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            Material mat = new Material(Shader.Find("Standard"));
-            mat.color = Color.magenta;
-            renderer.material = mat;
-        }
-
-    }
 }

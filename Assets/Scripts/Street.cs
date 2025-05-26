@@ -28,6 +28,7 @@ public class Street : MonoBehaviour
             GameObject waypoint = new GameObject("waypoint");
             waypoint.transform.position = node;
             this.waypoints.Add(waypoint.transform);
+            waypoint.transform.parent = this.transform;
             /*GameObject point = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             point.transform.position = node;
             point.transform.localScale = Vector3.one * 5;
@@ -67,6 +68,14 @@ public class Street : MonoBehaviour
        
 
         //Debug.DrawLine(Vector3.zero, this.closestPointOnStreet, Color.red);
+    }
+
+    public void AddWaypoint(Vector3 node, int index)
+    {
+        this.nodes.Insert(index, node);
+        GameObject waypoint = new GameObject("waypoint");
+        waypoint.transform.position = node;
+        this.waypoints.Insert(index ,waypoint.transform);
     }
 
 
