@@ -163,10 +163,12 @@ public class UIManager : MonoBehaviour
         {
             return;
         }
-        if (this.distanceToStop > this.gameManager.GetDistanceThreshhold())
+
+        // check if bus stop is near player. comment for testing later remove comment
+        /*if (this.distanceToStop > this.gameManager.GetDistanceThreshhold())
         {
             return;
-        }
+        }*/
             // empty bus selection list
             foreach (GameObject busSelectionBtn in this.busSelectionBtns)
         {

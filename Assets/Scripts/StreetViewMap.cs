@@ -16,15 +16,11 @@ public class StreetViewMap : MonoBehaviour
     private GameObject busStop;
     private List<GameObject> streets = new List<GameObject>();
 
-
-    // Beispielkoordinaten (Berlin)
-    private double minLat = 0;
-    private double minLon = 0;
-    private double maxLat = 0;
-    private double maxLon = 0;
+    private GameManager gameManager;
 
     void Start()
     {
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         StartCoroutine(DownloadOSMData());
     }
 
@@ -38,21 +34,14 @@ public class StreetViewMap : MonoBehaviour
 
     IEnumerator DownloadOSMData()
     {
-        this.minLat = searchCenterLat - searchRadius;
-        this.minLon = searchCenterLon - searchRadius;
-        this.maxLat = searchCenterLat + searchRadius;
-        this.maxLon = searchCenterLon + searchRadius;
+  
         // so toString method converts decimal point correctly (1.2 instead of 1,2)
         string searchCenterLatStr = searchCenterLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
         string searchCenterLonStr = searchCenterLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
         string searchRadiusStr = searchRadius.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string minLatString = minLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string minLonString = minLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string maxLatString = maxLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string maxLonString = maxLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
 
         // WebRequest to Open Street View as JSON in specified area
-        string url = "https://overpass-api.de/api/interpreter?data=[out:json];way['highway'](around:"+ searchRadiusStr +","+ searchCenterLatStr + ","+ searchCenterLonStr + ");(._;>;);out;";
+        string url = "https://overpass-api.de/api/interpreter?data=[out:json];way['highway'](around:" + searchRadiusStr + "," + searchCenterLatStr + "," + searchCenterLonStr + ");(._;>;);out;";
 
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
@@ -86,24 +75,30 @@ public class StreetViewMap : MonoBehaviour
                 if (element["type"] == "way")
                 {
                     GameObject road = new GameObject("Road");
+                    Street streetComponent = road.AddComponent<Street>();
                     LineRenderer lr = road.AddComponent<LineRenderer>();
                     lr.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
                     lr.widthMultiplier = 0.2f;
                     lr.positionCount = element["nodes"].Count;
-                    lr.startColor = Color.blue;
+                    lr.startColor = Color.red;
                     lr.endColor = Color.blue;
 
                     for (int i = 0; i < element["nodes"].Count; i++)
                     {
                         long nodeId = element["nodes"][i].AsLong;
+                        streetComponent.nodes.Add(nodes[nodeId]);
                         lr.SetPosition(i, nodes[nodeId]);
                     }
+                    streetComponent.DrawNodes();
 
                     this.streets.Add(road);
                 }
             }
 
-            DrawBusStop();
+            this.gameManager.SetStreets(this.streets);
+
+            DrawBusStop(this.searchCenterLat, this.searchCenterLon);
+            //StartCoroutine(QueryBusStopLocation());
         }
         else
         {
@@ -115,21 +110,59 @@ public class StreetViewMap : MonoBehaviour
     Vector3 LatLonToUnity(double lat, double lon)
     {
         float scale = 10000f;
-        float x = (float)((lon - searchCenterLon) * scale);
-        float z = (float)((lat - searchCenterLat) * scale);
+        float x = (float)((lon - this.searchCenterLon) * scale);
+        float z = (float)((lat - this.searchCenterLat) * scale);
         return new Vector3(x, 0, z);
     }
 
     // Draw rectangle at bus stop location
-    private void DrawBusStop()
+    private void DrawBusStop(double lat, double lon)
     {
-        Vector3 location = LatLonToUnity(searchCenterLat, searchCenterLon);
+        Vector3 location = LatLonToUnity(lat, lon);
 
-        if(this.busStop != null)
+        if (this.busStop != null)
         {
             Destroy(this.busStop);
         }
         this.busStop = GameObject.Instantiate(busStopPrefab);
-        this.busStop.transform.position = location + new Vector3(0,1,0);
+        this.busStop.transform.position = location + new Vector3(0, 0, 0);
+        this.gameManager.UpdateBusStopGameObject(this.busStop);
     }
+
+    /*
+    IEnumerator QueryBusStopLocation()
+    {
+        // so toString method converts decimal point correctly (1.2 instead of 1,2)
+        string searchCenterLatStr = searchCenterLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+        string searchCenterLonStr = searchCenterLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+        string searchRadiusStr = searchRadius.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+
+        // WebRequest to Open Street View as JSON in specified area
+        string url = "https://overpass-api.de/api/interpreter?data=[out:json];node['highway'='bus_stop'](around:100"  + "," + searchCenterLatStr + "," + searchCenterLonStr + ");(._;>;);out;";
+
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        yield return www.SendWebRequest();
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            JSONNode data = JSON.Parse(www.downloadHandler.text);
+            Dictionary<long, Vector3> nodes = new Dictionary<long, Vector3>();
+
+            // loop through nodes
+            foreach (JSONNode element in data["elements"].AsArray)
+            {
+                if (element["type"] == "node")
+                {
+                    Debug.Log(element["tags"]["name"]);
+                }
+
+                DrawBusStop(element["lat"], element["lon"]);
+            }
+
+            
+        }
+        else
+        {
+            Debug.LogError("Fehler beim Abrufen der OSM-Daten: " + www.error);
+        }
+    }*/
 }
