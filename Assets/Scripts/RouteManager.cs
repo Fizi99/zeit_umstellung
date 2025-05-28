@@ -114,10 +114,25 @@ public class RouteManager : MonoBehaviour
                     Street street1 = this.gameManager.streets[i].GetComponent<Street>();
                     Street street2 = this.gameManager.streets[j].GetComponent<Street>();
 
-                    if (ConnectedViaNode(street1, street2, out Vector3 connection1)){
+                    if (ConnectedViaNodeId(street1, street2, out Vector3 connection1)){
                         // draw connection point as green sphere
                         GameObject point = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         point.transform.position = connection1;
+                        point.transform.localScale = Vector3.one * 0.2f;
+
+                        var renderer = point.GetComponent<Renderer>();
+                        if (renderer != null)
+                        {
+                            Material mat = new Material(Shader.Find("Standard"));
+                            mat.color = Color.green;
+                            renderer.material = mat;
+                        }
+                    }
+                    /*else if (ConnectedViaNode(street1, street2, out Vector3 connection2))
+                    {
+                        // draw connection point as green sphere
+                        GameObject point = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        point.transform.position = connection2;
                         point.transform.localScale = Vector3.one * 0.2f;
 
                         var renderer = point.GetComponent<Renderer>();
@@ -144,11 +159,69 @@ public class RouteManager : MonoBehaviour
                             renderer.material = mat;
                         }
                     }*/
-                 
+
                 }
 
             }
         }
+    }
+    /*
+     * struktur: dictionary: node a: node b, node c...
+                             node b: node a, node d...
+     */
+    /*public Dictionary<long, List<long>> ConnectedNode(Dictionary<long, List<long>> graph, long start)
+    {
+        if()
+    }*/
+
+    public static List<List<long>> FindAllPaths(Dictionary<long, List<long>> graph, long start)
+    {
+        var allPaths = new List<List<long>>();
+        DFS(graph, start, new List<long>(), allPaths);
+        return allPaths;
+    }
+
+    private static void DFS(Dictionary<long, List<long>> graph, long current, List<long> path, List<List<long>> allPaths)
+    {
+        path.Add(current);
+
+        // Endknoten, wenn keine Nachbarn vorhanden
+        if (!graph.ContainsKey(current) || graph[current].Count == 0)
+        {
+            allPaths.Add(new List<long>(path));
+        }
+        else
+        {
+            foreach (var neighbor in graph[current])
+            {
+                if (!path.Contains(neighbor)) // Zyklen vermeiden
+                {
+                    DFS(graph, neighbor, path, allPaths);
+                }
+            }
+        }
+
+        path.RemoveAt(path.Count - 1); // Backtracking
+    }
+
+
+    // check if nodes are connected via node id given by OSM API
+    public bool ConnectedViaNodeId(Street street1, Street street2, out Vector3 connection)
+    {
+        connection = Vector3.zero;
+        for(int i = 0; i < street1.nodeIds.Count; i++){
+            foreach (long node2 in street2.nodeIds)
+            {
+                if (street1.nodeIds[i] == node2)
+                {
+                    connection = street1.nodes[i];
+                    Debug.Log("connected via node Id");
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     // check if 2 streets are connected via node, or 2 nodes are really close

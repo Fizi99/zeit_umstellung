@@ -6,6 +6,8 @@ public class Street : MonoBehaviour
     [HideInInspector]
     public List<Vector3> nodes = new List<Vector3>();
     [HideInInspector]
+    public List<long> nodeIds = new List<long>();
+    [HideInInspector]
     public List<Transform> waypoints = new List<Transform>();
     private GameManager gameManager;
 

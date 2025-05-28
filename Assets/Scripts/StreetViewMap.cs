@@ -87,6 +87,7 @@ public class StreetViewMap : MonoBehaviour
                     {
                         long nodeId = element["nodes"][i].AsLong;
                         streetComponent.nodes.Add(nodes[nodeId]);
+                        streetComponent.nodeIds.Add(nodeId);
                         lr.SetPosition(i, nodes[nodeId]);
                     }
                     streetComponent.DrawNodes();
