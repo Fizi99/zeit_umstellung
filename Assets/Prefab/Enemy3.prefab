@@ -118,9 +118,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4405568160711349380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16863c8c8333d464d82f2b63c34db0ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ec29db754c791942ae5fa0e9600e2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  initSpeed: 3
+  health: 500
   targets: []
   currentTarget: {fileID: 0}

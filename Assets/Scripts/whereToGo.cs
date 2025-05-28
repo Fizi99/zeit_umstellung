@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+
 
 public class whereToGo : MonoBehaviour
 {
@@ -6,7 +8,7 @@ public class whereToGo : MonoBehaviour
     private float speed = 3f;
     public int health = 100;
 
-    public Transform[] targets;
+    public List<Transform> targets = new List<Transform>();
     public Transform currentTarget;
     private int waypointIndex = 0;
     private float slowCountdown = 0f;
@@ -16,7 +18,7 @@ public class whereToGo : MonoBehaviour
         speed=initSpeed;
     }
 
-    void setTargetList(Transform[] targetList)
+    void setTargetList(List<Transform> targetList)
     {
         targets = targetList;
         currentTarget = targetList[waypointIndex];
@@ -47,7 +49,7 @@ public class whereToGo : MonoBehaviour
 
     void GetNextWaypoint()
     {
-        if (waypointIndex >= targets.Length - 1)
+        if (waypointIndex >= targets.Count - 1)
         {
             EndPath();
             return;
