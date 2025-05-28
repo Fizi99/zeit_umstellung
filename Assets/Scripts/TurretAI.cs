@@ -58,7 +58,7 @@ public class TurretAI : MonoBehaviour
             //langsamere rotation in Video, allerdings nicht hingekriegt
             Vector3 rotation = lookRotation.eulerAngles;
             //anpassen in 3D
-            transform.rotation = Quaternion.Euler(0f, 0f, rotation.y);
+            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
             if (fireCountdown <= 0f)
             {
                 Shoot();

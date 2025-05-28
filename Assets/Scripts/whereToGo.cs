@@ -61,7 +61,7 @@ public class whereToGo : MonoBehaviour
     void EndPath()
     {
         playerStats.lives--;
-        Debug.Log("lives: " + playerStats.lives);
+        //Debug.Log("lives: " + playerStats.lives);
         Destroy(gameObject);
         return;
     }

@@ -29,8 +29,8 @@ public class buildManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            //spawnTurret(turretArtillery);
-            spawnTurret(turretFreeze);
+            spawnTurret(turretArtillery);
+            //spawnTurret(turretFreeze);
         }
         else if (Input.GetMouseButtonDown(1))
         {
