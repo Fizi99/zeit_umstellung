@@ -2580,6 +2580,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053806520}
   m_CullTransparentMesh: 1
+--- !u!1 &1148362367
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1148362369}
+  - component: {fileID: 1148362368}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1148362368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148362367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc03ecd65ec04f44da03bdc02273144e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lat: 0
+  lon: 0
+  lives: 0
+  startLives: 20
+--- !u!4 &1148362369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148362367}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.289868, y: 2.8795576, z: -14.526994}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1213759359
 GameObject:
   m_ObjectHideFlags: 0
@@ -3397,6 +3445,7 @@ MonoBehaviour:
   gpsTracker: {fileID: 169364148}
   waveSpawner: {fileID: 576400594}
   routeManager: {fileID: 1404204179}
+  player: {fileID: 1148362368}
 --- !u!4 &1517589945
 Transform:
   m_ObjectHideFlags: 0
@@ -4803,3 +4852,4 @@ SceneRoots:
   - {fileID: 576400595}
   - {fileID: 1404204180}
   - {fileID: 556906726}
+  - {fileID: 1148362369}

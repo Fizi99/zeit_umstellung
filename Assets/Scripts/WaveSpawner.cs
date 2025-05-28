@@ -85,8 +85,8 @@ public class WaveSpawner : MonoBehaviour
     {
         List<Transform> targets = gameManager.streets[routeIndex].GetComponent<Street>().waypoints;
         Transform newEnemy = Instantiate(enemyPrefab1, targets[0].position, targets[0].rotation);
-        newEnemy.GetComponent<whereToGo>().targets = targets;
-        newEnemy.GetComponent<whereToGo>().currentTarget = newEnemy.GetComponent<whereToGo>().targets[1];
+        newEnemy.GetComponent<EnemyAI>().targets = targets;
+        newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[1];
 
         /*Transform[] targets = routeManager.routeList[routeIndex].GetComponent<enemyAI>().waypoints;
         Transform newEnemy = Instantiate(enemyPrefab1, targets[0].position, targets[0].rotation);

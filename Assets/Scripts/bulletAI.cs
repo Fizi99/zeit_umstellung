@@ -68,7 +68,7 @@ public class bulletAI : MonoBehaviour
     //change to game object of enemy
     void DealDamage(Transform enemy)
     {
-        whereToGo e = enemy.GetComponent<whereToGo>();
+        EnemyAI e = enemy.GetComponent<EnemyAI>();
         if (e != null)
         {
             e.TakeDamage(damage);
@@ -77,7 +77,7 @@ public class bulletAI : MonoBehaviour
 
     void Slow(Transform enemy)
     {
-        whereToGo e = enemy.GetComponent<whereToGo>();
+        EnemyAI e = enemy.GetComponent<EnemyAI>();
         if (e != null)
         {
             e.Slow(SlowMultiplier, freezeDuration);

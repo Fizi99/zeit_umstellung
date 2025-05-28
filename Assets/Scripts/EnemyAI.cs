@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
-public class whereToGo : MonoBehaviour
+public class EnemyAI : MonoBehaviour
 {
     public float initSpeed = 3f;
     private float speed = 3f;
@@ -13,9 +13,18 @@ public class whereToGo : MonoBehaviour
     private int waypointIndex = 0;
     private float slowCountdown = 0f;
 
+    public int damage = 1;
+
+    private GameManager gameManager;
+
     void Awake()
     {
         speed=initSpeed;
+    }
+
+    private void Start()
+    {
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void setTargetList(List<Transform> targetList)
@@ -60,7 +69,7 @@ public class whereToGo : MonoBehaviour
 
     void EndPath()
     {
-        playerStats.lives--;
+        this.gameManager.player.TakeDamage(damage);
         //Debug.Log("lives: " + playerStats.lives);
         Destroy(gameObject);
         return;

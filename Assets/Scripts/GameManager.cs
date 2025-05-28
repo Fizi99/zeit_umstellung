@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public List<GameObject> streets;
     public Bus selectedBus;
-    public Player player = new Player();
     public BusStop busStop;
     [HideInInspector]
     public GameObject busStopGO = null;
@@ -22,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GPSTracker gpsTracker;
     [SerializeField] public WaveSpawner waveSpawner;
     [SerializeField] public RouteManager routeManager;
+    [SerializeField] public Player player;
 
 
     void Start()
