@@ -8,8 +8,8 @@ public class EnemyAI : MonoBehaviour
     private float speed = 3f;
     public int health = 100;
 
-    public List<Transform> targets = new List<Transform>();
-    public Transform currentTarget;
+    public List<GameObject> targets = new List<GameObject>();
+    public GameObject currentTarget;
     private int waypointIndex = 0;
     private float slowCountdown = 0f;
 
@@ -27,7 +27,7 @@ public class EnemyAI : MonoBehaviour
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    void setTargetList(List<Transform> targetList)
+    void setTargetList(List<GameObject> targetList)
     {
         targets = targetList;
         currentTarget = targetList[waypointIndex];
@@ -37,7 +37,7 @@ public class EnemyAI : MonoBehaviour
     {
         //might be Vector2
 
-        Vector3 direction = currentTarget.position - transform.position;
+        Vector3 direction = currentTarget.transform.position - transform.position;
         transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
 
         if (slowCountdown > 0)
@@ -50,7 +50,7 @@ public class EnemyAI : MonoBehaviour
         }
 
 
-        if (Vector3.Distance(transform.position, currentTarget.position) < 0.2f)
+        if (Vector3.Distance(transform.position, currentTarget.transform.position) < 0.2f)
         {
             GetNextWaypoint();
         }

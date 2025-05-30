@@ -6,6 +6,8 @@ public class buildManager : MonoBehaviour
 
     public static buildManager instance;
 
+    public GameObject turretContainer;
+
     public GameObject turretArtillery;
     public GameObject turretLaser;
     public GameObject turretRocket;
@@ -71,7 +73,8 @@ public class buildManager : MonoBehaviour
             }
             if (!turretOverlap)
             {
-                Instantiate(turret, spawnPosition, Quaternion.identity);
+                GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
+                newTurret.transform.parent = turretContainer.transform;
             }
             else
             {

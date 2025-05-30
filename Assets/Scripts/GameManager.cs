@@ -7,10 +7,12 @@ public class GameManager : MonoBehaviour
     public List<Bus> busses;
     [HideInInspector]
     public List<GameObject> streets;
+    public List<List<GameObject>> routes = new List<List<GameObject>>();
     public Bus selectedBus;
     public BusStop busStop;
     [HideInInspector]
     public GameObject busStopGO = null;
+    public Dictionary<long, Vector3> nodeLocationDictionary;
 
     public GameState gameState;
 
@@ -66,9 +68,9 @@ public class GameManager : MonoBehaviour
     {
         // init waves for enemies
         // TODO: put at end, so only eligable routes are used (now every street spawns enemies)
-        this.waveSpawner.setAmountOfRoutes(streets.Count);
+        this.waveSpawner.setAmountOfRoutes(routes.Count);
 
-        this.routeManager.CalcClosestStreetToBusStop();
+        this.routeManager.InitiateRouteManagement();
 
         //this.routeManager.AddLastWaypointToRoutes(this.streets);
     }

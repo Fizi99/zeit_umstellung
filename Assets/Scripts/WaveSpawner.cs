@@ -7,6 +7,8 @@ public class WaveSpawner : MonoBehaviour
     public Transform enemyPrefab2;
     public Transform enemyPrefab3;
 
+    public GameObject enemyContainer;
+
     public float timeBetweenWaves = 5f;
     public float countdown = 3f;
 
@@ -38,7 +40,7 @@ public class WaveSpawner : MonoBehaviour
     {
         if (waveNumber == 1)
         {
-            for (int i = 0; i < amountOfRoutes; i++)
+            for (int i = 0; i < this.gameManager.routes.Count; i++)
             {
                 SpawnEnemy1(i);
             }
@@ -59,7 +61,7 @@ public class WaveSpawner : MonoBehaviour
         }*/
         else
         {
-            for (int i = 0; i < amountOfRoutes; i++)
+            for (int i = 0; i < this.gameManager.routes.Count; i++)
             {
                 SpawnEnemy1(i);
                /* if (i == 1)
@@ -73,7 +75,6 @@ public class WaveSpawner : MonoBehaviour
             }
         }
         waveNumber++;
-        Debug.Log("Wave Incoming!");
     }
 
     public void setAmountOfRoutes(int amountOfRoutes)
@@ -83,10 +84,11 @@ public class WaveSpawner : MonoBehaviour
 
     void SpawnEnemy1(int routeIndex)
     {
-        List<Transform> targets = gameManager.streets[routeIndex].GetComponent<Street>().waypoints;
-        Transform newEnemy = Instantiate(enemyPrefab1, targets[0].position, targets[0].rotation);
+        List<GameObject> targets = this.gameManager.routes[routeIndex];
+        Transform newEnemy = Instantiate(enemyPrefab1, targets[0].transform.position, targets[0].transform.rotation);
         newEnemy.GetComponent<EnemyAI>().targets = targets;
         newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[1];
+        newEnemy.transform.parent = enemyContainer.transform;
 
         /*Transform[] targets = routeManager.routeList[routeIndex].GetComponent<enemyAI>().waypoints;
         Transform newEnemy = Instantiate(enemyPrefab1, targets[0].position, targets[0].rotation);

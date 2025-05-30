@@ -17,7 +17,7 @@ public class BusTimeScraper : MonoBehaviour
     // representation of bus stop with data aboput location etc.
     private BusStop busStopData;
 
-    private List<Bus> busses;
+    private List<Bus> busses = new List<Bus>();
 
     private GameManager gameManager;
 

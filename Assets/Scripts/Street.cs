@@ -6,23 +6,27 @@ public class Street : MonoBehaviour
     [HideInInspector]
     public List<Vector3> nodes = new List<Vector3>();
     [HideInInspector]
+    public List<long> nodeIds = new List<long>();
+    [HideInInspector]
     public List<Transform> waypoints = new List<Transform>();
     private GameManager gameManager;
 
     [HideInInspector]
     public Vector3 closestPointOnStreet;
     [HideInInspector]
+    public List<long> neighbourNodes = new List<long>();
+    [HideInInspector]
     public double distance;
 
     private void Start()
     {
-         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // draw nodes belonging to street and place waypoints, to be used for enemy pathfinding
     public void DrawNodes()
     {
-        foreach(Vector3 node in nodes)
+        foreach (Vector3 node in nodes)
         {
 
             GameObject waypoint = new GameObject("waypoint");
@@ -52,9 +56,9 @@ public class Street : MonoBehaviour
         // for some reason have to set gamemanager here??
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         double shortestDistance = 99999;
-        for(int i = 0; i < nodes.Count-1; i++)
+        for (int i = 0; i < nodes.Count - 1; i++)
         {
-       
+
             Vector3 point = this.gameManager.GetClosestPointToBusStop(Vector3.zero, nodes[i], nodes[i + 1]);
             double distance = (point - Vector3.zero).magnitude;
             if (distance < shortestDistance)
@@ -62,22 +66,22 @@ public class Street : MonoBehaviour
                 shortestDistance = distance;
                 this.distance = distance;
                 this.closestPointOnStreet = point;
+                this.neighbourNodes.Add(nodeIds[i]);
+                this.neighbourNodes.Add(nodeIds[i+1]);
             }
         }
 
-       
+
 
         //Debug.DrawLine(Vector3.zero, this.closestPointOnStreet, Color.red);
     }
 
-    public void AddWaypoint(Vector3 node, int index)
+    public void SetAsClosestStreet()
     {
-        this.nodes.Insert(index, node);
-        GameObject waypoint = new GameObject("waypoint");
-        waypoint.transform.position = node;
-        this.waypoints.Insert(index ,waypoint.transform);
+        this.nodes.Add(this.closestPointOnStreet);
+        long beforeNode = this.neighbourNodes[1];
+        this.nodeIds.Insert(this.nodeIds.IndexOf(beforeNode), 1);
     }
-
 
 
 }
