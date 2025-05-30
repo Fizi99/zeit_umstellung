@@ -11,6 +11,7 @@ public class StreetViewMap : MonoBehaviour
     [SerializeField] private double searchCenterLon = 13.4040;
 
     [SerializeField] private GameObject busStopPrefab;
+    [SerializeField] private GameObject roadContainer;
 
 
     private GameObject busStop;
@@ -21,13 +22,19 @@ public class StreetViewMap : MonoBehaviour
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        StartCoroutine(DownloadOSMData());
+        //StartCoroutine(DownloadOSMData());
     }
 
     public void SearchStreetsAroundCenter(double searchCenterLat, double searchCenterLon)
     {
         this.searchCenterLat = searchCenterLat;
         this.searchCenterLon = searchCenterLon;
+
+        foreach (GameObject go in this.streets)
+        {
+            Destroy(go);
+        }
+        this.streets = new List<GameObject>();
 
         StartCoroutine(DownloadOSMData());
     }
@@ -50,6 +57,9 @@ public class StreetViewMap : MonoBehaviour
             JSONNode data = JSON.Parse(www.downloadHandler.text);
             Dictionary<long, Vector3> nodes = new Dictionary<long, Vector3>();
 
+            // add busstop as element with index 1 in dictionary
+            nodes[1] = Vector3.zero;
+
             // loop through nodes
             foreach (JSONNode element in data["elements"].AsArray)
             {
@@ -63,42 +73,33 @@ public class StreetViewMap : MonoBehaviour
                 }
             }
 
-            foreach (GameObject go in this.streets)
-            {
-                Destroy(go);
-            }
+            // dictionary with locations and node ids
+            this.gameManager.nodeLocationDictionary = nodes;
 
-            // Streets as lines
-            this.streets = new List<GameObject>();
             foreach (JSONNode element in data["elements"].AsArray)
             {
                 if (element["type"] == "way")
                 {
                     GameObject road = new GameObject("Road");
                     Street streetComponent = road.AddComponent<Street>();
-                    LineRenderer lr = road.AddComponent<LineRenderer>();
-                    lr.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
-                    lr.widthMultiplier = 0.2f;
-                    lr.positionCount = element["nodes"].Count;
-                    lr.startColor = Color.red;
-                    lr.endColor = Color.blue;
+                    road.transform.parent = roadContainer.transform;
 
                     for (int i = 0; i < element["nodes"].Count; i++)
                     {
                         long nodeId = element["nodes"][i].AsLong;
                         streetComponent.nodes.Add(nodes[nodeId]);
                         streetComponent.nodeIds.Add(nodeId);
-                        lr.SetPosition(i, nodes[nodeId]);
                     }
-                    streetComponent.DrawNodes();
+                    //streetComponent.DrawNodes();
 
                     this.streets.Add(road);
                 }
             }
 
+            //////////////////////////////////////////VLLLLLLLLLLLLLLLLLT HIER PROBLEME????
             this.gameManager.SetStreets(this.streets);
 
-            DrawBusStop(this.searchCenterLat, this.searchCenterLon);
+            DrawBusStop();
             //StartCoroutine(QueryBusStopLocation());
         }
         else
@@ -113,57 +114,21 @@ public class StreetViewMap : MonoBehaviour
         float scale = 10000f;
         float x = (float)((lon - this.searchCenterLon) * scale);
         float z = (float)((lat - this.searchCenterLat) * scale);
+        
         return new Vector3(x, 0, z);
     }
 
     // Draw rectangle at bus stop location
-    private void DrawBusStop(double lat, double lon)
+    private void DrawBusStop()
     {
-        Vector3 location = LatLonToUnity(lat, lon);
 
         if (this.busStop != null)
         {
             Destroy(this.busStop);
         }
         this.busStop = GameObject.Instantiate(busStopPrefab);
-        this.busStop.transform.position = location + new Vector3(0, 0, 0);
+        this.busStop.transform.position = new Vector3(0, 0, 0);
         this.gameManager.UpdateBusStopGameObject(this.busStop);
     }
 
-    /*
-    IEnumerator QueryBusStopLocation()
-    {
-        // so toString method converts decimal point correctly (1.2 instead of 1,2)
-        string searchCenterLatStr = searchCenterLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string searchCenterLonStr = searchCenterLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string searchRadiusStr = searchRadius.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-
-        // WebRequest to Open Street View as JSON in specified area
-        string url = "https://overpass-api.de/api/interpreter?data=[out:json];node['highway'='bus_stop'](around:100"  + "," + searchCenterLatStr + "," + searchCenterLonStr + ");(._;>;);out;";
-
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        yield return www.SendWebRequest();
-        if (www.result == UnityWebRequest.Result.Success)
-        {
-            JSONNode data = JSON.Parse(www.downloadHandler.text);
-            Dictionary<long, Vector3> nodes = new Dictionary<long, Vector3>();
-
-            // loop through nodes
-            foreach (JSONNode element in data["elements"].AsArray)
-            {
-                if (element["type"] == "node")
-                {
-                    Debug.Log(element["tags"]["name"]);
-                }
-
-                DrawBusStop(element["lat"], element["lon"]);
-            }
-
-            
-        }
-        else
-        {
-            Debug.LogError("Fehler beim Abrufen der OSM-Daten: " + www.error);
-        }
-    }*/
 }
