@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject lvlPlayingPanel;
     [SerializeField] private GameObject startMenuPanel;
     [SerializeField] private GameObject upgradingMenuPanel;
+    [SerializeField] private GameObject lvlEndPanel;
+
     [SerializeField] private GameObject distanceToStopText;
 
     [SerializeField] private GameObject debugText;
@@ -96,7 +98,7 @@ public class UIManager : MonoBehaviour
             if(this.gameManager.gameState == GameState.LEVELPLAYING)
             {
                 text = "Bus departed! Level finished!";
-
+                this.gameManager.ChangeGameState(GameState.LEVELEND);
             }
             else
             {
@@ -127,6 +129,7 @@ public class UIManager : MonoBehaviour
                 this.lvlPlayingPanel.SetActive(false);
                 this.startMenuPanel.SetActive(false);
                 this.upgradingMenuPanel.SetActive(false);
+                this.lvlEndPanel.SetActive(false);
                 break;
 
             case GameState.LEVELPLAYING:
@@ -134,6 +137,7 @@ public class UIManager : MonoBehaviour
                 this.lvlPlayingPanel.SetActive(true);
                 this.startMenuPanel.SetActive(false);
                 this.upgradingMenuPanel.SetActive(false);
+                this.lvlEndPanel.SetActive(false);
                 break;
 
             case GameState.UPGRADING:
@@ -141,12 +145,21 @@ public class UIManager : MonoBehaviour
                 this.lvlPlayingPanel.SetActive(false);
                 this.startMenuPanel.SetActive(false);
                 this.upgradingMenuPanel.SetActive(true);
+                this.lvlEndPanel.SetActive(false);
                 break;
             case GameState.MAINMENU:
                 this.lvlSelectionPanel.SetActive(false);
                 this.lvlPlayingPanel.SetActive(false);
                 this.startMenuPanel.SetActive(true);
                 this.upgradingMenuPanel.SetActive(false);
+                this.lvlEndPanel.SetActive(false);
+                break;
+            case GameState.LEVELEND:
+                this.lvlSelectionPanel.SetActive(false);
+                this.lvlPlayingPanel.SetActive(false);
+                this.startMenuPanel.SetActive(false);
+                this.upgradingMenuPanel.SetActive(false);
+                this.lvlEndPanel.SetActive(true);
                 break;
         }
     }
@@ -197,13 +210,13 @@ public class UIManager : MonoBehaviour
         this.gameManager.ChangeGameState(GameState.MAINMENU);
     }
 
-    public void EndLevel()
+    public void NavigateToEndLvl()
     {
         // when level is ended, regenerate bus selection: TODO: LATER CHANGE SO SHOWN UI DEPENDS ON GAMESTATE
-        GenerateBusSelection();
+        //GenerateBusSelection();
 
         // Update UI
-        this.gameManager.ChangeGameState(GameState.MAINMENU);
+        this.gameManager.ChangeGameState(GameState.LEVELEND);
 
     }
 

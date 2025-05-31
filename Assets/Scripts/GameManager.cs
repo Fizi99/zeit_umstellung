@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     public GameState gameState;
 
+    [Header("Managed Components")]
+    [Space(10)]
     [SerializeField] public BusTimeScraper busTimeScraper;
     [SerializeField] public StreetViewMap streetViewMapGetter;
     [SerializeField] public TMP_InputField busSearchInputField;
@@ -24,6 +26,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] public WaveSpawner waveSpawner;
     [SerializeField] public RouteManager routeManager;
     [SerializeField] public Player player;
+    [Header("Container")]
+    [Space(10)]
+    [SerializeField] public GameObject enemyContainer;
+    [SerializeField] public GameObject turretContainer;
 
 
     void Start()
@@ -43,7 +49,37 @@ public class GameManager : MonoBehaviour
     public void ChangeGameState(GameState gameState)
     {
         this.gameState = gameState;
+        if(gameState == GameState.LEVELEND)
+        {
+            ClearScene();
+        }
         this.uiManager.UpdateUI();
+    }
+
+    // Remove all enemies and turrets from scene
+    public void ClearScene()
+    {
+        // Destroy all enemies
+        List<Transform> enemies = new List<Transform>();
+        for(int i = 0; i < enemyContainer.transform.childCount; i++)
+        {
+            enemies.Add(enemyContainer.transform.GetChild(i));
+        }
+        foreach (Transform child in enemies)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Destroy all turrets
+        List<Transform> turrets = new List<Transform>();
+        for (int i = 0; i < turretContainer.transform.childCount; i++)
+        {
+            turrets.Add(turretContainer.transform.GetChild(i));
+        }
+        foreach (Transform child in turrets)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     public void UpdateBusStopData(BusStop newData)

@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
     public int lives;
     public int startLives = 20;
 
+    public int zeitsand = 0;
+    public int uhrranium = 0;
+
     public void SetPlayerCoords(double lat, double lon)
     {
         this.lat = lat;

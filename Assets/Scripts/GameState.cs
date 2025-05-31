@@ -5,6 +5,7 @@ public enum GameState
     LEVELSELECTION,
     LEVELPLAYING,
     UPGRADING,
-    MAINMENU
+    MAINMENU,
+    LEVELEND
 
 }

@@ -17,8 +17,11 @@ public class RouteManager : MonoBehaviour
     [SerializeField]
     private GameObject routeVisualizerContainer;
 
+    [HideInInspector]
     public List<List<long>> enemyRouteIds = new List<List<long>>();
+    [HideInInspector]
     public List<List<GameObject>> enemyRouteWaypoints = new List<List<GameObject>>();
+    [HideInInspector]
     public List<GameObject> enemyRouteVisualizer = new List<GameObject>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -212,13 +215,25 @@ public class RouteManager : MonoBehaviour
                     // add neighbour nodes in street to dictionary at key of currently watched node
                     if (j != 0)
                     {
-                        float cost = (this.gameManager.nodeLocationDictionary[street.nodeIds[j]] - this.gameManager.nodeLocationDictionary[street.nodeIds[j - 1]]).magnitude;
-                        graph[street.nodeIds[j]].Add(new Edge(street.nodeIds[j], street.nodeIds[j - 1], cost));
+                        // check first, if node is cutoff point and node should be handled as leaf, when node before is out of bounds
+                        float distanceFromCenterForPrev = (this.gameManager.nodeLocationDictionary[street.nodeIds[j-1]] - Vector3.zero).magnitude;
+                        if (distanceFromCenterForPrev < spawnRadius)
+                        {
+                            float cost = (this.gameManager.nodeLocationDictionary[street.nodeIds[j]] - this.gameManager.nodeLocationDictionary[street.nodeIds[j - 1]]).magnitude;
+                            graph[street.nodeIds[j]].Add(new Edge(street.nodeIds[j], street.nodeIds[j - 1], cost));
+                        }
+                            
                     }
                     if (j != street.nodeIds.Count - 1)
                     {
-                        float cost = (this.gameManager.nodeLocationDictionary[street.nodeIds[j]] - this.gameManager.nodeLocationDictionary[street.nodeIds[j + 1]]).magnitude;
-                        graph[street.nodeIds[j]].Add(new Edge(street.nodeIds[j], street.nodeIds[j + 1], cost));
+                        // check first, if node is cutoff point and node should be handled as leaf, when node after is out of bounds
+                        float distanceFromCenterForNext = (this.gameManager.nodeLocationDictionary[street.nodeIds[j + 1]] - Vector3.zero).magnitude;
+                        if (distanceFromCenterForNext < spawnRadius)
+                        {
+                            float cost = (this.gameManager.nodeLocationDictionary[street.nodeIds[j]] - this.gameManager.nodeLocationDictionary[street.nodeIds[j + 1]]).magnitude;
+                            graph[street.nodeIds[j]].Add(new Edge(street.nodeIds[j], street.nodeIds[j + 1], cost));
+                        }
+                               
                     }
                 }
                 

@@ -16,6 +16,8 @@ public class buildManager : MonoBehaviour
     public GameObject turretDrone;
     public Camera mainCamera;
 
+    private GameManager gameManager;
+
     void Awake()
     {
         if(instance != null)
@@ -27,23 +29,34 @@ public class buildManager : MonoBehaviour
 
     }
 
+    void Start()
+    {
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        // only place turrets, when lvl is in session
+        if(this.gameManager.gameState == GameState.LEVELPLAYING)
         {
-            spawnTurret(turretArtillery);
-            //spawnTurret(turretFreeze);
+            if (Input.GetMouseButtonDown(0))
+            {
+                spawnTurret(turretArtillery);
+                //spawnTurret(turretFreeze);
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                //spawnTurret(turretLaser);
+                spawnTurret(turretBomb);
+            }
+            else if (Input.GetMouseButtonDown(2))
+            {
+                //spawnTurret(turretRocket);
+                spawnTurret(turretDrone);
+            }
         }
-        else if (Input.GetMouseButtonDown(1))
-        {
-            //spawnTurret(turretLaser);
-            spawnTurret(turretBomb);
-        }
-        else if (Input.GetMouseButtonDown(2))
-        {
-            //spawnTurret(turretRocket);
-            spawnTurret(turretDrone);
-        }
+
+       
     }
 
     //implement logic with shop
