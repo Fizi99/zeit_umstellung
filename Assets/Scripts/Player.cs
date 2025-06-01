@@ -8,8 +8,38 @@ public class Player : MonoBehaviour
     public int lives;
     public int startLives = 20;
 
-    public int zeitsand = 0;
-    public int uhrranium = 0;
+    public float zeitsand = 0;
+    public float uhranium = 0;
+
+    public float maxZeitsand = 100;
+    public float zeitsandStartValue = 40;
+    public float zeitsandRatePerSec = 1;
+
+    public float savedUhranium = 0;
+    public float uhrraniumRatePerSec = 1;
+    // to display uhranium gain, after it has been reset
+    public float uhraniumGain = 0;
+
+    private GameManager gameManager;
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        lives = startLives;
+        this.zeitsand = this.zeitsandStartValue;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(this.gameManager.gameState == GameState.LEVELPLAYING)
+        {
+            UpdateUhranium();
+            UpdateZeitsand();
+        }
+    }
 
     public void SetPlayerCoords(double lat, double lon)
     {
@@ -17,21 +47,32 @@ public class Player : MonoBehaviour
         this.lon = lon;
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void UpdateZeitsand()
     {
-        lives = startLives;
+       
+        zeitsand += Time.deltaTime * zeitsandRatePerSec;
+        Mathf.Clamp(zeitsand, 0, maxZeitsand);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UpdateUhranium()
     {
 
+        uhranium += Time.deltaTime * uhrraniumRatePerSec;
     }
+
+    public void SaveUhranium()
+    {
+        this.savedUhranium += (int)this.uhranium;
+        this.uhraniumGain = (int)this.uhranium;
+        this.uhranium = 0;
+    }
+
+
 
     public void TakeDamage(int dmg)
     {
+        this.uhranium -= dmg;
+        this.uhranium = Mathf.Max(this.uhranium, 0);
         this.lives -= dmg;
     }
 

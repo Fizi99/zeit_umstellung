@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
         if(gameState == GameState.LEVELEND)
         {
             ClearScene();
+            this.player.SaveUhranium();
         }
         this.uiManager.UpdateUI();
     }
@@ -80,6 +81,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        // reset player zeitsand
+        this.player.zeitsand = this.player.zeitsandStartValue;
     }
 
     public void UpdateBusStopData(BusStop newData)

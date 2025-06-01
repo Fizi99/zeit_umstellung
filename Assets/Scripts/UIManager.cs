@@ -6,12 +6,17 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Controlled components")]
 
     [SerializeField] private TMP_InputField busSearchInputField;
     [SerializeField] private List<TMP_Text> countdown;
     [SerializeField] private GameObject gridLayout;
     [SerializeField] private GameObject busSelectorBtnPrefab;
-
+    [SerializeField] private TMP_Text zeitsandText;
+    [SerializeField] private TMP_Text uhraniumText;
+    [SerializeField] private TMP_Text lvlFinishedText;
+    [Space(10)]
+    [Header("Panel for navigation")]
     [SerializeField] private GameObject lvlSelectionPanel;
     [SerializeField] private GameObject lvlPlayingPanel;
     [SerializeField] private GameObject startMenuPanel;
@@ -45,6 +50,13 @@ public class UIManager : MonoBehaviour
         {
             GenerateBusSelection();
         }
+
+        if(this.gameManager.gameState == GameState.LEVELPLAYING)
+        {
+            UpdateUhraniumText();
+            UpdateZeitsandText();
+        }
+
     }
 
     public void ShowDebug(string msg)
@@ -100,18 +112,18 @@ public class UIManager : MonoBehaviour
                 text = "Bus departed! Level finished!";
                 this.gameManager.ChangeGameState(GameState.LEVELEND);
             }
-            else
-            {
-                text = "Bus already departed. pick another";
-            }
-            foreach(TMP_Text countdownDisplay in this.countdown)
-                countdownDisplay.fontSize = 12;
+            //else
+            //{
+                //text = "Bus already departed. pick another";
+            //}
+            //foreach(TMP_Text countdownDisplay in this.countdown)
+            //    countdownDisplay.fontSize = 12;
         }
         else
         {
             text = $"{timeSpan:hh':'mm':'ss}";
-            foreach (TMP_Text countdownDisplay in this.countdown)
-                countdownDisplay.fontSize = 36;
+            //foreach (TMP_Text countdownDisplay in this.countdown)
+            //    countdownDisplay.fontSize = 36;
         }
 
         // show countdown
@@ -120,6 +132,22 @@ public class UIManager : MonoBehaviour
 
     }
 
+    private void UpdateUhraniumText()
+    {
+        this.uhraniumText.text = "Uhranium: "+(int)this.gameManager.player.uhranium;
+    }
+
+    private void UpdateZeitsandText()
+    {
+        this.zeitsandText.text = "Zeitsand: " + (int)this.gameManager.player.zeitsand;
+    }
+
+    private void UpdateLvlFinishedText()
+    {
+        this.lvlFinishedText.text = "Congratulations!\nLevel finished, your bus is arriving!\n+" + this.gameManager.player.uhraniumGain + " Uhranium!\ntotal: " + this.gameManager.player.savedUhranium;
+    }
+
+    // update navigation depending on gamestate
     public void UpdateUI()
     {
         switch (this.gameManager.gameState)
@@ -160,6 +188,35 @@ public class UIManager : MonoBehaviour
                 this.startMenuPanel.SetActive(false);
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(true);
+
+                break;
+        }
+
+        UpdateComponentsOnGameStateChange();
+    }
+
+    // update single components that need to be updated on specific gamestate change
+    private void UpdateComponentsOnGameStateChange()
+    {
+        switch (this.gameManager.gameState)
+        {
+            case GameState.LEVELSELECTION:
+      
+                break;
+
+            case GameState.LEVELPLAYING:
+
+                break;
+
+            case GameState.UPGRADING:
+
+                break;
+            case GameState.MAINMENU:
+
+                break;
+            case GameState.LEVELEND:
+                UpdateLvlFinishedText();
+
                 break;
         }
     }
