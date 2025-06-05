@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
     {
        
         zeitsand += Time.deltaTime * zeitsandRatePerSec;
-        Mathf.Clamp(zeitsand, 0, maxZeitsand);
+        zeitsand = Mathf.Clamp(zeitsand, 0, maxZeitsand);
     }
 
     public void SetZeitsand(float adjustedZeitsand)

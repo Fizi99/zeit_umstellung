@@ -84,10 +84,13 @@ public class RouteManager : MonoBehaviour
             }
 
         }
+        if( closestStreet != null)
+        {
+            this.lastWaypointPos = closestStreet.GetComponent<Street>().closestPointOnStreet;
+            // add target node to closest street
+            closestStreet.GetComponent<Street>().SetAsClosestStreet();
+        }
 
-        this.lastWaypointPos = closestStreet.GetComponent<Street>().closestPointOnStreet;
-        // add target node to closest street
-        closestStreet.GetComponent<Street>().SetAsClosestStreet();
 
         // draw closest point on closest street as sphere
         //GameObject point = GameObject.CreatePrimitive(PrimitiveType.Sphere);

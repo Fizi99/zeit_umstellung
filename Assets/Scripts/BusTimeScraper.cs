@@ -95,6 +95,12 @@ public class BusTimeScraper : MonoBehaviour
                         this.gameManager.UpdateBusStopData(busStopData);
                     }
                 }
+                /* DEBUG */
+                this.busStopData = new BusStop(53.837944, 10.700381);
+                this.hafas = 9057765;
+                this.busstopActual = "Technische Hochschule";
+                this.gameManager.UpdateBusStopData(busStopData);
+                /* DEBUG */
                 Debug.Log(this.busstopActual+ ": " +this.hafas);
 
                 // Load Bus Information
