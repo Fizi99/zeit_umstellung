@@ -31,6 +31,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject enemyContainer;
     [SerializeField] public GameObject turretContainer;
 
+    [SerializeField] public GameObject artilleryPrefab;
+    [SerializeField] public GameObject dronePrefab;
+    [SerializeField] public GameObject freezePrefab;
+    [SerializeField] public GameObject bombPrefab;
+    [SerializeField] public GameObject laserPrefab;
 
     void Start()
     {

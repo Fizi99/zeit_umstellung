@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
         }
     }
 
+
     public void SetPlayerCoords(double lat, double lon)
     {
         this.lat = lat;
@@ -54,6 +55,10 @@ public class Player : MonoBehaviour
         Mathf.Clamp(zeitsand, 0, maxZeitsand);
     }
 
+    public void SetZeitsand(float adjustedZeitsand)
+    {
+        zeitsand = adjustedZeitsand;
+    }
     private void UpdateUhranium()
     {
 

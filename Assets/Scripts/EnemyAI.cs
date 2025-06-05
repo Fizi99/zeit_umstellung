@@ -13,9 +13,7 @@ public class EnemyAI : MonoBehaviour
     public bool isSplitter = false;
     public int splitAmount = 0;
     public Transform splitUnit;
-
-    public GameObject enemyContainer;
-
+    private GameManager gameManager;
     public int auraRadius =0;
     public float auraEffectStrength = 2f;
     public float auraDuration = 2f;
@@ -27,8 +25,6 @@ public class EnemyAI : MonoBehaviour
 
     public int damage = 1;
 
-    private GameManager gameManager;
-
     void Awake()
     {
         speed=initSpeed;
@@ -37,7 +33,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void setTargetList(List<GameObject> targetList)
@@ -142,7 +138,7 @@ public class EnemyAI : MonoBehaviour
                 newEnemy.GetComponent<EnemyAI>().targets = targets;
                 newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[waypointIndex];
                 newEnemy.GetComponent<EnemyAI>().waypointIndex = waypointIndex;
-                //newEnemy.transform.parent = enemyContainer.transform;
+                newEnemy.transform.parent = gameManager.enemyContainer.transform;
             }
         }
         Destroy(gameObject);

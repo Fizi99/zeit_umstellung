@@ -6,6 +6,8 @@ public class buildManager : MonoBehaviour
 
     public static buildManager instance;
 
+    public GameObject turretToBuild;
+
     public GameObject turretContainer;
 
     public GameObject turretArtillery;
@@ -15,6 +17,8 @@ public class buildManager : MonoBehaviour
     public GameObject turretBomb;
     public GameObject turretDrone;
     public Camera mainCamera;
+
+    public bool isBuildPossible = false;
 
     private GameManager gameManager;
 
@@ -43,7 +47,7 @@ public class buildManager : MonoBehaviour
             {
                 //spawnTurret(turretArtillery);
                 //spawnTurret(turretFreeze);
-                spawnTurret(turretDrone);
+                spawnTurret(turretToBuild);
             }
             else if (Input.GetMouseButtonDown(1))
             {
@@ -60,15 +64,24 @@ public class buildManager : MonoBehaviour
        
     }
 
-    //implement logic with shop
-    public void GetTurretToBuild()
+    public void setIsBuild(bool isBuild)
     {
-        return;
+        isBuildPossible = isBuild;
+    }
+
+    public void SetTurretToBuild(GameObject turret)
+    {
+        turretToBuild = turret;
+        setIsBuild(true);
     }
 
   void spawnTurret(GameObject turret)
     {
-        Vector3 mousePosition = Input.mousePosition;
+        if (isBuildPossible)
+        {
+            setIsBuild(false);
+
+            Vector3 mousePosition = Input.mousePosition;
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         RaycastHit hit;
 
@@ -85,14 +98,16 @@ public class buildManager : MonoBehaviour
                     turretOverlap = true;
                 }
             }
-            if (!turretOverlap)
+            if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
             {
+                    gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost);
                 GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
                 newTurret.transform.parent = turretContainer.transform;
             }
             else
             {
                 Debug.LogWarning("Turret already there");
+            }
             }
         }
 

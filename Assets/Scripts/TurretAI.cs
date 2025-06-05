@@ -11,6 +11,7 @@ public class TurretAI : MonoBehaviour
     public bool useTimeInsteadOfAmmo = false;
     public int initUseAmount = 1;
     public int useAmount = 1;
+    public float buildingCost = 1f;
     public Image useBar;
 
     public bool isMoving = false;
