@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 
@@ -6,7 +7,9 @@ public class EnemyAI : MonoBehaviour
 {
     public float initSpeed = 3f;
     private float speed = 3f;
-    public int health = 100;
+    public int initHealth = 100;
+    private int health = 100;
+    public Image healthbar;
     public bool isSplitter = false;
     public int splitAmount = 0;
     public Transform splitUnit;
@@ -29,6 +32,7 @@ public class EnemyAI : MonoBehaviour
     void Awake()
     {
         speed=initSpeed;
+        health = initHealth;
     }
 
     private void Start()
@@ -115,6 +119,7 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(int amount)
     {
         health -= amount;
+        healthbar.fillAmount =health / initHealth;
         if(health <= 0)
         {
             Die();

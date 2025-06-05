@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurretAI : MonoBehaviour
 {
@@ -7,7 +8,10 @@ public class TurretAI : MonoBehaviour
     public float range = 3f;
     public string enemyTag = "Enemy";
     public bool isSingleUse=false;
+    public bool useTimeInsteadOfAmmo = false;
+    public int initUseAmount = 1;
     public int useAmount = 1;
+    public Image useBar;
 
     public bool isMoving = false;
     public float speed = 30f;
@@ -25,6 +29,7 @@ public class TurretAI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        useAmount = initUseAmount;
        InvokeRepeating("UpdateTarget", 0f, 0.5f);
 
     }
@@ -55,6 +60,10 @@ public class TurretAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isSingleUse && useTimeInsteadOfAmmo )
+        {
+            UpdateUseAmount((int)Time.deltaTime);
+        }
         if (target != null)
         {
             Vector3 dir = target.position - transform.position;
@@ -105,17 +114,22 @@ public class TurretAI : MonoBehaviour
         {
             bullet.SetBulletTarget(target);
         }
-        if (isSingleUse)
+        if (isSingleUse && !useTimeInsteadOfAmmo)
         {
-            useAmount--;
-            if (useAmount <= 0)
-            {
-                Destroy(gameObject);
-                return;
-            }
+            UpdateUseAmount(1);
         }
     }
 
+    void UpdateUseAmount(int usageUsed)
+    {
+        useAmount=useAmount-usageUsed;
+        useBar.fillAmount= useAmount/initUseAmount;
+        if (useAmount <= 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
