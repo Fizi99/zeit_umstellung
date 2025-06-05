@@ -123,8 +123,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 10000
   enemyTag: Enemy
-  isSingleUse: 0
+  isSingleUse: 1
   useAmount: 1
+  isMoving: 0
+  speed: 30
   fireRate: 2
-  bulletPrefab: {fileID: 9084643237093435201, guid: aca2e0cfab43afb4ea6ea0b8c843f206, type: 3}
+  bulletPrefab: {fileID: 4655690105588628940, guid: 16e20f16c5c17614b982c7b18f35f0a5, type: 3}
   firePoint: {fileID: 0}

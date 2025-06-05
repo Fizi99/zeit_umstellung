@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class WaveSpawner : MonoBehaviour
 {
-    public Transform enemyPrefab1;
-    public Transform enemyPrefab2;
-    public Transform enemyPrefab3;
+    public Transform enemyPrefabSupport;
+    public Transform enemyPrefabSpeed;
+    public Transform enemyPrefabStandard;
+    public Transform enemyPrefabSplitter;
+    public Transform enemyPrefabTank;
 
     public GameObject enemyContainer;
 
@@ -85,7 +87,7 @@ public class WaveSpawner : MonoBehaviour
     void SpawnEnemy1(int routeIndex)
     {
         List<GameObject> targets = this.gameManager.routes[routeIndex];
-        Transform newEnemy = Instantiate(enemyPrefab1, targets[0].transform.position, targets[0].transform.rotation);
+        Transform newEnemy = Instantiate(enemyPrefabSupport, targets[0].transform.position, targets[0].transform.rotation);
         newEnemy.GetComponent<EnemyAI>().targets = targets;
         newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[1];
         newEnemy.transform.parent = enemyContainer.transform;

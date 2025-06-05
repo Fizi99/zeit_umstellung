@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6205213089280388363}
   - component: {fileID: -2543700457451469261}
   m_Layer: 0
-  m_Name: Enemy3
+  m_Name: EnemyTank
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.399897, w: 0.91656005}
   m_LocalPosition: {x: 0.6405, y: -0.7826, z: 0.042125933}
-  m_LocalScale: {x: 2.4264321, y: 2.4524393, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -118,10 +118,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4405568160711349380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7934f81fa4c20a4eb5123a8526a3bec, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ec29db754c791942ae5fa0e9600e2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  health: 500
+  initSpeed: 1
+  health: 200
+  isSplitter: 0
+  splitAmount: 0
+  splitUnit: {fileID: 0}
+  enemyContainer: {fileID: 0}
   targets: []
   currentTarget: {fileID: 0}
+  waypointIndex: 0
+  damage: 1

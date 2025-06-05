@@ -9,6 +9,10 @@ public class TurretAI : MonoBehaviour
     public bool isSingleUse=false;
     public int useAmount = 1;
 
+    public bool isMoving = false;
+    public float speed = 30f;
+    public float stopAndShootRange = 5f;
+
 
     public float fireRate = 15f;
     private float fireCountdown = 0f;
@@ -59,7 +63,24 @@ public class TurretAI : MonoBehaviour
             Vector3 rotation = lookRotation.eulerAngles;
             //anpassen in 3D
             transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-            if (fireCountdown <= 0f)
+            if (isMoving)
+            {
+                float distanceThisFrame = speed * Time.deltaTime;
+
+
+                transform.LookAt(target);
+                if (dir.magnitude > stopAndShootRange)
+                {
+                    transform.Translate(dir.normalized * distanceThisFrame, Space.World);
+                }
+                else if (fireCountdown <= 0f && dir.magnitude <= stopAndShootRange)
+                {
+                    Shoot();
+                    fireCountdown = 1f / fireRate;
+
+                }
+            }
+            else if (fireCountdown <= 0f && !isMoving)
             {
                 Shoot();
                 fireCountdown = 1f / fireRate;
@@ -70,6 +91,7 @@ public class TurretAI : MonoBehaviour
         {
             return;
         }
+
         UpdateTarget();
     }
 

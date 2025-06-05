@@ -1609,9 +1609,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e40853a319c4748ad2607d587034e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab1: {fileID: 6446975306276922648, guid: ab51a67d937083f4aa82cd74dc810d4b, type: 3}
-  enemyPrefab2: {fileID: 3881856927585364605, guid: 69150263d259e7f4bb9bf41bb501156c, type: 3}
-  enemyPrefab3: {fileID: 4725726051768412984, guid: ce7d3f30f5bcedb42b5c7e0bb63f2c74, type: 3}
+  enemyPrefabSupport: {fileID: 4725726051768412984, guid: ccf72721763bad2479493a75a59f7713, type: 3}
+  enemyPrefabSpeed: {fileID: 3881856927585364605, guid: 69150263d259e7f4bb9bf41bb501156c, type: 3}
+  enemyPrefabStandard: {fileID: 6446975306276922648, guid: db384612a51b9924c964c54999df2518, type: 3}
+  enemyPrefabSplitter: {fileID: 6446975306276922648, guid: ab51a67d937083f4aa82cd74dc810d4b, type: 3}
+  enemyPrefabTank: {fileID: 4725726051768412984, guid: ce7d3f30f5bcedb42b5c7e0bb63f2c74, type: 3}
   enemyContainer: {fileID: 755473744}
   timeBetweenWaves: 5
   countdown: 3
