@@ -115,7 +115,7 @@ public class StreetViewMap : MonoBehaviour
         float x = (float)((lon - this.searchCenterLon) * scale);
         float z = (float)((lat - this.searchCenterLat) * scale);
         
-        return new Vector3(x, 0, z);
+        return new Vector3(x, z, 0);
     }
 
     // Draw rectangle at bus stop location

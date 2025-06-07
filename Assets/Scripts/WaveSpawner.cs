@@ -19,7 +19,8 @@ public class WaveSpawner : MonoBehaviour
 
     public int waveBudget = 100;
     private int budgetSpent = 0;
-    private Dictionary<EnemyType, int> currentWaveEnemies = new Dictionary<EnemyType, int>();
+    private List<EnemyType> currentWaveEnemies = new List<EnemyType>();
+    private Dictionary<int, Queue<EnemyType>> wave = new Dictionary<int, Queue<EnemyType>>();
 
     public Transform[] targetList;
 
@@ -34,9 +35,13 @@ public class WaveSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(countdown <=0 && this.gameManager.gameState == GameState.LEVELPLAYING)
+        if(this.wave.Count <= 0 && this.gameManager.gameState == GameState.LEVELPLAYING)
         {
             InitWave();
+        }
+
+        if(countdown <=0 && this.gameManager.gameState == GameState.LEVELPLAYING)
+        {
             SpawnWave();
             countdown = timeBetweenWaves;
         }
@@ -45,84 +50,109 @@ public class WaveSpawner : MonoBehaviour
 
     private void InitWave()
     {
-        this.currentWaveEnemies = new Dictionary<EnemyType, int>();
 
-        this.currentWaveEnemies.Add(EnemyType.STANDARD, 0);
-        this.currentWaveEnemies.Add(EnemyType.SPEED, 0);
-        this.currentWaveEnemies.Add(EnemyType.TANK, 0);
-        this.currentWaveEnemies.Add(EnemyType.SPLITTER, 0);
-        this.currentWaveEnemies.Add(EnemyType.SUPPORT, 0);
+        // randomly choose enemies to spawn depending on wave budget
+        this.currentWaveEnemies = new List<EnemyType>();
 
         while (this.budgetSpent < this.waveBudget)
         {
-            // currently adds enemies randomly
+            // currently adds enemies randomly to wave
             int i = Random.Range(1, 5);
 
             switch (i)
             {
                 case 1:
-                    this.currentWaveEnemies[EnemyType.STANDARD] += 1;
+                    this.currentWaveEnemies.Add(EnemyType.STANDARD);
                     this.budgetSpent += enemyPrefabStandard.GetComponent<EnemyAI>().cost;
                     break;
                 case 2:
-                    this.currentWaveEnemies[EnemyType.SPEED] += 1;
+                    this.currentWaveEnemies.Add(EnemyType.SPEED);
                     this.budgetSpent += enemyPrefabSpeed.GetComponent<EnemyAI>().cost;
                     break;
                 case 3:
-                    this.currentWaveEnemies[EnemyType.TANK] += 1;
+                    this.currentWaveEnemies.Add(EnemyType.TANK);
                     this.budgetSpent += enemyPrefabTank.GetComponent<EnemyAI>().cost;
                     break;
                 case 4:
-                    this.currentWaveEnemies[EnemyType.SPLITTER] += 1;
+                    this.currentWaveEnemies.Add(EnemyType.SPLITTER);
                     this.budgetSpent += enemyPrefabSplitter.GetComponent<EnemyAI>().cost;
                     break;
                 case 5:
-                    this.currentWaveEnemies[EnemyType.SUPPORT] += 1;
+                    this.currentWaveEnemies.Add(EnemyType.SUPPORT);
                     this.budgetSpent += enemyPrefabSupport.GetComponent<EnemyAI>().cost;
                     break;
                 default:
-                    this.currentWaveEnemies[EnemyType.STANDARD] += 1;
+                    this.currentWaveEnemies.Add(EnemyType.STANDARD);
                     this.budgetSpent += enemyPrefabStandard.GetComponent<EnemyAI>().cost;
                     break;
             }
         }
 
-
+        // randomly choose route for each enemy 
+        //////////////////// CHANGE HERE IF WE WANT TO REDUCE ROUTE AMOUNT/////////////////////////
+        this.wave = new Dictionary<int, Queue<EnemyType>>();
+        for(int i = 0; i < this.gameManager.routes.Count; i++)
+        {
+            this.wave.Add(i, new Queue<EnemyType>());
+        }
+        // distribute enemies to routes randomly
+        foreach (EnemyType enemy in this.currentWaveEnemies)
+        {
+            int j = Random.Range(0, this.gameManager.routes.Count - 1);
+            this.wave[j].Enqueue(enemy);
+        }
+        //////////////////// CHANGE HERE IF WE WANT TO REDUCE ROUTE AMOUNT/////////////////////////
 
         this.budgetSpent = 0;
     }
 
     void SpawnWave()
     {
-
-        foreach(KeyValuePair<EnemyType, int> kvp in currentWaveEnemies)
+        // delete elements from dictionary dynamically
+        List<int> toDelete = new List<int>();
+        
+        // loop through all routes and spawn next enemie of given route
+        foreach(KeyValuePair<int, Queue<EnemyType>> currentWave in this.wave)
         {
-            for(int i = 0; i < kvp.Value; i++)
+            if(currentWave.Value.Count > 0)
             {
-                int j = Random.Range(0, this.gameManager.routes.Count-1);
-                switch (kvp.Key)
+                switch(currentWave.Value.Peek())
                 {
                     case EnemyType.STANDARD:
-                        SpawnEnemy(j, this.enemyPrefabStandard);
+                        SpawnEnemy(currentWave.Key, this.enemyPrefabStandard);
                         break;
                     case EnemyType.SPEED:
-                        SpawnEnemy(j, this.enemyPrefabSpeed);
+                        SpawnEnemy(currentWave.Key, this.enemyPrefabSpeed);
                         break;
                     case EnemyType.TANK:
-                        SpawnEnemy(j, this.enemyPrefabTank);
+                        SpawnEnemy(currentWave.Key, this.enemyPrefabTank);
                         break;
                     case EnemyType.SPLITTER:
-                        SpawnEnemy(j, this.enemyPrefabSplitter);
+                        SpawnEnemy(currentWave.Key, this.enemyPrefabSplitter);
                         break;
                     case EnemyType.SUPPORT:
-                        SpawnEnemy(j, this.enemyPrefabSupport);
+                        SpawnEnemy(currentWave.Key, this.enemyPrefabSupport);
                         break;
                     default:
-                        SpawnEnemy(j, this.enemyPrefabStandard);
+                        SpawnEnemy(currentWave.Key, this.enemyPrefabStandard);
                         break;
 
                 }
+
+                currentWave.Value.Dequeue();
             }
+            else
+            {
+                // later remove that key value pair
+                toDelete.Add(currentWave.Key);
+            }
+            
+        }
+
+        // Remove routes that spawned all enemies
+        foreach(int i in toDelete)
+        {
+            this.wave.Remove(i);
         }
 
         if (waveNumber == 1)
