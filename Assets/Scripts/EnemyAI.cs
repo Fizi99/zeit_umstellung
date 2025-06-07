@@ -23,6 +23,8 @@ public class EnemyAI : MonoBehaviour
     public int waypointIndex = 0;
     private float slowCountdown = 0f;
 
+    public int cost = 10;
+
     public int damage = 1;
 
     void Awake()

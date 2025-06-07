@@ -4,6 +4,9 @@ using UnityEngine.Networking;
 using System.Text.RegularExpressions;
 using SimpleJSON;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net;
+using System.Threading.Tasks;
 
 public class BusTimeScraper : MonoBehaviour
 {
@@ -25,7 +28,7 @@ public class BusTimeScraper : MonoBehaviour
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        this.busStopSearchURL = "https://swhl.vercel.app/api/stops?search="+ this.busstop +"&luebeckOnly=true";
+        this.busStopSearchURL = "https://nah.sh.hafas.de/bin/ajax-getstop.exe/eny?start=1&start=1&tpl=suggest2json&getstop=1&getstop=1&noSession=yes&=&encoding=utf-8&S=lübeck" + this.busstop + "?&REQ0JourneyStopsS0A=255&REQ0JourneyStopsB=12";
         StartCoroutine(FetchBusStopHafas());
    
     }
@@ -58,7 +61,8 @@ public class BusTimeScraper : MonoBehaviour
     public void SearchBusStop(string busstop)
     {
         this.busstop = busstop;
-        this.busStopSearchURL = "https://swhl.vercel.app/api/stops?search=" + this.busstop + "&luebeckOnly=true";
+        
+        this.busStopSearchURL = "https://nah.sh.hafas.de/bin/ajax-getstop.exe/eny?start=1&start=1&tpl=suggest2json&getstop=1&getstop=1&noSession=yes&=&encoding=utf-8&S=lübeck" + this.busstop + "?&REQ0JourneyStopsS0A=255&REQ0JourneyStopsB=12";
         StartCoroutine(FetchBusStopHafas());
     }
 
@@ -72,7 +76,7 @@ public class BusTimeScraper : MonoBehaviour
     IEnumerator FetchBusStopHafas()
     {
         // fetch search result for busstop
-        UnityWebRequest request = UnityWebRequest.Get(this.busStopSearchURL);
+        /*UnityWebRequest request = UnityWebRequest.Get(this.busStopSearchURL);
         yield return request.SendWebRequest();
         {
 
@@ -95,12 +99,12 @@ public class BusTimeScraper : MonoBehaviour
                         this.gameManager.UpdateBusStopData(busStopData);
                     }
                 }
-                /* DEBUG */
+                // DEBUG 
                 this.busStopData = new BusStop(53.837944, 10.700381);
                 this.hafas = 9057765;
                 this.busstopActual = "Technische Hochschule";
                 this.gameManager.UpdateBusStopData(busStopData);
-                /* DEBUG */
+                // DEBUG 
                 Debug.Log(this.busstopActual+ ": " +this.hafas);
 
                 // Load Bus Information
@@ -108,8 +112,57 @@ public class BusTimeScraper : MonoBehaviour
                 // Update map so bus stop is centered
                 this.gameManager.SearchStreetsAroundCenter(this.busStopData.lat, this.busStopData.lon);
             }
+        }*/
+
+
+        UnityWebRequest request = UnityWebRequest.Get(this.busStopSearchURL);
+
+        yield return request.SendWebRequest();
+        {
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Fehler beim Laden: " + request.error);
+            }
+            else
+            {
+
+                string json = request.downloadHandler.text.Substring(8);
+                json.Remove(json.Length - 1);
+                // Parse json return
+                JSONNode data = JSON.Parse(json);
+                for(int i = 0; i < data["suggestions"].AsArray.Count; i++)
+                {
+                    if(i== 0)
+                    {
+                        // get hafas of first element in search
+                        double lon = (double)data["suggestions"][i]["xcoord"]/ (double)1000000;
+                        double lat = (double)data["suggestions"][i]["ycoord"]/ (double)1000000;
+                        this.busStopData = new BusStop(lat, lon);
+                        this.hafas = data["suggestions"][i]["extId"];
+                        this.busstopActual = data["suggestions"][i]["value"];
+                        this.gameManager.UpdateBusStopData(busStopData);
+                        Debug.Log(busstopActual);
+                    }
+                }
+
+                // DEBUG 
+                /*this.busStopData = new BusStop(53.837944, 10.700381);
+                this.hafas = 9057765;
+                this.busstopActual = "Technische Hochschule";
+                this.gameManager.UpdateBusStopData(busStopData);*/
+                // DEBUG 
+
+                // Load Bus Information
+                StartCoroutine(FetchBusStopInformation());
+                // Update map so bus stop is centered
+                this.gameManager.SearchStreetsAroundCenter(this.busStopData.lat, this.busStopData.lon);
+            }
         }
+
+
     }
+
 
     // Fetch Busstop information like departure of each bus and update current list
     IEnumerator UpdateBusStopInformation()

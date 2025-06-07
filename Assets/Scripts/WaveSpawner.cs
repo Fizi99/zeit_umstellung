@@ -17,6 +17,10 @@ public class WaveSpawner : MonoBehaviour
     public int amountOfRoutes = 0;
     private int waveNumber = 1;
 
+    public int waveBudget = 100;
+    private int budgetSpent = 0;
+    private Dictionary<EnemyType, int> currentWaveEnemies = new Dictionary<EnemyType, int>();
+
     public Transform[] targetList;
 
     private GameManager gameManager;
@@ -32,19 +36,100 @@ public class WaveSpawner : MonoBehaviour
     {
         if(countdown <=0 && this.gameManager.gameState == GameState.LEVELPLAYING)
         {
+            InitWave();
             SpawnWave();
             countdown = timeBetweenWaves;
         }
         countdown -= Time.deltaTime;
     }
 
+    private void InitWave()
+    {
+        this.currentWaveEnemies = new Dictionary<EnemyType, int>();
+
+        this.currentWaveEnemies.Add(EnemyType.STANDARD, 0);
+        this.currentWaveEnemies.Add(EnemyType.SPEED, 0);
+        this.currentWaveEnemies.Add(EnemyType.TANK, 0);
+        this.currentWaveEnemies.Add(EnemyType.SPLITTER, 0);
+        this.currentWaveEnemies.Add(EnemyType.SUPPORT, 0);
+
+        while (this.budgetSpent < this.waveBudget)
+        {
+            // currently adds enemies randomly
+            int i = Random.Range(1, 5);
+
+            switch (i)
+            {
+                case 1:
+                    this.currentWaveEnemies[EnemyType.STANDARD] += 1;
+                    this.budgetSpent += enemyPrefabStandard.GetComponent<EnemyAI>().cost;
+                    break;
+                case 2:
+                    this.currentWaveEnemies[EnemyType.SPEED] += 1;
+                    this.budgetSpent += enemyPrefabSpeed.GetComponent<EnemyAI>().cost;
+                    break;
+                case 3:
+                    this.currentWaveEnemies[EnemyType.TANK] += 1;
+                    this.budgetSpent += enemyPrefabTank.GetComponent<EnemyAI>().cost;
+                    break;
+                case 4:
+                    this.currentWaveEnemies[EnemyType.SPLITTER] += 1;
+                    this.budgetSpent += enemyPrefabSplitter.GetComponent<EnemyAI>().cost;
+                    break;
+                case 5:
+                    this.currentWaveEnemies[EnemyType.SUPPORT] += 1;
+                    this.budgetSpent += enemyPrefabSupport.GetComponent<EnemyAI>().cost;
+                    break;
+                default:
+                    this.currentWaveEnemies[EnemyType.STANDARD] += 1;
+                    this.budgetSpent += enemyPrefabStandard.GetComponent<EnemyAI>().cost;
+                    break;
+            }
+        }
+
+
+
+        this.budgetSpent = 0;
+    }
+
     void SpawnWave()
     {
+
+        foreach(KeyValuePair<EnemyType, int> kvp in currentWaveEnemies)
+        {
+            for(int i = 0; i < kvp.Value; i++)
+            {
+                int j = Random.Range(0, this.gameManager.routes.Count-1);
+                switch (kvp.Key)
+                {
+                    case EnemyType.STANDARD:
+                        SpawnEnemy(j, this.enemyPrefabStandard);
+                        break;
+                    case EnemyType.SPEED:
+                        SpawnEnemy(j, this.enemyPrefabSpeed);
+                        break;
+                    case EnemyType.TANK:
+                        SpawnEnemy(j, this.enemyPrefabTank);
+                        break;
+                    case EnemyType.SPLITTER:
+                        SpawnEnemy(j, this.enemyPrefabSplitter);
+                        break;
+                    case EnemyType.SUPPORT:
+                        SpawnEnemy(j, this.enemyPrefabSupport);
+                        break;
+                    default:
+                        SpawnEnemy(j, this.enemyPrefabStandard);
+                        break;
+
+                }
+            }
+        }
+
         if (waveNumber == 1)
         {
             for (int i = 0; i < this.gameManager.routes.Count; i++)
             {
-                SpawnEnemy1(i);
+                //SpawnEnemy1(i);
             }
         }
         /*else if (waveNumber == 2)
@@ -65,7 +150,7 @@ public class WaveSpawner : MonoBehaviour
         {
             for (int i = 0; i < this.gameManager.routes.Count; i++)
             {
-                SpawnEnemy1(i);
+                //SpawnEnemy1(i);
                /* if (i == 1)
                 {
                     SpawnEnemy1(i);
@@ -84,13 +169,35 @@ public class WaveSpawner : MonoBehaviour
         this.amountOfRoutes = amountOfRoutes;
     }
 
-    void SpawnEnemy1(int routeIndex)
+    void SpawnEnemy(int routeIndex, Transform type)
     {
+
+        //switch (type)
+        //{
+        //    case EnemyType.STANDARD:
+        //        Transform prefab = enemyPrefabStandard;
+        //        break;
+        //    case EnemyType.SPEED:
+        //        Transform prefab = enemyPrefabStandard;
+        //        break;
+        //    case EnemyType.TANK:
+        //        Transform prefab = enemyPrefabStandard;
+        //        break;
+        //    case EnemyType.SPLITTER:
+        //        Transform prefab = enemyPrefabStandard;
+        //        break;
+        //    case EnemyType.SUPPORT:
+        //        Transform prefab = enemyPrefabStandard;
+        //        break;
+        //}
+
         List<GameObject> targets = this.gameManager.routes[routeIndex];
-        Transform newEnemy = Instantiate(enemyPrefabSupport, targets[0].transform.position, targets[0].transform.rotation);
+        Transform newEnemy = Instantiate(type, targets[0].transform.position, targets[0].transform.rotation);
         newEnemy.GetComponent<EnemyAI>().targets = targets;
         newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[1];
         newEnemy.transform.parent = enemyContainer.transform;
+
+
 
         /*Transform[] targets = routeManager.routeList[routeIndex].GetComponent<enemyAI>().waypoints;
         Transform newEnemy = Instantiate(enemyPrefab1, targets[0].position, targets[0].rotation);
