@@ -117,7 +117,7 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(int amount)
     {
         health -= amount;
-        healthbar.fillAmount =health / initHealth;
+        healthbar.fillAmount = (float) health / (float) initHealth;
         if(health <= 0)
         {
             Die();

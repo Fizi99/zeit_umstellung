@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 public class TurretAI : MonoBehaviour
 {
-
+    private GameManager gameManager;
     private Transform target;
     public float range = 3f;
     public string enemyTag = "Enemy";
-    public bool isSingleUse=false;
+    public bool isSingleUse = false;
     public bool useTimeInsteadOfAmmo = false;
     public int initUseAmount = 1;
     public int useAmount = 1;
@@ -31,13 +31,13 @@ public class TurretAI : MonoBehaviour
     void Start()
     {
         useAmount = initUseAmount;
-       InvokeRepeating("UpdateTarget", 0f, 0.5f);
-
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
     void UpdateTarget()
     {
-        GameObject[]enemies=GameObject.FindGameObjectsWithTag(enemyTag);
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
         target = null;
@@ -52,16 +52,16 @@ public class TurretAI : MonoBehaviour
             }
         }
 
-            if (nearestEnemy != null && shortestDistance <= range)
-            {
-                target=nearestEnemy.transform;
-            }
+        if (nearestEnemy != null && shortestDistance <= range)
+        {
+            target = nearestEnemy.transform;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isSingleUse && useTimeInsteadOfAmmo )
+        if (isSingleUse && useTimeInsteadOfAmmo)
         {
             UpdateUseAmount((int)Time.deltaTime);
         }
@@ -72,13 +72,13 @@ public class TurretAI : MonoBehaviour
             //langsamere rotation in Video, allerdings nicht hingekriegt
             Vector3 rotation = lookRotation.eulerAngles;
             //anpassen in 3D
-            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+            //transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
             if (isMoving)
             {
                 float distanceThisFrame = speed * Time.deltaTime;
 
 
-                transform.LookAt(target);
+                //transform.LookAt(target);
                 if (dir.magnitude > stopAndShootRange)
                 {
                     transform.Translate(dir.normalized * distanceThisFrame, Space.World);
@@ -95,8 +95,8 @@ public class TurretAI : MonoBehaviour
                 Shoot();
                 fireCountdown = 1f / fireRate;
             }
-            fireCountdown -=Time.deltaTime;
-            }
+            fireCountdown -= Time.deltaTime;
+        }
         else
         {
             return;
@@ -109,7 +109,8 @@ public class TurretAI : MonoBehaviour
     {
         //define firepoint depending on turret before using this
         //Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        GameObject currentBullet=(GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+        GameObject currentBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+        currentBullet.transform.parent = this.gameManager.turretContainer.transform;
         bulletAI bullet = currentBullet.GetComponent<bulletAI>();
         if (bullet != null)
         {
@@ -123,8 +124,8 @@ public class TurretAI : MonoBehaviour
 
     void UpdateUseAmount(int usageUsed)
     {
-        useAmount=useAmount-usageUsed;
-        useBar.fillAmount= useAmount/initUseAmount;
+        useAmount = useAmount - usageUsed;
+        useBar.fillAmount = useAmount / initUseAmount;
         if (useAmount <= 0)
         {
             Destroy(gameObject);

@@ -42,16 +42,14 @@ public class bulletAI : MonoBehaviour
                 return;
             }
             transform.Translate(dir.normalized * distanceThisFrame, Space.World);
-            transform.LookAt(target);
+            //transform.LookAt(target);
 
         }
-
-        
-
     }
+
     void HitTarget()
     {
-        
+
         if (explosionRadius > 0)
         {
             Explode();
@@ -86,10 +84,10 @@ public class bulletAI : MonoBehaviour
 
     void Explode()
     {
-        Collider[] collidersHit= Physics.OverlapSphere(transform.position, explosionRadius);
+        Collider[] collidersHit = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider collider in collidersHit)
         {
-            if(collider.tag == "Enemy")
+            if (collider.tag == "Enemy")
             {
                 if (useFreeze)
                 {
@@ -100,8 +98,4 @@ public class bulletAI : MonoBehaviour
         }
 
     }
-
-    
-
-    
 }
