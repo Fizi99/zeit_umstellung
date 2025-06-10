@@ -33,6 +33,10 @@ public class TurretAI : MonoBehaviour
         useAmount = initUseAmount;
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        if (!isSingleUse)
+        {
+            useBar.fillAmount = 0f;
+        }
     }
 
     void UpdateTarget()
@@ -125,7 +129,7 @@ public class TurretAI : MonoBehaviour
     void UpdateUseAmount(int usageUsed)
     {
         useAmount = useAmount - usageUsed;
-        useBar.fillAmount = useAmount / initUseAmount;
+        useBar.fillAmount = (float) useAmount / (float) initUseAmount;
         if (useAmount <= 0)
         {
             Destroy(gameObject);

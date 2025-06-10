@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using IEnumerator = System.Collections.IEnumerator;
+
 
 
 public class EnemyAI : MonoBehaviour
@@ -22,6 +24,7 @@ public class EnemyAI : MonoBehaviour
     public GameObject currentTarget;
     public int waypointIndex = 0;
     private float slowCountdown = 0f;
+    private Vector3 direction;
 
     public int cost = 10;
 
@@ -48,7 +51,7 @@ public class EnemyAI : MonoBehaviour
     {
         //might be Vector2
 
-        Vector3 direction = currentTarget.transform.position - transform.position;
+        direction = currentTarget.transform.position - transform.position;
         transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
 
         if (slowCountdown > 0)
@@ -134,16 +137,25 @@ public class EnemyAI : MonoBehaviour
     {
         if (isSplitter)
         {
-            for(int i = 0; i < splitAmount; i++)
+            for (int i = 0; i < splitAmount; i++)
             {
-                Transform newEnemy = Instantiate(splitUnit, targets[waypointIndex].transform.position, targets[waypointIndex].transform.rotation);
+                Transform newEnemy = Instantiate(splitUnit, targets[waypointIndex].transform.position-i* direction.normalized, targets[waypointIndex].transform.rotation);
                 newEnemy.GetComponent<EnemyAI>().targets = targets;
                 newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[waypointIndex];
                 newEnemy.GetComponent<EnemyAI>().waypointIndex = waypointIndex;
                 newEnemy.transform.parent = gameManager.enemyContainer.transform;
             }
+            //StartCoroutine(waiter());
         }
-        Destroy(gameObject);
+            Destroy(gameObject);
+    }
+
+    IEnumerator waiter()
+    {
+        
+            
+        
+        yield return new WaitForSeconds(1);
     }
 
 }

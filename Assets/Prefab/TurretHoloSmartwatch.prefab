@@ -174,14 +174,14 @@ MonoBehaviour:
   enemyTag: Enemy
   isSingleUse: 1
   useTimeInsteadOfAmmo: 0
-  initUseAmount: 1
+  initUseAmount: 3
   useAmount: 1
   buildingCost: 3
   useBar: {fileID: 6442167444039342859}
   isMoving: 0
   speed: 30
   stopAndShootRange: 5
-  fireRate: 2
+  fireRate: 0.1
   bulletPrefab: {fileID: 4655690105588628940, guid: 16e20f16c5c17614b982c7b18f35f0a5, type: 3}
   firePoint: {fileID: 0}
 --- !u!212 &-5162899484720996840
@@ -264,16 +264,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6446063193718793840}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.4979846, y: -0.821112, z: 0.27465832, w: 0.04846911}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00014062971}
   m_LocalScale: {x: 1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5716216329318734870}
-  m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 29.955, y: -192.936, z: -65.946}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0.00038010356, y: 0.9999472}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8992837430376081328
@@ -311,6 +311,6 @@ MonoBehaviour:
   m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
