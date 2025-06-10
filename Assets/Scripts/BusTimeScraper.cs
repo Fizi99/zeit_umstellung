@@ -234,6 +234,9 @@ public class BusTimeScraper : MonoBehaviour
 
 
                 }
+
+                // debug bus that is 5 min late after bus is loaded
+                this.busses.Add(new Bus("0", "DEBUG BUS", System.DateTimeOffset.UtcNow.ToUnixTimeSeconds(), System.DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 300));
             }
         }
 

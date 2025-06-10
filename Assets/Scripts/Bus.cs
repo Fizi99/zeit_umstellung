@@ -4,10 +4,10 @@ public class Bus
 {
     public string line;
     public string headsign;
-    public int time;
-    public int realtime;
+    public long time;
+    public long realtime;
 
-    public Bus(string line, string headsign, int time, int realtime)
+    public Bus(string line, string headsign, long time, long realtime)
     {
         this.line = line;
         this.headsign = headsign;
