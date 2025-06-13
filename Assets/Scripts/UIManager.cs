@@ -139,7 +139,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateZeitsandText()
     {
-        this.zeitsandText.text = "Zeitsand: " + (int)this.gameManager.player.zeitsand;
+        this.zeitsandText.text = "" + (int)this.gameManager.player.zeitsand;
     }
 
     private void UpdateLvlFinishedText()
