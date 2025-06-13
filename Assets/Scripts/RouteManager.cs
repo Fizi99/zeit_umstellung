@@ -148,6 +148,7 @@ public class RouteManager : MonoBehaviour
             lr.material = this.streetMat;
             lr.widthMultiplier = 0.2f;
             lr.positionCount = enemyroute.Value.Count;
+            lr.textureMode = LineTextureMode.Tile;
             //lr.startColor = Color.red;
             //lr.endColor = Color.blue;
             for (int i = 0; i < enemyroute.Value.Count; i++)
