@@ -26,12 +26,16 @@ public class TurretAI : MonoBehaviour
     //bullet spawn position
     public Transform firePoint;
 
+    [Tooltip("Sprite for East (0), North (1), West (2), South (3)")]
+    [SerializeField] private Sprite[] towerSprites = new Sprite[4]; // 0=Rechts, 1=Oben, 2=Links, 3=Unten
+    private SpriteRenderer spriteRenderer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         useAmount = initUseAmount;
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
         if (!isSingleUse)
         {
@@ -77,6 +81,13 @@ public class TurretAI : MonoBehaviour
             Vector3 rotation = lookRotation.eulerAngles;
             //anpassen in 3D
             //transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+
+            // Choose one of 4 sprites (north, east, south, west) based on look direction
+            float angle = Mathf.Atan2(dir.normalized.y, dir.normalized.x) * Mathf.Rad2Deg;
+            if (angle < 0) angle += 360;
+            int spriteIndex = GetSpriteIndex(angle);
+            spriteRenderer.sprite = towerSprites[spriteIndex];
+
             if (isMoving)
             {
                 float distanceThisFrame = speed * Time.deltaTime;
@@ -136,6 +147,16 @@ public class TurretAI : MonoBehaviour
             return;
         }
     }
+
+    private int GetSpriteIndex(float angle)
+    {
+        // 4 Richtungen: 0°=Rechts, 90°=Oben, 180°=Links, 270°=Unten
+        if (angle >= 315 || angle < 45) return 0;      // Rechts
+        else if (angle >= 45 && angle < 135) return 1;  // Oben
+        else if (angle >= 135 && angle < 225) return 2; // Links
+        else return 3;                                   // Unten
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;

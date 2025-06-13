@@ -41,15 +41,25 @@ public class bulletAI : MonoBehaviour
                 HitTarget();
                 return;
             }
+
+            // ALT:
+            //transform.rotation = Quaternion.LookRotation(dir.normalized) * Quaternion.Euler(0, 90, 0);
+            //float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            //transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+            //Debug.Log("[LOG] Winkel: " + (angle-90));
+
+            // Rotate projectile sprite to always point at the target ('s direction)
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
+            Vector3 rotation = lookRotation.eulerAngles;
+            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+
             transform.Translate(dir.normalized * distanceThisFrame, Space.World);
             //transform.LookAt(target);
-
         }
     }
 
     void HitTarget()
     {
-
         if (explosionRadius > 0)
         {
             Explode();
@@ -60,7 +70,6 @@ public class bulletAI : MonoBehaviour
         }
         Destroy(gameObject);
         //do bullet effect here
-
     }
 
     //change to game object of enemy
@@ -96,6 +105,5 @@ public class bulletAI : MonoBehaviour
                 DealDamage(collider.transform);
             }
         }
-
     }
 }
