@@ -24,6 +24,7 @@ public class EnemyAI : MonoBehaviour
     private float slowCountdown = 0f;
 
     public int cost = 10;
+    public int randomWeight = 1;
 
     public int damage = 1;
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 public class BusTimeScraper : MonoBehaviour
 {
     [SerializeField] private string busstop = "Technische-Hochschule";
-    private int hafas = 9057765;
+    private int hafas = 0;
     private string busstopActual = "";
     // URL to fetch hafas of specific bus stop
     private string busStopSearchURL = "https://netzplan.swhl.de/api/v1/stationboards/hafas/9057765";
@@ -123,6 +123,13 @@ public class BusTimeScraper : MonoBehaviour
             if (request.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Fehler beim Laden: " + request.error);
+
+                // hard coded technische hochschule in cas of error
+                double lon = 10.700337;
+                double lat = 53.837951;
+                this.busStopData = new BusStop(lat, lon);
+                this.hafas = 9057765;
+                this.busstopActual = "Technische Hochschule";
             }
             else
             {
@@ -141,7 +148,7 @@ public class BusTimeScraper : MonoBehaviour
                         this.busStopData = new BusStop(lat, lon);
                         this.hafas = data["suggestions"][i]["extId"];
                         this.busstopActual = data["suggestions"][i]["value"];
-                        this.gameManager.UpdateBusStopData(busStopData);
+
                         Debug.Log(busstopActual);
                     }
                 }
@@ -153,11 +160,24 @@ public class BusTimeScraper : MonoBehaviour
                 this.gameManager.UpdateBusStopData(busStopData);*/
                 // DEBUG 
 
-                // Load Bus Information
-                StartCoroutine(FetchBusStopInformation());
-                // Update map so bus stop is centered
-                this.gameManager.SearchStreetsAroundCenter(this.busStopData.lat, this.busStopData.lon);
+                if(this.hafas == 0)
+                    // hard coded technische hochschule in cas of error
+                    double lon = 10.700337;
+                    double lat = 53.837951;
+                    this.busStopData = new BusStop(lat, lon);
+                    this.hafas = 9057765;
+                    this.busstopActual = "Technische Hochschule";
+                }
+
+
             }
+
+            this.gameManager.UpdateBusStopData(this.busStopData);
+
+            // Load Bus Information
+            StartCoroutine(FetchBusStopInformation());
+            // Update map so bus stop is centered
+            this.gameManager.SearchStreetsAroundCenter(this.busStopData.lat, this.busStopData.lon);
         }
 
 
@@ -173,16 +193,17 @@ public class BusTimeScraper : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Get(this.busStopURL);
         yield return request.SendWebRequest();
         {
+            List<Bus> bussesTemp = new List<Bus>();
 
             if (request.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Fehler beim Laden: " + request.error);
+
             }
             else
             {
                 // Parse json return
                 JSONNode data = JSON.Parse(request.downloadHandler.text);
-                List<Bus> bussesTemp = new List<Bus>();
                 for (int i = 0; i < data["data"].AsArray.Count; i++)
                 {
                     // add busses to List
@@ -192,14 +213,16 @@ public class BusTimeScraper : MonoBehaviour
                     
                 }
 
-                // loop through new bus information and update bus list.
-                for (int i=0; i <bussesTemp.Count; i++){
-                    for (int j = 0; j < this.busses.Count; j++)
+                
+            }
+            // loop through new bus information and update bus list.
+            for (int i = 0; i < bussesTemp.Count; i++)
+            {
+                for (int j = 0; j < this.busses.Count; j++)
+                {
+                    if (bussesTemp[i].line == this.busses[j].line && bussesTemp[i].time == this.busses[j].time)
                     {
-                        if (bussesTemp[i].line == this.busses[j].line && bussesTemp[i].time == this.busses[j].time)
-                        {
-                            this.busses[j] = bussesTemp[i];
-                        }
+                        this.busses[j] = bussesTemp[i];
                     }
                 }
             }
@@ -234,7 +257,15 @@ public class BusTimeScraper : MonoBehaviour
 
 
                 }
+<<<<<<< Updated upstream
+=======
+
+                
+>>>>>>> Stashed changes
             }
+
+            // debug bus that is 5 min late after bus is loaded
+            this.busses.Add(new Bus("0", "DEBUG BUS", System.DateTimeOffset.UtcNow.ToUnixTimeSeconds(), System.DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 300));
         }
 
     }

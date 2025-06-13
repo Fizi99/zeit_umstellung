@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using SimpleJSON;
+using System.IO;
 
 public class StreetViewMap : MonoBehaviour
 {
@@ -52,60 +53,69 @@ public class StreetViewMap : MonoBehaviour
 
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
+        JSONNode data = null;
         if (www.result == UnityWebRequest.Result.Success)
         {
-            JSONNode data = JSON.Parse(www.downloadHandler.text);
-            Dictionary<long, Vector3> nodes = new Dictionary<long, Vector3>();
-
-            // add busstop as element with index 1 in dictionary
-            nodes[1] = Vector3.zero;
-
-            // loop through nodes
-            foreach (JSONNode element in data["elements"].AsArray)
-            {
-                if (element["type"] == "node")
-                {
-                    long id = element["id"].AsLong;
-                    double lat = element["lat"].AsDouble;
-                    double lon = element["lon"].AsDouble;
-                    Vector3 pos = LatLonToUnity(lat, lon);
-                    nodes[id] = pos;
-                }
-            }
-
-            // dictionary with locations and node ids
-            this.gameManager.nodeLocationDictionary = nodes;
-
-            foreach (JSONNode element in data["elements"].AsArray)
-            {
-                if (element["type"] == "way")
-                {
-                    GameObject road = new GameObject("Road");
-                    Street streetComponent = road.AddComponent<Street>();
-                    road.transform.parent = roadContainer.transform;
-
-                    for (int i = 0; i < element["nodes"].Count; i++)
-                    {
-                        long nodeId = element["nodes"][i].AsLong;
-                        streetComponent.nodes.Add(nodes[nodeId]);
-                        streetComponent.nodeIds.Add(nodeId);
-                    }
-                    //streetComponent.DrawNodes();
-
-                    this.streets.Add(road);
-                }
-            }
-
-            //////////////////////////////////////////VLLLLLLLLLLLLLLLLLT HIER PROBLEME????
-            this.gameManager.SetStreets(this.streets);
-
-            DrawBusStop();
-            //StartCoroutine(QueryBusStopLocation());
+            //File.WriteAllTextAsync("C:/Users/anton/Documents/GitHub/zeit_umstellung/Assets/DebugMapData.txt", www.downloadHandler.text);
+            data = JSON.Parse(www.downloadHandler.text);
+            
         }
         else
         {
             Debug.LogError("Fehler beim Abrufen der OSM-Daten: " + www.error);
+            // in case of connection error read json with layout around technische hochschule
+            StreamReader sr = new StreamReader(Application.dataPath + "/" + "DebugMapData.txt");
+            string fileContents = sr.ReadToEnd();
+            sr.Close();
+            data = JSON.Parse(fileContents);
+
         }
+
+        Dictionary<long, Vector3> nodes = new Dictionary<long, Vector3>();
+
+        // add busstop as element with index 1 in dictionary
+        nodes[1] = Vector3.zero;
+
+        // loop through nodes
+        foreach (JSONNode element in data["elements"].AsArray)
+        {
+            if (element["type"] == "node")
+            {
+                long id = element["id"].AsLong;
+                double lat = element["lat"].AsDouble;
+                double lon = element["lon"].AsDouble;
+                Vector3 pos = LatLonToUnity(lat, lon);
+                nodes[id] = pos;
+            }
+        }
+
+        // dictionary with locations and node ids
+        this.gameManager.nodeLocationDictionary = nodes;
+
+        foreach (JSONNode element in data["elements"].AsArray)
+        {
+            if (element["type"] == "way")
+            {
+                GameObject road = new GameObject("Road");
+                Street streetComponent = road.AddComponent<Street>();
+                road.transform.parent = roadContainer.transform;
+
+                for (int i = 0; i < element["nodes"].Count; i++)
+                {
+                    long nodeId = element["nodes"][i].AsLong;
+                    streetComponent.nodes.Add(nodes[nodeId]);
+                    streetComponent.nodeIds.Add(nodeId);
+                }
+                //streetComponent.DrawNodes();
+
+                this.streets.Add(road);
+            }
+        }
+
+        this.gameManager.SetStreets(this.streets);
+
+        DrawBusStop();
+        //StartCoroutine(QueryBusStopLocation());
     }
 
     // GPS Data in Unity units
