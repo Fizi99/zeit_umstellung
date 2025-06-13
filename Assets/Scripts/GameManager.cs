@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
 
         // reset player zeitsand
         this.player.zeitsand = this.player.zeitsandStartValue;
+        this.waveSpawner.waveBudget = this.waveSpawner.initialWaveBudget;
     }
 
     public void UpdateBusStopData(BusStop newData)

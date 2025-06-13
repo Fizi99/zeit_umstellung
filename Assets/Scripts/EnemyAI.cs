@@ -27,6 +27,7 @@ public class EnemyAI : MonoBehaviour
     private Vector3 direction;
 
     public int cost = 10;
+    public int randomWeight = 1;
 
     public int damage = 1;
 

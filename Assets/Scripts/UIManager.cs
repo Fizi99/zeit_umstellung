@@ -201,7 +201,7 @@ public class UIManager : MonoBehaviour
         switch (this.gameManager.gameState)
         {
             case GameState.LEVELSELECTION:
-      
+                GenerateBusSelection();
                 break;
 
             case GameState.LEVELPLAYING:
