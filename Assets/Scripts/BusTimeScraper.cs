@@ -161,6 +161,7 @@ public class BusTimeScraper : MonoBehaviour
                 // DEBUG 
 
                 if(this.hafas == 0)
+                {
                     // hard coded technische hochschule in cas of error
                     double lon = 10.700337;
                     double lat = 53.837951;
