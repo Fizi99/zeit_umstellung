@@ -30,7 +30,7 @@ public class BusTimeScraper : MonoBehaviour
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.busStopSearchURL = "https://nah.sh.hafas.de/bin/ajax-getstop.exe/eny?start=1&start=1&tpl=suggest2json&getstop=1&getstop=1&noSession=yes&=&encoding=utf-8&S=l�beck" + this.busstop + "?&REQ0JourneyStopsS0A=255&REQ0JourneyStopsB=12";
         StartCoroutine(FetchBusStopHafas());
-   
+
     }
 
     private void Update()
@@ -53,7 +53,7 @@ public class BusTimeScraper : MonoBehaviour
             }
         }
 
-   
+
         this.gameManager.busses = this.busses;
     }
 
@@ -61,7 +61,7 @@ public class BusTimeScraper : MonoBehaviour
     public void SearchBusStop(string busstop)
     {
         this.busstop = busstop;
-        
+
         this.busStopSearchURL = "https://nah.sh.hafas.de/bin/ajax-getstop.exe/eny?start=1&start=1&tpl=suggest2json&getstop=1&getstop=1&noSession=yes&=&encoding=utf-8&S=l�beck" + this.busstop + "?&REQ0JourneyStopsS0A=255&REQ0JourneyStopsB=12";
         StartCoroutine(FetchBusStopHafas());
     }
@@ -138,13 +138,13 @@ public class BusTimeScraper : MonoBehaviour
                 json.Remove(json.Length - 1);
                 // Parse json return
                 JSONNode data = JSON.Parse(json);
-                for(int i = 0; i < data["suggestions"].AsArray.Count; i++)
+                for (int i = 0; i < data["suggestions"].AsArray.Count; i++)
                 {
-                    if(i== 0)
+                    if (i == 0)
                     {
                         // get hafas of first element in search
-                        double lon = (double)data["suggestions"][i]["xcoord"]/ (double)1000000;
-                        double lat = (double)data["suggestions"][i]["ycoord"]/ (double)1000000;
+                        double lon = (double)data["suggestions"][i]["xcoord"] / (double)1000000;
+                        double lat = (double)data["suggestions"][i]["ycoord"] / (double)1000000;
                         this.busStopData = new BusStop(lat, lon);
                         this.hafas = data["suggestions"][i]["extId"];
                         this.busstopActual = data["suggestions"][i]["value"];
@@ -160,7 +160,7 @@ public class BusTimeScraper : MonoBehaviour
                 this.gameManager.UpdateBusStopData(busStopData);*/
                 // DEBUG 
 
-                if(this.hafas == 0)
+                if (this.hafas == 0)
                 {
                     // hard coded technische hochschule in cas of error
                     double lon = 10.700337;
@@ -210,11 +210,11 @@ public class BusTimeScraper : MonoBehaviour
                     // add busses to List
                     bussesTemp.Add(new Bus(data["data"][i]["line"]["name"], data["data"][i]["headsign"], data["data"][i]["time"], data["data"][i]["realtime"]));
                     //Debug.Log(this.busses[i].line + ": Richtung: " + this.busses[i].headsign + " kommt um: " + System.DateTimeOffset.FromUnixTimeSeconds(this.busses[i].realtime).LocalDateTime.TimeOfDay);
-                    
-                    
+
+
                 }
 
-                
+
             }
             // loop through new bus information and update bus list.
             for (int i = 0; i < bussesTemp.Count; i++)

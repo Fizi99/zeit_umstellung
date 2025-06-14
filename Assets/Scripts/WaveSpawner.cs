@@ -243,12 +243,15 @@ public class WaveSpawner : MonoBehaviour
 
     void SpawnEnemy(int routeIndex, Transform type)
     {
-
-        List<GameObject> targets = this.gameManager.routes[routeIndex];
-        Transform newEnemy = Instantiate(type, targets[0].transform.position, targets[0].transform.rotation);
-        newEnemy.GetComponent<EnemyAI>().targets = targets;
-        newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[1];
-        newEnemy.transform.parent = enemyContainer.transform;
+        if(this.gameManager.routes.Count > 0)
+        {
+            List<GameObject> targets = this.gameManager.routes[routeIndex];
+            Transform newEnemy = Instantiate(type, targets[0].transform.position, targets[0].transform.rotation);
+            newEnemy.GetComponent<EnemyAI>().targets = targets;
+            newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[1];
+            newEnemy.transform.parent = enemyContainer.transform;
+        }
+        
 
 
     }
