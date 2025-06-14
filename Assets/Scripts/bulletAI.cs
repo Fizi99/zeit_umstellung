@@ -47,11 +47,16 @@ public class bulletAI : MonoBehaviour
             //float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             //transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
             //Debug.Log("[LOG] Winkel: " + (angle-90));
+            //transform.localScale = new Vector3(1, 1, 1);
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+            Debug.Log(transform.localScale); // sollte (1,1,1) sein
 
             // Rotate projectile sprite to always point at the target ('s direction)
-            Quaternion lookRotation = Quaternion.LookRotation(dir);
+            /*Quaternion lookRotation = Quaternion.LookRotation(dir.normalized);
+            transform.rotation = lookRotation;
             Vector3 rotation = lookRotation.eulerAngles;
-            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+            transform.rotation = Quaternion.Euler(0f, 0f, rotation.z);*/
 
             transform.Translate(dir.normalized * distanceThisFrame, Space.World);
             //transform.LookAt(target);
