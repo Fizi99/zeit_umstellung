@@ -184,6 +184,15 @@ MonoBehaviour:
   fireRate: 0.1
   bulletPrefab: {fileID: 4655690105588628940, guid: 16e20f16c5c17614b982c7b18f35f0a5, type: 3}
   firePoint: {fileID: 0}
+  towerSprites:
+  - {fileID: 21300000, guid: 5ec55ffe12edb6c41a4858281afbd359, type: 3}
+  - {fileID: 21300000, guid: 5ec55ffe12edb6c41a4858281afbd359, type: 3}
+  - {fileID: 21300000, guid: 5ec55ffe12edb6c41a4858281afbd359, type: 3}
+  - {fileID: 21300000, guid: 5ec55ffe12edb6c41a4858281afbd359, type: 3}
+  blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
+  blobShadowOffset: {x: 0, y: -0.1, z: 0}
+  blobShadowScale: {x: 1, y: 1.3, z: 1}
+  blobShadowRotation: {x: 0, y: 0, z: 0}
 --- !u!212 &-5162899484720996840
 SpriteRenderer:
   m_ObjectHideFlags: 0

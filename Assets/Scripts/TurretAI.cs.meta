@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: d57dd927588864d48ab9cb88ff449586
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - useBar: {instanceID: 0}
+  - bulletPrefab: {instanceID: 0}
+  - firePoint: {instanceID: 0}
+  - blobShadowSprite: {fileID: 21300000, guid: 807f2c11b6f69554da9c55a91d774df4, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

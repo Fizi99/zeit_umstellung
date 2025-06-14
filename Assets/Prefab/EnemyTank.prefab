@@ -4917,6 +4917,10 @@ MonoBehaviour:
   cost: 10
   randomWeight: 1
   damage: 1
+  blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
+  blobShadowOffset: {x: 0, y: -0.1, z: 0}
+  blobShadowScale: {x: 1, y: 1, z: 1}
+  blobShadowRotation: {x: 0, y: 0, z: 0}
 --- !u!212 &6147265837515520916
 SpriteRenderer:
   m_ObjectHideFlags: 0
