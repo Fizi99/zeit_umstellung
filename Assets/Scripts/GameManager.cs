@@ -103,11 +103,15 @@ public class GameManager : MonoBehaviour
     }
 
     // generate new streets. Set them so other scripts can access them, get the closest street to the bus stop and add that point as last destination to every street
-    // TODO: only add last waypoint to eligable streets (maybe use OSRM?)
     public void SetStreets(List<GameObject> streets)
     {
         this.streets = streets;
         ConvertStreetsToRoutes();
+    }
+
+    public void ScaleStreetGrid(float scale)
+    {
+        this.streetViewMapGetter.ScaleStreetGrid(scale);
     }
 
     public void ConvertStreetsToRoutes()

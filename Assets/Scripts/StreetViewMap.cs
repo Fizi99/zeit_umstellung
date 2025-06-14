@@ -112,6 +112,9 @@ public class StreetViewMap : MonoBehaviour
             }
         }
 
+        //DEBUG
+        //ScaleStreetGrid(0.5f);
+
         this.gameManager.SetStreets(this.streets);
 
         DrawBusStop();
@@ -126,6 +129,19 @@ public class StreetViewMap : MonoBehaviour
         float z = (float)((lat - this.searchCenterLat) * scale);
         
         return new Vector3(x, z, 0);
+    }
+
+    // TODO: reicht das schon oder müssen street komponenten auch angepasst werden?
+    public void ScaleStreetGrid(float scale)
+    {
+        Dictionary<long, Vector3> nodes = new Dictionary<long, Vector3>();
+        foreach (KeyValuePair<long, Vector3> node in this.gameManager.nodeLocationDictionary)
+        {
+            nodes[node.Key] = node.Value * scale;
+        }
+
+        this.gameManager.nodeLocationDictionary = nodes;
+        Debug.Log("scaled");
     }
 
     // Draw rectangle at bus stop location

@@ -5120,6 +5120,8 @@ MonoBehaviour:
   routeContainer: {fileID: 1109500776}
   routeVisualizerContainer: {fileID: 1587628490}
   streetMat: {fileID: 2100000, guid: 1a7d403440979b34ba41cc7a7ae5f660, type: 2}
+  minNodes: 150
+  maxScaleTries: 5
   boundingBoxForNodeLoading: {fileID: 1105241697}
   enemyRouteVisualizer: []
 --- !u!4 &1404204180
