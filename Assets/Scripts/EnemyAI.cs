@@ -55,6 +55,13 @@ public class EnemyAI : MonoBehaviour
         direction = currentTarget.transform.position - transform.position;
         transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
 
+        // Mirror sprite if needed to look at the direction of movement
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (direction.x < 0)
+            sr.flipX = true; // Mirror (left side)
+        else if (direction.x > 0)
+            sr.flipX = false;  // Original (right side)
+
         if (slowCountdown > 0)
         {
             slowCountdown -= Time.deltaTime;
