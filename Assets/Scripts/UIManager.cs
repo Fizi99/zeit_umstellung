@@ -299,7 +299,7 @@ public class UIManager : MonoBehaviour
             GameObject btn = GameObject.Instantiate(this.busSelectorBtnPrefab);
             btn.transform.SetParent(this.gridLayout.transform);
             btn.GetComponent<BusSelectorBtn>().bus = this.gameManager.busses[i];
-            btn.GetComponentInChildren<TMP_Text>().text = this.gameManager.busses[i].line + " Richtung: " + this.gameManager.busses[i].headsign + " um " + System.DateTimeOffset.FromUnixTimeSeconds(this.busses[i].realtime).LocalDateTime.TimeOfDay;
+            btn.GetComponentInChildren<TMP_Text>().text = this.gameManager.busses[i].line + " Richtung: " + this.gameManager.busses[i].headsign + " um " + System.DateTimeOffset.FromUnixTimeSeconds(this.gameManager.busses[i].realtime).LocalDateTime.TimeOfDay;
             
             // change color of button of selected bus
             if(this.gameManager.selectedBus != null && this.gameManager.busses[i].line == this.gameManager.selectedBus.line && this.gameManager.busses[i].time == this.gameManager.selectedBus.time)
