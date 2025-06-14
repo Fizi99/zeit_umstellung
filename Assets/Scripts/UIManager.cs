@@ -306,10 +306,10 @@ public class UIManager : MonoBehaviour
             GameObject btn = GameObject.Instantiate(this.busSelectorBtnPrefab);
             btn.transform.SetParent(this.gridLayout.transform);
             btn.GetComponent<BusSelectorBtn>().bus = newList[i];
-            btn.GetComponentInChildren<TMP_Text>().text = newList[i].line + " Richtung: " + newList[i].headsign + " um " + System.DateTimeOffset.FromUnixTimeSeconds(newList[i].realtime).LocalDateTime.TimeOfDay;
-            
+            btn.GetComponentInChildren<TMP_Text>().text = newList[i].line + " Richtung: " + newList[i].headsign + " um " + $"{System.DateTimeOffset.FromUnixTimeSeconds(newList[i].time).LocalDateTime.TimeOfDay:hh\\:mm}" + "+" + System.DateTimeOffset.FromUnixTimeSeconds(newList[i].realtime - newList[i].time).Minute;
+
             // change color of button of selected bus
-            if(this.gameManager.selectedBus != null && newList[i].line == this.gameManager.selectedBus.line && newList[i].time == this.gameManager.selectedBus.time)
+            if (this.gameManager.selectedBus != null && this.gameManager.busses[i].line == this.gameManager.selectedBus.line && this.gameManager.busses[i].time == this.gameManager.selectedBus.time)
             {
                 btn.GetComponent<Button>().Select();
             }
