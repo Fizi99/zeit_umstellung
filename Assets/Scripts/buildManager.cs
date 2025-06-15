@@ -113,7 +113,7 @@ public class buildManager : MonoBehaviour
                         turretOverlap = true;
                     }
                 }
-                if (turret.GetComponent<TurretAI>().calculateBuildingCost)
+                /*if (turret.GetComponent<TurretAI>().calculateBuildingCost)
                 {
                     if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
                     {
@@ -138,9 +138,10 @@ public class buildManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning("Turret already there");
-                    }
+                        Debug.LogWarning("Turret already there or not enough sand");
+                    placeableZone.HidePlaceableZone();
                 }
+                //}
             }
         }
     }

@@ -2291,6 +2291,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: buyTurret1
       objectReference: {fileID: 0}
+    - target: {fileID: 4386940361022328411, guid: c899eb5425759df499f892d8b548b756, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.1564941
+      objectReference: {fileID: 0}
     - target: {fileID: 4917831198234031545, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: turret
       value: 
@@ -2365,7 +2369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6860482830855375882, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -880
+      value: -840
       objectReference: {fileID: 0}
     - target: {fileID: 6860482830855375882, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3489,6 +3493,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: buyTurret1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4386940361022328411, guid: c899eb5425759df499f892d8b548b756, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.1564941
+      objectReference: {fileID: 0}
     - target: {fileID: 4917831198234031545, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: turret
       value: 
@@ -3563,7 +3571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6860482830855375882, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -660
+      value: -630
       objectReference: {fileID: 0}
     - target: {fileID: 6860482830855375882, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4251,6 +4259,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: buyTurret1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4386940361022328411, guid: c899eb5425759df499f892d8b548b756, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.1564941
+      objectReference: {fileID: 0}
     - target: {fileID: 6860482830855375882, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -4317,7 +4329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6860482830855375882, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -220
+      value: -210
       objectReference: {fileID: 0}
     - target: {fileID: 6860482830855375882, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6633,10 +6645,10 @@ RectTransform:
   - {fileID: 653997585}
   m_Father: {fileID: 196146802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -1652, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 50, y: -575}
+  m_SizeDelta: {x: 220, y: 1080}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1755780543
 MonoBehaviour:
@@ -6775,6 +6787,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: buyTurret1
       objectReference: {fileID: 0}
+    - target: {fileID: 4386940361022328411, guid: c899eb5425759df499f892d8b548b756, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.1564941
+      objectReference: {fileID: 0}
     - target: {fileID: 4917831198234031545, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: turret
       value: 
@@ -6849,7 +6865,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6860482830855375882, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -440
+      value: -420
       objectReference: {fileID: 0}
     - target: {fileID: 6860482830855375882, guid: c899eb5425759df499f892d8b548b756, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
