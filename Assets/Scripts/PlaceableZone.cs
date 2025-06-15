@@ -37,7 +37,8 @@ public class PlaceableZone : MonoBehaviour
         var sr = overlayObj.AddComponent<SpriteRenderer>();
         sr.sprite = overlaySprite;
         sr.color = new Color(0f, 0.5f, 1f, 0.5f);
-        sr.sortingLayerName = "Overlay";
+        sr.sortingLayerName = "Default";
+        sr.sortingOrder = -2;
         sr.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
         overlayObj.transform.position = zoneCenter;
         overlayObj.transform.localScale = zoneSize;

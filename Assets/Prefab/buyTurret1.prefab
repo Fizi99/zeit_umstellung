@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -175,7 +175,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.5188679, g: 0.05139729, b: 0.05139729, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -289,8 +289,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Artillery
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 881b880c3ae1542489cb9371c26ffb90, type: 2}
-  m_sharedMaterial: {fileID: 5811083612556066177, guid: 881b880c3ae1542489cb9371c26ffb90, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9ee1cc739e2236e4a9e6aa6608b616e3, type: 2}
+  m_sharedMaterial: {fileID: -2784747974879808116, guid: 9ee1cc739e2236e4a9e6aa6608b616e3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -314,7 +314,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.55
+  m_fontSize: 18
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
