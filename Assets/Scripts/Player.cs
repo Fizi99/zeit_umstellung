@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public float uhranium = 0;
 
     public float maxZeitsand = 100;
-    public float zeitsandStartValue = 40;
+    public float zeitsandStartValue = 00;
     public float zeitsandRatePerSec = 1;
 
     public float savedUhranium = 0;
@@ -81,4 +81,8 @@ public class Player : MonoBehaviour
         this.lives -= dmg;
     }
 
+    public void setZeitsandRatePerSec(float zeitSandRate)
+    {
+        this.zeitsandRatePerSec = zeitSandRate;
+    }
 }

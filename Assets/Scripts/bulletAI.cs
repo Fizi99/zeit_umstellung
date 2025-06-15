@@ -4,11 +4,11 @@ public class bulletAI : MonoBehaviour
 {
     private Transform target;
     public float speed = 70f;
-    public int damage = 5;
+    public float damage = 5;
     public float explosionRadius = 0;
     public bool useFreeze = false;
     public bool shootSelf = false;
-    public int SlowMultiplier = 0;
+    public float SlowMultiplier = 0;
     public float freezeDuration = 5f;
 
     public void SetBulletTarget(Transform targetSetter)

@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec29db754c791942ae5fa0e9600e2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initSpeed: 1
-  initHealth: 200
+  initSpeed: 0.5
+  initHealth: 2
   healthbar: {fileID: 9096020086479623457}
   isSplitter: 0
   splitAmount: 3

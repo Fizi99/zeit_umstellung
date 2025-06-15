@@ -143,14 +143,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57dd927588864d48ab9cb88ff449586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 10
+  range: 3
   enemyTag: Enemy
   isSingleUse: 1
-  useTimeInsteadOfAmmo: 0
-  initUseAmount: 60
+  useTimeInsteadOfAmmo: 1
+  initUseAmount: 15
   useAmount: 1
-  buildingCost: 1
+  buildingCost: 11
   useBar: {fileID: 7649511621411242656}
+  calculateBuildingCost: 1
   isMoving: 0
   speed: 30
   stopAndShootRange: 5
