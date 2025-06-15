@@ -2218,7 +2218,7 @@ GameObject:
   - component: {fileID: 556906723}
   - component: {fileID: 556906722}
   m_Layer: 0
-  m_Name: Background
+  m_Name: TowerPlaceCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
