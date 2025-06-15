@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class buildManager : MonoBehaviour
 {
@@ -21,6 +21,7 @@ public class buildManager : MonoBehaviour
     private float loadOutSize = 4f;
 
     public PlaceableZone placeableZone;
+    private GameObject lastlySelectedButton;
 
     public bool isBuildPossible = false;
 
@@ -89,6 +90,27 @@ public class buildManager : MonoBehaviour
         placeableZone.ShowPlaceableZone();
     }
 
+    public void highlightTowerSelected(GameObject button)
+    {
+        lastlySelectedButton = button;
+        var childImage = button.GetComponentInChildren<RawImage>();
+        button.GetComponent<displayTurretCost>().isTowerSelected = true;
+        childImage.color = new Color(0.6f, 0.8f, 1f, 1f); // leichter blauer Tint
+    }
+
+    public void clearHighlight()
+    {
+        if (lastlySelectedButton != null)
+        {
+            var image = lastlySelectedButton.GetComponentInChildren<RawImage>();
+            if (image != null)
+                image.color = Color.white;
+
+            lastlySelectedButton.GetComponent<displayTurretCost>().isTowerSelected = false;
+            lastlySelectedButton = null;
+        }
+    }
+
     void spawnTurret(GameObject turret)
     {
         if (isBuildPossible)
@@ -140,6 +162,7 @@ public class buildManager : MonoBehaviour
                     Debug.LogWarning("Turret already there or not enough sand");
                 }
                 placeableZone.HidePlaceableZone();
+                clearHighlight();
             }
         }
     }
