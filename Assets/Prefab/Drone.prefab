@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.7642, y: -0.9081, z: 0.021218855}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 97161410031227725}
@@ -84,10 +84,14 @@ MonoBehaviour:
   bulletPrefab: {fileID: 9084643237093435201, guid: bb2046b85b19ed24686cdb1425d7c3b5, type: 3}
   firePoint: {fileID: 0}
   towerSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 52836230cad04224ebcd0e02a70f7078, type: 3}
+  - {fileID: 21300000, guid: d49450cfd102cd6479be9b7b12f9cff3, type: 3}
+  - {fileID: 21300000, guid: d49450cfd102cd6479be9b7b12f9cff3, type: 3}
+  - {fileID: 21300000, guid: 52836230cad04224ebcd0e02a70f7078, type: 3}
+  blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
+  blobShadowOffset: {x: 0, y: -0.3, z: 0}
+  blobShadowScale: {x: 0.2, y: 0.2, z: 0.2}
+  blobShadowRotation: {x: 0, y: 0, z: 0}
 --- !u!212 &1142861882281451792
 SpriteRenderer:
   m_ObjectHideFlags: 0

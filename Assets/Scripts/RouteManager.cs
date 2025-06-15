@@ -17,6 +17,11 @@ public class RouteManager : MonoBehaviour
     private Material streetMat;
 
     [SerializeField]
+    private int minNodes = 20;
+    [SerializeField]
+    private int maxScaleTries = 5;
+
+    [SerializeField]
     private GameObject boundingBoxForNodeLoading;
     private Vector3 boxCenter = Vector3.zero;
     private Vector3 boxSize = new Vector3(25, 15, 1);
@@ -118,6 +123,16 @@ public class RouteManager : MonoBehaviour
         Dictionary<long, List<Edge>> graph = new Dictionary<long, List<Edge>>();
         FillDictionaryWithStreets(graph);
 
+        // rescale, if not enough nodes in game but max {maxscaletries} times
+        int scaleTries = 0;
+        while(graph.Count < minNodes && scaleTries < this.maxScaleTries)
+        {
+            scaleTries++;
+            this.gameManager.ScaleStreetGrid(0.8f);
+            graph = new Dictionary<long, List<Edge>>();
+            FillDictionaryWithStreets(graph);
+        }
+
         // traverse graph to find routes
         Dictionary<long, List<long>> routes = FindAllPaths(graph, 1);
 
@@ -149,6 +164,7 @@ public class RouteManager : MonoBehaviour
             lr.widthMultiplier = 0.2f;
             lr.positionCount = enemyroute.Value.Count;
             lr.textureMode = LineTextureMode.Tile;
+            lr.sortingOrder = -1;
             //lr.startColor = Color.red;
             //lr.endColor = Color.blue;
             for (int i = 0; i < enemyroute.Value.Count; i++)

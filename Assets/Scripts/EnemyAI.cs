@@ -3,8 +3,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using IEnumerator = System.Collections.IEnumerator;
 
-
-
 public class EnemyAI : MonoBehaviour
 {
     public float initSpeed = 3f;
@@ -31,6 +29,12 @@ public class EnemyAI : MonoBehaviour
 
     public int damage = 1;
 
+    // Blob Shadow related
+    public GameObject blobShadowPrefab;
+    public Vector3 blobShadowOffset = new Vector3(0f, -0.1f, 0f);
+    public Vector3 blobShadowScale = new Vector3(1f, 1f, 1f);
+    public Vector3 blobShadowRotation = Vector3.zero;
+
     void Awake()
     {
         speed=initSpeed;
@@ -40,6 +44,7 @@ public class EnemyAI : MonoBehaviour
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        CreateBlobShadow();
     }
 
     void setTargetList(List<GameObject> targetList)
@@ -55,6 +60,13 @@ public class EnemyAI : MonoBehaviour
         direction = currentTarget.transform.position - transform.position;
         transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
 
+        // Mirror sprite if needed to look at the direction of movement
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (direction.x < 0)
+            sr.flipX = true; // Mirror (left side)
+        else if (direction.x > 0)
+            sr.flipX = false;  // Original (right side)
+
         if (slowCountdown > 0)
         {
             slowCountdown -= Time.deltaTime;
@@ -63,7 +75,6 @@ public class EnemyAI : MonoBehaviour
                 speed = initSpeed;
             }
         }
-
 
         if (Vector3.Distance(transform.position, currentTarget.transform.position) < 0.2f)
         {
@@ -151,12 +162,45 @@ public class EnemyAI : MonoBehaviour
             Destroy(gameObject);
     }
 
-    IEnumerator waiter()
+    /*private void CreateGroundShadow()
     {
-        
-            
-        
-        yield return new WaitForSeconds(1);
+        GameObject shadow = new GameObject("Shadow");
+        SpriteRenderer sr = shadow.AddComponent<SpriteRenderer>();
+        sr.sprite = GetComponent<SpriteRenderer>().sprite;
+        sr.color = new Color(0, 0, 0, 0.3f);
+        sr.sortingOrder = GetComponent<SpriteRenderer>().sortingOrder - 1;
+
+        shadow.transform.parent = transform;
+        shadow.transform.localPosition = new Vector3(0, -0.05f, 0);
+        shadow.transform.localScale = new Vector3(1f, 0.3f, 1f);
+    }*/
+
+    private void CreateBlobShadow()
+    {
+        if (transform.Find("BlobShadow") != null) return;
+
+        GameObject shadow = Instantiate(blobShadowPrefab, transform);
+        shadow.name = "BlobShadow";
+        shadow.transform.localPosition = blobShadowOffset;
+        shadow.transform.localScale = blobShadowScale;
+        shadow.transform.localEulerAngles = blobShadowRotation;
+
+        // Transparenz anpassen
+        Renderer renderer = shadow.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material mat = renderer.material;
+            if (mat.HasProperty("_Color"))
+            {
+                Color c = mat.color;
+                c.a = 0.3f;
+                mat.color = c;
+            }
+        }
     }
 
+    IEnumerator waiter()
+    {
+        yield return new WaitForSeconds(1);
+    }
 }

@@ -90,12 +90,13 @@ public class buildManager : MonoBehaviour
             setIsBuild(false);
 
             Vector3 mousePosition = Input.mousePosition;
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        RaycastHit hit;
+            Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+            RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
-            Vector3 spawnPosition = hit.point; 
+            Vector3 spawnPosition = hit.point;
+            spawnPosition.z = 0; // Make the tower be in the base depth
             
             Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.5f);
             bool turretOverlap = false;

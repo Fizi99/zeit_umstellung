@@ -293,16 +293,23 @@ public class UIManager : MonoBehaviour
             Destroy(busSelectionBtn);
         }
         // add new bus selection buttons
-        for (int i = 0; i < this.gameManager.busses.Count; i++)
+
+        List<Bus> newList = new List<Bus>(this.gameManager.busses.Count);
+        this.gameManager.busses.ForEach((item) =>
+        {
+            newList.Add(item);
+        });
+
+        for (int i = 0; i < newList.Count; i++)
         {
             // create new selection button and set grid as parent
             GameObject btn = GameObject.Instantiate(this.busSelectorBtnPrefab);
             btn.transform.SetParent(this.gridLayout.transform);
-            btn.GetComponent<BusSelectorBtn>().bus = this.gameManager.busses[i];
-            btn.GetComponentInChildren<TMP_Text>().text = this.gameManager.busses[i].line + " Richtung: " + this.gameManager.busses[i].headsign + " um " + System.DateTimeOffset.FromUnixTimeSeconds(this.busses[i].realtime).LocalDateTime.TimeOfDay;
-            
+            btn.GetComponent<BusSelectorBtn>().bus = newList[i];
+            btn.GetComponentInChildren<TMP_Text>().text = newList[i].line + " Richtung: " + newList[i].headsign + " um " + $"{System.DateTimeOffset.FromUnixTimeSeconds(newList[i].time).LocalDateTime.TimeOfDay:hh\\:mm}" + "+" + System.DateTimeOffset.FromUnixTimeSeconds(newList[i].realtime - newList[i].time).Minute;
+
             // change color of button of selected bus
-            if(this.gameManager.selectedBus != null && this.gameManager.busses[i].line == this.gameManager.selectedBus.line && this.gameManager.busses[i].time == this.gameManager.selectedBus.time)
+            if (this.gameManager.selectedBus != null && this.gameManager.busses[i].line == this.gameManager.selectedBus.line && this.gameManager.busses[i].time == this.gameManager.selectedBus.time)
             {
                 btn.GetComponent<Button>().Select();
             }

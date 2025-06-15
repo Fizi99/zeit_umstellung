@@ -163,6 +163,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e39b3745ba368ff4e972b9b40a5d1d46, type: 3}
   - {fileID: 21300000, guid: ff694ae926d7d06448658a6c6b99be10, type: 3}
   - {fileID: 21300000, guid: 1fa458d327b03c7468b203c1e4542f15, type: 3}
+  blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
+  blobShadowOffset: {x: 0, y: -0.1, z: 0}
+  blobShadowScale: {x: 1, y: 1, z: 1}
+  blobShadowRotation: {x: 0, y: 0, z: 0}
 --- !u!212 &3678048461366433438
 SpriteRenderer:
   m_ObjectHideFlags: 0

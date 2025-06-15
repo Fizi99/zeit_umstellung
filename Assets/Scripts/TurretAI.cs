@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 public class TurretAI : MonoBehaviour
@@ -32,6 +32,12 @@ public class TurretAI : MonoBehaviour
     [SerializeField] private Sprite[] towerSprites = new Sprite[4]; // 0=Rechts, 1=Oben, 2=Links, 3=Unten
     private SpriteRenderer spriteRenderer;
 
+    // Blob Shadow related
+    public GameObject blobShadowPrefab;
+    public Vector3 blobShadowOffset = new Vector3(0f, -0.1f, 0f);
+    public Vector3 blobShadowScale = new Vector3(1f, 1f, 1f);
+    public Vector3 blobShadowRotation = Vector3.zero;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -43,6 +49,8 @@ public class TurretAI : MonoBehaviour
         {
             useBar.fillAmount = 0f;
         }
+
+        CreateBlobShadow();
     }
 
     public float getCalculatedBuildingCost()
@@ -180,11 +188,35 @@ public class TurretAI : MonoBehaviour
 
     private int GetSpriteIndex(float angle)
     {
-        // 4 Richtungen: 0°=Rechts, 90°=Oben, 180°=Links, 270°=Unten
+        // 4 Richtungen: 0Â°=Rechts, 90Â°=Oben, 180Â°=Links, 270Â°=Unten
         if (angle >= 315 || angle < 45) return 0;      // Rechts
         else if (angle >= 45 && angle < 135) return 1;  // Oben
         else if (angle >= 135 && angle < 225) return 2; // Links
         else return 3;                                   // Unten
+    }
+
+    private void CreateBlobShadow()
+    {
+        if (transform.Find("BlobShadow") != null) return;
+
+        GameObject shadow = Instantiate(blobShadowPrefab, transform);
+        shadow.name = "BlobShadow";
+        shadow.transform.localPosition = blobShadowOffset;
+        shadow.transform.localScale = blobShadowScale;
+        shadow.transform.localEulerAngles = blobShadowRotation;
+
+        // Transparenz anpassen
+        Renderer renderer = shadow.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material mat = renderer.material; 
+            if (mat.HasProperty("_Color"))
+            {
+                Color c = mat.color;
+                c.a = 0.3f;
+                mat.color = c;
+            }
+        }
     }
 
     void OnDrawGizmosSelected()
