@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public WaveSpawner waveSpawner;
     [SerializeField] public RouteManager routeManager;
     [SerializeField] public Player player;
+    [SerializeField] public buildManager buildManager;
+
     [Header("Container")]
     [Space(10)]
     [SerializeField] public GameObject enemyContainer;

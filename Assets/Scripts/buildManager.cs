@@ -17,6 +17,8 @@ public class buildManager : MonoBehaviour
     public GameObject turretBomb;
     public GameObject turretDrone;
     public Camera mainCamera;
+    private float turretLoadoutEfficiency;
+    private float loadOutSize = 4f;
 
     public PlaceableZone placeableZone;
 
@@ -37,7 +39,16 @@ public class buildManager : MonoBehaviour
 
     void Start()
     {
+        turretLoadoutEfficiency = ((turretArtillery.GetComponent <TurretAI>().getTurretEfficiency()+
+            turretLaser.GetComponent<TurretAI>().getTurretEfficiency()+
+            turretRocket.GetComponent<TurretAI>().getTurretEfficiency()+
+            turretDrone.GetComponent<TurretAI>().getTurretEfficiency() )/ loadOutSize)/4;
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    public float getLoadoutEfficiency()
+    {
+        return turretLoadoutEfficiency;
     }
 
     void Update()
@@ -88,46 +99,50 @@ public class buildManager : MonoBehaviour
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 spawnPosition = hit.point;
+            spawnPosition.z = 0; // Make the tower be in the base depth
+            
+            Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.5f);
+            bool turretOverlap = false;
+            foreach (Collider collider in collidersHit)
             {
-                Vector3 spawnPosition = hit.point;
-                spawnPosition.z = 0; // Set tower depth
-
-                Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.1f);
-                bool turretOverlap = false;
-                foreach (Collider collider in collidersHit)
+                if (collider.tag == "Turret")
                 {
-                    if (collider.CompareTag("Turret"))
-                    {
-                        turretOverlap = true;
-                        break;
-                    }
+                    turretOverlap = true;
                 }
+            }
+                if (turret.GetComponent<TurretAI>().calculateBuildingCost)
+                { 
+                    if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
+                    {
+                        gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().getCalculatedBuildingCost());
+                        GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
+                        newTurret.transform.parent = turretContainer.transform;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Turret already there");
+                    }
 
-                bool enoughResources = turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand;
-
-                if (!turretOverlap && enoughResources)
-                {
-                    gameManager.player.SetZeitsand(
-                        gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost
-                    );
-
-                    GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
-                    newTurret.transform.parent = turretContainer.transform;
-
-                    placeableZone.HidePlaceableZone();
+                    
                 }
                 else
                 {
-                    Debug.LogWarning("Turret already there or not enough Zeitsand");
+                    if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
+                    {
+                        gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost);
+                        GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
+                        newTurret.transform.parent = turretContainer.transform;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Turret already there");
+                    }
 
-                    // Reset build state and hide overlay
-                    setIsBuild(false);
-                    turretToBuild = null;
-                    placeableZone.HidePlaceableZone();
                 }
             }
         }
-    }
 
 }

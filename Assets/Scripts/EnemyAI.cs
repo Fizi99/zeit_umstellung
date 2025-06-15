@@ -7,8 +7,8 @@ public class EnemyAI : MonoBehaviour
 {
     public float initSpeed = 3f;
     private float speed = 3f;
-    public int initHealth = 100;
-    private int health = 100;
+    public float initHealth = 100;
+    private float health = 100;
     public Image healthbar;
     public bool isSplitter = false;
     public int splitAmount = 0;
@@ -129,10 +129,10 @@ public class EnemyAI : MonoBehaviour
         return;
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         health -= amount;
-        healthbar.fillAmount = (float) health / (float) initHealth;
+        healthbar.fillAmount =  health / initHealth;
         if(health <= 0)
         {
             Die();
