@@ -9,6 +9,6 @@ public class displayTurretCost : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        costText.text = " cost: "+(turret.GetComponent<TurretAI>().getCalculatedBuildingCost()).ToString();
+        costText.text = (turret.GetComponent<TurretAI>().buildingCost).ToString();
     }
 }

@@ -126,11 +126,11 @@ MonoBehaviour:
   enemyTag: Enemy
   isSingleUse: 1
   useTimeInsteadOfAmmo: 1
-  initUseAmount: 10
+  initUseAmount: 20
   useAmount: 1
-  buildingCost: 6
+  buildingCost: 15
   useBar: {fileID: 6150590460092479386}
-  calculateBuildingCost: 1
+  calculateBuildingCost: 0
   isMoving: 0
   speed: 30
   stopAndShootRange: 5

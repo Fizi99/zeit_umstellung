@@ -17,8 +17,10 @@ public class buildManager : MonoBehaviour
     public GameObject turretBomb;
     public GameObject turretDrone;
     public Camera mainCamera;
-    private float turretLoadoutEfficiency;
+    private float turretLoadoutEfficiency = 1f;
     private float loadOutSize = 4f;
+
+    public PlaceableZone placeableZone;
 
     public bool isBuildPossible = false;
 
@@ -37,10 +39,10 @@ public class buildManager : MonoBehaviour
 
     void Start()
     {
-        turretLoadoutEfficiency = ((turretArtillery.GetComponent <TurretAI>().getTurretEfficiency()+
+        /*turretLoadoutEfficiency = ((turretArtillery.GetComponent <TurretAI>().getTurretEfficiency()+
             turretLaser.GetComponent<TurretAI>().getTurretEfficiency()+
             turretRocket.GetComponent<TurretAI>().getTurretEfficiency()+
-            turretDrone.GetComponent<TurretAI>().getTurretEfficiency() )/ loadOutSize)/4;
+            turretDrone.GetComponent<TurretAI>().getTurretEfficiency() )/ loadOutSize)/4;*/
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
@@ -84,9 +86,10 @@ public class buildManager : MonoBehaviour
     {
         turretToBuild = turret;
         setIsBuild(true);
+        placeableZone.ShowPlaceableZone();
     }
 
-  void spawnTurret(GameObject turret)
+    void spawnTurret(GameObject turret)
     {
         if (isBuildPossible)
         {
@@ -96,51 +99,49 @@ public class buildManager : MonoBehaviour
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
             RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
-        {
-            Vector3 spawnPosition = hit.point;
-            spawnPosition.z = 0; // Make the tower be in the base depth
-            
-            Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.5f);
-            bool turretOverlap = false;
-            foreach (Collider collider in collidersHit)
+            if (Physics.Raycast(ray, out hit))
             {
-                if (collider.tag == "Turret")
+                Vector3 spawnPosition = hit.point;
+                spawnPosition.z = 0; // Make the tower be in the base depth
+
+                Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.1f);
+                bool turretOverlap = false;
+                foreach (Collider collider in collidersHit)
                 {
-                    turretOverlap = true;
+                    if (collider.tag == "Turret")
+                    {
+                        turretOverlap = true;
+                    }
                 }
-            }
                 if (turret.GetComponent<TurretAI>().calculateBuildingCost)
-                { 
+                {
                     if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
                     {
                         gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().getCalculatedBuildingCost());
                         GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
                         newTurret.transform.parent = turretContainer.transform;
+                        placeableZone.HidePlaceableZone();
                     }
                     else
                     {
                         Debug.LogWarning("Turret already there");
                     }
-
-                    
                 }
                 else
-                {
+                {*/
                     if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
                     {
                         gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost);
                         GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
                         newTurret.transform.parent = turretContainer.transform;
+                        placeableZone.HidePlaceableZone();
                     }
                     else
                     {
                         Debug.LogWarning("Turret already there");
                     }
-
                 }
             }
         }
-
     }
 }

@@ -139,9 +139,12 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    public void Slow(float slowMultiplier, float freezeDuration) { 
-        speed *= slowMultiplier;
-        slowCountdown = freezeDuration;
+    public void Slow(float slowMultiplier, float freezeDuration) {
+        if (speed == initSpeed)
+        {
+            speed *= slowMultiplier;
+            slowCountdown = freezeDuration;
+        }
     }
 
 

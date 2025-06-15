@@ -149,9 +149,9 @@ MonoBehaviour:
   useTimeInsteadOfAmmo: 1
   initUseAmount: 15
   useAmount: 1
-  buildingCost: 11
+  buildingCost: 10
   useBar: {fileID: 7649511621411242656}
-  calculateBuildingCost: 1
+  calculateBuildingCost: 0
   isMoving: 0
   speed: 30
   stopAndShootRange: 5

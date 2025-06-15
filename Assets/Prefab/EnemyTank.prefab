@@ -4903,7 +4903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initSpeed: 0.125
-  initHealth: 5
+  initHealth: 10
   healthbar: {fileID: 957149318274152898}
   isSplitter: 0
   splitAmount: 0
@@ -4915,8 +4915,8 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   waypointIndex: 0
   cost: 30
-  randomWeight: 1
-  damage: 1
+  randomWeight: 100
+  damage: 30
   blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
   blobShadowOffset: {x: 0, y: 0, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}

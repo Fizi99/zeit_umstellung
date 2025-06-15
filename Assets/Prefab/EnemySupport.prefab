@@ -4984,14 +4984,14 @@ MonoBehaviour:
   splitAmount: 0
   splitUnit: {fileID: 0}
   auraRadius: 3
-  auraEffectStrength: 1.1
-  auraDuration: 2
+  auraEffectStrength: 1.5
+  auraDuration: 5
   targets: []
   currentTarget: {fileID: 0}
   waypointIndex: 0
   cost: 20
-  randomWeight: 1
-  damage: 1
+  randomWeight: 50
+  damage: 10
   blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
   blobShadowOffset: {x: 0, y: 0, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}

@@ -4902,7 +4902,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4984,10 +4984,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initSpeed: 0.25
-  initHealth: 3
+  initHealth: 1
   healthbar: {fileID: 6105599656787540163}
   isSplitter: 1
-  splitAmount: 3
+  splitAmount: 5
   splitUnit: {fileID: 6446975306276922648, guid: db384612a51b9924c964c54999df2518, type: 3}
   auraRadius: 0
   auraEffectStrength: 2
@@ -4996,8 +4996,8 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   waypointIndex: 0
   cost: 30
-  randomWeight: 1
-  damage: 1
+  randomWeight: 100
+  damage: 30
   blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
   blobShadowOffset: {x: 0, y: -0.1, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}
