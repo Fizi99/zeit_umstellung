@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TMP_InputField busSearchInputField;
     [SerializeField] private List<TMP_Text> countdown;
-    [SerializeField] private GameObject gridLayout;
+    [SerializeField] private GameObject scrollerContent;
     [SerializeField] private GameObject busSelectorBtnPrefab;
     [SerializeField] private TMP_Text zeitsandText;
     [SerializeField] private TMP_Text uhraniumText;
@@ -304,7 +304,7 @@ public class UIManager : MonoBehaviour
         {
             // create new selection button and set grid as parent
             GameObject btn = GameObject.Instantiate(this.busSelectorBtnPrefab);
-            btn.transform.SetParent(this.gridLayout.transform);
+            btn.transform.SetParent(this.scrollerContent.transform);
             btn.GetComponent<BusSelectorBtn>().bus = newList[i];
             btn.GetComponentInChildren<TMP_Text>().text = newList[i].line + " Richtung: " + newList[i].headsign + " um " + $"{System.DateTimeOffset.FromUnixTimeSeconds(newList[i].time).LocalDateTime.TimeOfDay:hh\\:mm}" + "+" + System.DateTimeOffset.FromUnixTimeSeconds(newList[i].realtime - newList[i].time).Minute;
 
@@ -315,7 +315,8 @@ public class UIManager : MonoBehaviour
             }
             this.busSelectionBtns.Add(btn);
 
-        } 
+        }
+
     }
 
     private void UpdateDistanceToStopText()

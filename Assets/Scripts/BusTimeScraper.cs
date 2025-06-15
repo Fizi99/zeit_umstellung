@@ -240,6 +240,9 @@ public class BusTimeScraper : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Get(this.busStopURL);
         yield return request.SendWebRequest();
         {
+            this.busses = new List<Bus>();
+            // debug bus that is 5 min late after bus is loaded
+            this.busses.Add(new Bus("0", "DEBUG BUS", System.DateTimeOffset.UtcNow.ToUnixTimeSeconds(), System.DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 300));
 
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -249,7 +252,6 @@ public class BusTimeScraper : MonoBehaviour
             {
                 // Parse json return
                 JSONNode data = JSON.Parse(request.downloadHandler.text);
-                this.busses = new List<Bus>();
                 for (int i = 0; i < data["data"].AsArray.Count; i++)
                 {
                     // add busses to List
@@ -260,8 +262,7 @@ public class BusTimeScraper : MonoBehaviour
                 }
             }
 
-            // debug bus that is 5 min late after bus is loaded
-            this.busses.Add(new Bus("0", "DEBUG BUS", System.DateTimeOffset.UtcNow.ToUnixTimeSeconds(), System.DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 300));
+            
         }
 
     }

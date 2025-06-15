@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public RouteManager routeManager;
     [SerializeField] public Player player;
     [SerializeField] public buildManager buildManager;
+    [SerializeField] public GameObject floatingTextPrefab;
 
     [Header("Container")]
     [Space(10)]
@@ -102,6 +103,13 @@ public class GameManager : MonoBehaviour
     public void UpdateBusStopGameObject(GameObject newBusStop)
     {
         this.busStopGO = newBusStop;
+    }
+
+    public void SpawnFloatingText(Vector3 pos, string text)
+    {
+        GameObject floatingText = Instantiate(this.floatingTextPrefab);
+        floatingText.transform.position = pos;
+        floatingText.GetComponentInChildren<TMP_Text>().text = text;
     }
 
     // generate new streets. Set them so other scripts can access them, get the closest street to the bus stop and add that point as last destination to every street
