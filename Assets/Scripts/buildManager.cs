@@ -28,7 +28,7 @@ public class buildManager : MonoBehaviour
 
     void Awake()
     {
-        if(instance != null)
+        if (instance != null)
         {
             Debug.LogError("more than one BuildManager!");
             return;
@@ -54,7 +54,7 @@ public class buildManager : MonoBehaviour
     void Update()
     {
         // only place turrets, when lvl is in session
-        if(this.gameManager.gameState == GameState.LEVELPLAYING)
+        if (this.gameManager.gameState == GameState.LEVELPLAYING)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -74,7 +74,7 @@ public class buildManager : MonoBehaviour
             }
         }
 
-       
+
     }
 
     public void setIsBuild(bool isBuild)
@@ -128,20 +128,18 @@ public class buildManager : MonoBehaviour
                     }
                 }
                 else
+                {*/
+                if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
                 {
-                    if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
-                    {
-                        gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost);
-                        GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
-                        newTurret.transform.parent = turretContainer.transform;
-                        placeableZone.HidePlaceableZone();
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Turret already there or not enough sand");
-                    placeableZone.HidePlaceableZone();
+                    gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost);
+                    GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
+                    newTurret.transform.parent = turretContainer.transform;
                 }
-                //}
+                else
+                {
+                    Debug.LogWarning("Turret already there or not enough sand");
+                }
+                placeableZone.HidePlaceableZone();
             }
         }
     }
