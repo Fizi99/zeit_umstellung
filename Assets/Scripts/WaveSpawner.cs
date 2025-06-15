@@ -164,7 +164,7 @@ public class WaveSpawner : MonoBehaviour
         }
         float neededZeitsand =this.waveHealth * this.gameManager.buildManager.getLoadoutEfficiency();
         float neededZeitsandRate = zeitSandBuff * neededZeitsand/(5 + this.currentWaveEnemies.Count*2);
-        this.zeitSandBuff = 1 + (1 / waveCount);
+        //this.zeitSandBuff = 1 + (1 / waveCount);
         Debug.Log(waveCount);
 
 
@@ -217,7 +217,8 @@ public class WaveSpawner : MonoBehaviour
         {
             if (currentWave.Value.Count > 0)
             {
-                switch (currentWave.Value.Peek())
+                //switch (currentWave.Value.Peek())
+                switch(EnemyType.STANDARD)
                 {
                     case EnemyType.STANDARD:
                         SpawnEnemy(currentWave.Key, this.enemyPrefabStandard);

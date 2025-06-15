@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec29db754c791942ae5fa0e9600e2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initSpeed: 0.5
+  initSpeed: 0.25
   initHealth: 2
   healthbar: {fileID: 9096020086479623457}
   isSplitter: 0

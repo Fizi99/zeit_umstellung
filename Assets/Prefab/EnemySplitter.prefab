@@ -5004,7 +5004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec29db754c791942ae5fa0e9600e2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initSpeed: 0.5
+  initSpeed: 0.25
   initHealth: 3
   healthbar: {fileID: 6105599656787540163}
   isSplitter: 1
@@ -5016,7 +5016,7 @@ MonoBehaviour:
   targets: []
   currentTarget: {fileID: 0}
   waypointIndex: 0
-  cost: 10
+  cost: 30
   randomWeight: 1
   damage: 1
   blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}

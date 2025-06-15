@@ -37,7 +37,10 @@ public class buildManager : MonoBehaviour
 
     void Start()
     {
-        turretLoadoutEfficiency = turretArtillery.GetComponent <TurretAI>().getTurretEfficiency() / loadOutSize;
+        turretLoadoutEfficiency = ((turretArtillery.GetComponent <TurretAI>().getTurretEfficiency()+
+            turretLaser.GetComponent<TurretAI>().getTurretEfficiency()+
+            turretRocket.GetComponent<TurretAI>().getTurretEfficiency()+
+            turretDrone.GetComponent<TurretAI>().getTurretEfficiency() )/ loadOutSize)/4;
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 

@@ -38,6 +38,8 @@ public class TurretAI : MonoBehaviour
     public Vector3 blobShadowScale = new Vector3(1f, 1f, 1f);
     public Vector3 blobShadowRotation = Vector3.zero;
 
+    private float explosionMult = 1f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -62,12 +64,20 @@ public class TurretAI : MonoBehaviour
         {
             TurretAI drohnenAI = this.bulletPrefab.GetComponent<TurretAI>();
             bulletAI = drohnenAI.bulletPrefab.GetComponent<bulletAI>();
-            buildingCost = (drohnenAI.fireRate * (bulletAI.damage + bulletAI.explosionRadius)) + (range + drohnenAI.initUseAmount) / 2;
+            if (bulletAI.explosionRadius > 0)
+            {
+                this.explosionMult = 5;
+            }
+            buildingCost = (drohnenAI.fireRate * bulletAI.damage*explosionMult) + (range + drohnenAI.initUseAmount) / 5;
             this.turretEfficiency = (fireRate * bulletAI.damage * initUseAmount) / buildingCost;
         }
         else
         {
-            buildingCost = (fireRate * (bulletAI.damage + bulletAI.explosionRadius)) + (range + initUseAmount) / 2;
+            if (bulletAI.explosionRadius > 0)
+            {
+                this.explosionMult = 5;
+            }
+            buildingCost = (fireRate * bulletAI.damage * explosionMult) + (range + initUseAmount) / 5;
             this.turretEfficiency = (fireRate * bulletAI.damage * initUseAmount) / buildingCost;
 
         }

@@ -80,7 +80,7 @@ MonoBehaviour:
   isMoving: 1
   speed: 10
   stopAndShootRange: 2
-  fireRate: 2
+  fireRate: 1
   bulletPrefab: {fileID: 9084643237093435201, guid: bb2046b85b19ed24686cdb1425d7c3b5, type: 3}
   firePoint: {fileID: 0}
   towerSprites:
