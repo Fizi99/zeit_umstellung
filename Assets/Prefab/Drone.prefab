@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57dd927588864d48ab9cb88ff449586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 4
+  range: 10
   enemyTag: Enemy
   isSingleUse: 1
   useTimeInsteadOfAmmo: 1
@@ -79,7 +79,7 @@ MonoBehaviour:
   useBar: {fileID: 7829559032320418762}
   calculateBuildingCost: 0
   isMoving: 1
-  speed: 10
+  speed: 2
   stopAndShootRange: 2
   fireRate: 1
   bulletPrefab: {fileID: 9084643237093435201, guid: bb2046b85b19ed24686cdb1425d7c3b5, type: 3}

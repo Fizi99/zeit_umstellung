@@ -4956,7 +4956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec29db754c791942ae5fa0e9600e2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initSpeed: 0.75
+  initSpeed: 1
   initHealth: 1
   healthbar: {fileID: 7550756099456502530}
   isSplitter: 0
@@ -4969,8 +4969,8 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   waypointIndex: 0
   cost: 10
-  randomWeight: 1
-  damage: 1
+  randomWeight: 100
+  damage: 5
   blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
   blobShadowOffset: {x: 0, y: -0.1, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}

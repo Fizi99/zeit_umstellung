@@ -55,7 +55,7 @@ public class TurretAI : MonoBehaviour
         CreateBlobShadow();
     }
 
-    public float getCalculatedBuildingCost()
+    /*public float getCalculatedBuildingCost()
     {
 
         bulletAI bulletAI = this.bulletPrefab.GetComponent<bulletAI>();
@@ -83,11 +83,11 @@ public class TurretAI : MonoBehaviour
         }
         Debug.Log("calculated Building cost: " + buildingCost);
         return buildingCost;
-    }
+    }*/
 
     public float getTurretEfficiency()
     {
-        getCalculatedBuildingCost();
+        //getCalculatedBuildingCost();
         return this.turretEfficiency;
     }
 

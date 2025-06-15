@@ -168,7 +168,7 @@ public class WaveSpawner : MonoBehaviour
         Debug.Log(waveCount);
 
 
-        this.gameManager.player.setZeitsandRatePerSec(neededZeitsandRate);
+        //this.gameManager.player.setZeitsandRatePerSec(neededZeitsandRate);
         this.waveHealth = 0;
         // randomly choose route for each enemy 
         this.wave = new Dictionary<int, Queue<EnemyType>>();
@@ -217,8 +217,8 @@ public class WaveSpawner : MonoBehaviour
         {
             if (currentWave.Value.Count > 0)
             {
-                //switch (currentWave.Value.Peek())
-                switch(EnemyType.STANDARD)
+                switch (currentWave.Value.Peek())
+                //switch(EnemyType.SUPPORT)
                 {
                     case EnemyType.STANDARD:
                         SpawnEnemy(currentWave.Key, this.enemyPrefabStandard);
