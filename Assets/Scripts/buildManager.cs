@@ -117,7 +117,7 @@ public class buildManager : MonoBehaviour
                 {
                     if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
                     {
-                        gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().getCalculatedBuildingCost());
+                        //gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().getCalculatedBuildingCost());
                         GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
                         newTurret.transform.parent = turretContainer.transform;
                         placeableZone.HidePlaceableZone();
@@ -128,7 +128,7 @@ public class buildManager : MonoBehaviour
                     }
                 }
                 else
-                {*/
+                {
                     if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
                     {
                         gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost);
