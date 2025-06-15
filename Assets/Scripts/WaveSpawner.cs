@@ -15,9 +15,11 @@ public class WaveSpawner : MonoBehaviour
     public GameObject enemyContainer;
 
     public float timeBetweenWaves = 5f;
-    public float countdownWaves = 3f;
+    public float countdownWaves = 0f;
     public float timeBetweenEnemies = 3f;
-    public float countdownEnemies = 1f;
+    public float countdownEnemies = 0f;
+
+    public float minSpawnDistance = 5f;
 
     public int amountOfRoutes = 0;
 
@@ -172,15 +174,29 @@ public class WaveSpawner : MonoBehaviour
         this.waveHealth = 0;
         // randomly choose route for each enemy 
         this.wave = new Dictionary<int, Queue<EnemyType>>();
+
+
+        // get eligable routes for spawning (so enemies dont spawn too close to busstop
+        List<int> eligableRoutes = new List<int>();
+        for(int i = 0; i < this.gameManager.routes.Count; i++)
+        {
+            if((Vector3.zero - this.gameManager.routes[i][0].transform.position).magnitude > minSpawnDistance)
+            {
+                eligableRoutes.Add(i);
+      
+            }
+        }
+
         // choose how many routes enemys can walk on. If there are less possible routes on map than max route amounte, use list length as max.
-        int maxRoutes = Mathf.Min(this.maxRoutesUsedByEnemies, this.gameManager.routes.Count);
+        // int maxRoutes = Mathf.Min(this.maxRoutesUsedByEnemies, this.gameManager.routes.Count);
+        int maxRoutes = Mathf.Min(this.maxRoutesUsedByEnemies, eligableRoutes.Count);
         // init spawn queues for routes
         // save possible indices of routes in list, to access them randomly. also save those indices, so enemies can be assigned to dictionary positions
         List<int> routeIndices = new List<int>();
         List<int> usedRouteIndices = new List<int>();
-        for (int i = 0; i < this.gameManager.routes.Count; i++)
+        for (int i = 0; i < eligableRoutes.Count; i++)
         {
-            routeIndices.Add(i);
+            routeIndices.Add(eligableRoutes[i]);
         }
         for (int i = 0; i < maxRoutes; i++)
         {
