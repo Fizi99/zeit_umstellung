@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec29db754c791942ae5fa0e9600e2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initSpeed: 2
-  initHealth: 100
+  initSpeed: 1.5
+  initHealth: 1
   healthbar: {fileID: 7550756099456502530}
   isSplitter: 0
   splitAmount: 0
@@ -158,6 +158,7 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   waypointIndex: 0
   cost: 10
+  randomWeight: 1
   damage: 1
 --- !u!212 &8613936685823846041
 SpriteRenderer:

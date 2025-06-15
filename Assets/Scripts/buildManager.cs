@@ -17,6 +17,8 @@ public class buildManager : MonoBehaviour
     public GameObject turretBomb;
     public GameObject turretDrone;
     public Camera mainCamera;
+    private float turretLoadoutEfficiency;
+    private float loadOutSize = 4f;
 
     public bool isBuildPossible = false;
 
@@ -35,7 +37,13 @@ public class buildManager : MonoBehaviour
 
     void Start()
     {
+        turretLoadoutEfficiency = turretArtillery.GetComponent <TurretAI>().getTurretEfficiency() / loadOutSize;
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    public float getLoadoutEfficiency()
+    {
+        return turretLoadoutEfficiency;
     }
 
     void Update()
@@ -89,7 +97,7 @@ public class buildManager : MonoBehaviour
         {
             Vector3 spawnPosition = hit.point; 
             
-            Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 1f);
+            Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.5f);
             bool turretOverlap = false;
             foreach (Collider collider in collidersHit)
             {
@@ -98,16 +106,35 @@ public class buildManager : MonoBehaviour
                     turretOverlap = true;
                 }
             }
-            if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
-            {
-                    gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost);
-                GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
-                newTurret.transform.parent = turretContainer.transform;
-            }
-            else
-            {
-                Debug.LogWarning("Turret already there");
-            }
+                if (turret.GetComponent<TurretAI>().calculateBuildingCost)
+                { 
+                    if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
+                    {
+                        gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().getCalculatedBuildingCost());
+                        GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
+                        newTurret.transform.parent = turretContainer.transform;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Turret already there");
+                    }
+
+                    
+                }
+                else
+                {
+                    if (!turretOverlap && turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
+                    {
+                        gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost);
+                        GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
+                        newTurret.transform.parent = turretContainer.transform;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Turret already there");
+                    }
+
+                }
             }
         }
 

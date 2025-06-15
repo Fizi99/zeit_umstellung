@@ -68,20 +68,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57dd927588864d48ab9cb88ff449586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 10000
+  range: 4
   enemyTag: Enemy
-  isSingleUse: 0
-  useTimeInsteadOfAmmo: 0
-  initUseAmount: 1
+  isSingleUse: 1
+  useTimeInsteadOfAmmo: 1
+  initUseAmount: 10
   useAmount: 1
   buildingCost: 1
   useBar: {fileID: 7829559032320418762}
+  calculateBuildingCost: 0
   isMoving: 1
   speed: 10
   stopAndShootRange: 2
   fireRate: 2
   bulletPrefab: {fileID: 9084643237093435201, guid: bb2046b85b19ed24686cdb1425d7c3b5, type: 3}
   firePoint: {fileID: 0}
+  towerSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!212 &1142861882281451792
 SpriteRenderer:
   m_ObjectHideFlags: 0

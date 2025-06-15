@@ -31,6 +31,11 @@ public class WaveSpawner : MonoBehaviour
     private Dictionary<int, Queue<EnemyType>> wave = new Dictionary<int, Queue<EnemyType>>();
     private WeightedList<EnemyType> enemyWeightList = new WeightedList<EnemyType>();
     private List<EnemyType> enemyTypesFromEnum = new List<EnemyType>();
+    private float waveHealth = 0;
+    private int waveCount = 1;
+
+    [Header("1=minimum zeitSandBuff needed to win wave")]
+    public float zeitSandBuff = 2f;
 
     public Transform[] targetList;
 
@@ -69,6 +74,7 @@ public class WaveSpawner : MonoBehaviour
             if (countdownEnemies <= 0)
             {
                 SpawnWave();
+                this.waveCount++;
                 this.countdownEnemies = this.timeBetweenEnemies;
             }
             else
@@ -127,30 +133,43 @@ public class WaveSpawner : MonoBehaviour
                 case EnemyType.STANDARD:
                     this.currentWaveEnemies.Add(EnemyType.STANDARD);
                     this.budgetSpent += enemyPrefabStandard.GetComponent<EnemyAI>().cost;
+                    this.waveHealth += enemyPrefabStandard.GetComponent<EnemyAI>().initHealth;
                     break;
                 case EnemyType.SPEED:
                     this.currentWaveEnemies.Add(EnemyType.SPEED);
                     this.budgetSpent += enemyPrefabSpeed.GetComponent<EnemyAI>().cost;
+                    this.waveHealth += enemyPrefabSpeed.GetComponent<EnemyAI>().initHealth;
                     break;
                 case EnemyType.TANK:
                     this.currentWaveEnemies.Add(EnemyType.TANK);
                     this.budgetSpent += enemyPrefabTank.GetComponent<EnemyAI>().cost;
+                    this.waveHealth += enemyPrefabTank.GetComponent<EnemyAI>().initHealth;
                     break;
                 case EnemyType.SPLITTER:
                     this.currentWaveEnemies.Add(EnemyType.SPLITTER);
                     this.budgetSpent += enemyPrefabSplitter.GetComponent<EnemyAI>().cost;
+                    this.waveHealth += enemyPrefabSplitter.GetComponent<EnemyAI>().initHealth;
                     break;
                 case EnemyType.SUPPORT:
                     this.currentWaveEnemies.Add(EnemyType.SUPPORT);
                     this.budgetSpent += enemyPrefabSupport.GetComponent<EnemyAI>().cost;
+                    this.waveHealth += enemyPrefabSupport.GetComponent<EnemyAI>().initHealth;
                     break;
                 default:
                     this.currentWaveEnemies.Add(EnemyType.STANDARD);
                     this.budgetSpent += enemyPrefabStandard.GetComponent<EnemyAI>().cost;
+                    this.waveHealth += enemyPrefabStandard.GetComponent<EnemyAI>().initHealth;
                     break;
             }
         }
+        float neededZeitsand =this.waveHealth * this.gameManager.buildManager.getLoadoutEfficiency();
+        float neededZeitsandRate = zeitSandBuff * neededZeitsand/(5 + this.currentWaveEnemies.Count*2);
+        this.zeitSandBuff = 1 + (1 / waveCount);
+        Debug.Log(waveCount);
 
+
+        this.gameManager.player.setZeitsandRatePerSec(neededZeitsandRate);
+        this.waveHealth = 0;
         // randomly choose route for each enemy 
         this.wave = new Dictionary<int, Queue<EnemyType>>();
         // choose how many routes enemys can walk on. If there are less possible routes on map than max route amounte, use list length as max.
@@ -181,12 +200,15 @@ public class WaveSpawner : MonoBehaviour
             this.wave[usedRouteIndices[j]].Enqueue(enemy);
         }
 
+
         this.budgetSpent = 0;
         this.waveBudget += this.budgetIncrease;
     }
 
     void SpawnWave()
     {
+
+        
         // delete elements from dictionary dynamically
         List<int> toDelete = new List<int>();
 

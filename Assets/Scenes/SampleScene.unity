@@ -403,6 +403,7 @@ GameObject:
   - component: {fileID: 89560710}
   - component: {fileID: 89560709}
   - component: {fileID: 89560708}
+  - component: {fileID: 89560711}
   m_Layer: 5
   m_Name: buyTurret3
   m_TagString: Untagged
@@ -427,7 +428,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 134, y: -583.7838}
+  m_AnchoredPosition: {x: 133.99994, y: -899.99994}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &89560708
@@ -524,6 +525,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89560706}
   m_CullTransparentMesh: 1
+--- !u!114 &89560711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89560706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a97f6031999038418ef2fb3bf30d1ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  costText: {fileID: 5291361}
+  cost: 0
+  turret: {fileID: 4655690105588628940, guid: a89865e169a06664ca1d22914fb66d97, type: 3}
 --- !u!1 &110484339
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,6 +688,7 @@ GameObject:
   - component: {fileID: 124391214}
   - component: {fileID: 124391213}
   - component: {fileID: 124391212}
+  - component: {fileID: 124391215}
   m_Layer: 5
   m_Name: buyTurret1
   m_TagString: Untagged
@@ -696,7 +713,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 134, y: -350.27026}
+  m_AnchoredPosition: {x: 133.99994, y: -179.99998}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &124391212
@@ -793,6 +810,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 124391210}
   m_CullTransparentMesh: 1
+--- !u!114 &124391215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124391210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a97f6031999038418ef2fb3bf30d1ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  costText: {fileID: 1084305385}
+  cost: 0
+  turret: {fileID: 4655690105588628940, guid: 28037954cc3401a449c7c57dd6319cf5, type: 3}
 --- !u!1 &142112168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1888,7 +1920,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1600, y: -25}
+  m_AnchoredPosition: {x: 1591.6665, y: -25}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &422066360
@@ -2165,6 +2197,7 @@ MonoBehaviour:
   waveBudget: 100
   budgetIncrease: 10
   maxRoutesUsedByEnemies: 3
+  budgetBuff: 1
   targetList: []
 --- !u!4 &576400595
 Transform:
@@ -2769,7 +2802,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -25}
+  m_AnchoredPosition: {x: 934.99994, y: -25}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &772188668
@@ -3207,7 +3240,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 881b880c3ae1542489cb9371c26ffb90, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 5811083612556066177, guid: 881b880c3ae1542489cb9371c26ffb90, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3272,7 +3305,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &933148221
@@ -4170,7 +4203,7 @@ MonoBehaviour:
   zeitsand: 0
   uhranium: 0
   maxZeitsand: 100
-  zeitsandStartValue: 40
+  zeitsandStartValue: 0
   zeitsandRatePerSec: 1
   savedUhranium: 0
   uhrraniumRatePerSec: 1
@@ -4490,6 +4523,7 @@ GameObject:
   - component: {fileID: 1290146349}
   - component: {fileID: 1290146348}
   - component: {fileID: 1290146347}
+  - component: {fileID: 1290146350}
   m_Layer: 5
   m_Name: buyTurret2
   m_TagString: Untagged
@@ -4514,7 +4548,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 134, y: -817.2973}
+  m_AnchoredPosition: {x: 133.99994, y: -539.99994}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1290146347
@@ -4611,6 +4645,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1290146345}
   m_CullTransparentMesh: 1
+--- !u!114 &1290146350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290146345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a97f6031999038418ef2fb3bf30d1ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  costText: {fileID: 1193772001}
+  cost: 0
+  turret: {fileID: 4655690105588628940, guid: 44a5480b0bf97f44ca1d7799bf90ca4c, type: 3}
 --- !u!1 &1305903358
 GameObject:
   m_ObjectHideFlags: 0
@@ -5449,6 +5498,7 @@ MonoBehaviour:
   waveSpawner: {fileID: 576400594}
   routeManager: {fileID: 1404204179}
   player: {fileID: 1148362368}
+  buildManager: {fileID: 556906722}
   enemyContainer: {fileID: 755473744}
   turretContainer: {fileID: 1187661255}
   artilleryPrefab: {fileID: 0}
@@ -5504,9 +5554,9 @@ RectTransform:
   - {fileID: 933148219}
   m_Father: {fileID: 674536331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -729.99994, y: 379.73682}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 303.3333, y: -225}
   m_SizeDelta: {x: 450, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1530871554
@@ -6425,10 +6475,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1772806104}
   - {fileID: 124391211}
-  - {fileID: 89560707}
   - {fileID: 1290146346}
+  - {fileID: 89560707}
+  - {fileID: 1772806104}
   m_Father: {fileID: 196146802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6561,6 +6611,7 @@ GameObject:
   - component: {fileID: 1772806107}
   - component: {fileID: 1772806106}
   - component: {fileID: 1772806105}
+  - component: {fileID: 1772806108}
   m_Layer: 5
   m_Name: buyTurret4
   m_TagString: Untagged
@@ -6585,7 +6636,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 134, y: -116.75676}
+  m_AnchoredPosition: {x: 133.99994, y: -1259.9999}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1772806105
@@ -6682,6 +6733,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772806103}
   m_CullTransparentMesh: 1
+--- !u!114 &1772806108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772806103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a97f6031999038418ef2fb3bf30d1ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  costText: {fileID: 48855752}
+  cost: 0
+  turret: {fileID: 4655690105588628940, guid: 89c4ef4638deb4542a934dbf3df37443, type: 3}
 --- !u!1 &1857546898
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  damage: 125
-  explosionRadius: 5
+  damage: 2
+  explosionRadius: 1.5
   useFreeze: 0
   shootSelf: 0
   SlowMultiplier: 0

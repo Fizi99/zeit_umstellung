@@ -9,14 +9,16 @@ public class TurretAI : MonoBehaviour
     public string enemyTag = "Enemy";
     public bool isSingleUse = false;
     public bool useTimeInsteadOfAmmo = false;
-    public int initUseAmount = 1;
-    public int useAmount = 1;
+    public float initUseAmount = 1;
+    public float useAmount = 1;
     public float buildingCost = 1f;
     public Image useBar;
+    public bool calculateBuildingCost = false;    
 
     public bool isMoving = false;
     public float speed = 30f;
     public float stopAndShootRange = 5f;
+    private float turretEfficiency = 0f;
 
 
     public float fireRate = 15f;
@@ -41,6 +43,34 @@ public class TurretAI : MonoBehaviour
         {
             useBar.fillAmount = 0f;
         }
+    }
+
+    public float getCalculatedBuildingCost()
+    {
+
+        bulletAI bulletAI = this.bulletPrefab.GetComponent<bulletAI>();
+        //wenn drohne hol dessen bullet
+        if(bulletAI == null)
+        {
+            TurretAI drohnenAI = this.bulletPrefab.GetComponent<TurretAI>();
+            bulletAI = drohnenAI.bulletPrefab.GetComponent<bulletAI>();
+            buildingCost = (drohnenAI.fireRate * (bulletAI.damage + bulletAI.explosionRadius)) + (range + drohnenAI.initUseAmount) / 2;
+            this.turretEfficiency = (fireRate * bulletAI.damage * initUseAmount) / buildingCost;
+        }
+        else
+        {
+            buildingCost = (fireRate * (bulletAI.damage + bulletAI.explosionRadius)) + (range + initUseAmount) / 2;
+            this.turretEfficiency = (fireRate * bulletAI.damage * initUseAmount) / buildingCost;
+
+        }
+        Debug.Log("calculated Building cost: " + buildingCost);
+        return buildingCost;
+    }
+
+    public float getTurretEfficiency()
+    {
+        getCalculatedBuildingCost();
+        return this.turretEfficiency;
     }
 
     void UpdateTarget()
@@ -71,7 +101,7 @@ public class TurretAI : MonoBehaviour
     {
         if (isSingleUse && useTimeInsteadOfAmmo)
         {
-            UpdateUseAmount((int)Time.deltaTime);
+            UpdateUseAmount(Time.deltaTime);
         }
         if (target != null)
         {
@@ -137,10 +167,10 @@ public class TurretAI : MonoBehaviour
         }
     }
 
-    void UpdateUseAmount(int usageUsed)
+    void UpdateUseAmount(float usageUsed)
     {
         useAmount = useAmount - usageUsed;
-        useBar.fillAmount = (float) useAmount / (float) initUseAmount;
+        useBar.fillAmount =  useAmount / initUseAmount;
         if (useAmount <= 0)
         {
             Destroy(gameObject);

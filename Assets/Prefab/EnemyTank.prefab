@@ -68,8 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec29db754c791942ae5fa0e9600e2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initSpeed: 1
-  initHealth: 100
+  initSpeed: 0.25
+  initHealth: 5
   healthbar: {fileID: 957149318274152898}
   isSplitter: 0
   splitAmount: 0
@@ -80,8 +80,9 @@ MonoBehaviour:
   targets: []
   currentTarget: {fileID: 0}
   waypointIndex: 0
-  cost: 10
-  damage: 1
+  cost: 30
+  randomWeight: 1
+  damage: 3
 --- !u!212 &6147265837515520916
 SpriteRenderer:
   m_ObjectHideFlags: 0
