@@ -194,7 +194,7 @@ public class BusTimeScraper : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Get(this.busStopURL);
         yield return request.SendWebRequest();
         {
-            List<Bus> bussesTemp = new List<Bus>();
+            List<Bus> fetchedBusses = new List<Bus>();
 
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -208,7 +208,7 @@ public class BusTimeScraper : MonoBehaviour
                 for (int i = 0; i < data["data"].AsArray.Count; i++)
                 {
                     // add busses to List
-                    bussesTemp.Add(new Bus(data["data"][i]["line"]["name"], data["data"][i]["headsign"], data["data"][i]["time"], data["data"][i]["realtime"]));
+                    fetchedBusses.Add(new Bus(data["data"][i]["line"]["name"], data["data"][i]["headsign"], data["data"][i]["time"], data["data"][i]["realtime"]));
                     //Debug.Log(this.busses[i].line + ": Richtung: " + this.busses[i].headsign + " kommt um: " + System.DateTimeOffset.FromUnixTimeSeconds(this.busses[i].realtime).LocalDateTime.TimeOfDay);
 
 
@@ -217,16 +217,23 @@ public class BusTimeScraper : MonoBehaviour
 
             }
             // loop through new bus information and update bus list.
-            for (int i = 0; i < bussesTemp.Count; i++)
+            List<Bus> bussesTemp = new List<Bus>();
+            for (int i = 0; i < fetchedBusses.Count; i++)
             {
-                for (int j = 0; j < this.busses.Count; j++)
+                if((System.DateTimeOffset.FromUnixTimeSeconds(fetchedBusses[i].realtime).LocalDateTime - System.DateTime.Now).Seconds > 0)
+                {
+                    bussesTemp.Add(fetchedBusses[i]);
+                }
+                /*for (int j = 0; j < this.busses.Count; j++)
                 {
                     if (bussesTemp[i].line == this.busses[j].line && bussesTemp[i].time == this.busses[j].time)
                     {
                         this.busses[j] = bussesTemp[i];
                     }
-                }
+                }*/
             }
+
+            this.busses = bussesTemp;
         }
 
     }

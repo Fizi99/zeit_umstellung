@@ -40,6 +40,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject bombPrefab;
     [SerializeField] public GameObject laserPrefab;
 
+    [Space(10)]
+    [Header("Content for balancing export")]
+    [Space(10)]
+    [SerializeField] public List<GameObject> enemyPrefabs;
+    [SerializeField] public List<GameObject> turretPrefabs;
+
     void Start()
     {
         this.gameState = GameState.MAINMENU;

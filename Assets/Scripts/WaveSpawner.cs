@@ -27,6 +27,7 @@ public class WaveSpawner : MonoBehaviour
     [HideInInspector]
     public int waveBudget = 100;
     public int budgetIncrease = 10;
+    public int maxWaveBudget = 1000;
     private int budgetSpent = 0;
     public int maxRoutesUsedByEnemies = 3;
     private List<EnemyType> currentWaveEnemies = new List<EnemyType>();
@@ -218,7 +219,11 @@ public class WaveSpawner : MonoBehaviour
 
 
         this.budgetSpent = 0;
-        this.waveBudget += this.budgetIncrease;
+        // increase wave budget for next wave
+        if(this.waveBudget < this.maxWaveBudget)
+        {
+            this.waveBudget += this.budgetIncrease;
+        }
     }
 
     void SpawnWave()

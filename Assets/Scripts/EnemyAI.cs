@@ -5,6 +5,7 @@ using IEnumerator = System.Collections.IEnumerator;
 
 public class EnemyAI : MonoBehaviour
 {
+    public EnemyType name;
     public float initSpeed = 3f;
     private float speed = 3f;
     public float initHealth = 100;
@@ -127,6 +128,24 @@ public class EnemyAI : MonoBehaviour
         //Debug.Log("lives: " + playerStats.lives);
         Destroy(gameObject);
         return;
+    }
+
+    void CollideWithBusStop()
+    {
+        this.gameManager.player.TakeDamage(damage);
+        //Debug.Log("lives: " + playerStats.lives);
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("collision");
+        Debug.Log(collision.gameObject.tag);
+        if (collision.gameObject.CompareTag("Busstop"))
+        {
+            Debug.Log("hit busstop");
+            CollideWithBusStop();
+        }
     }
 
     public void TakeDamage(float amount)

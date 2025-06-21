@@ -5,6 +5,7 @@ public class TurretAI : MonoBehaviour
 {
     private GameManager gameManager;
     private Transform target;
+    public TurretType name;
     public float range = 3f;
     public string enemyTag = "Enemy";
     public bool isSingleUse = false;

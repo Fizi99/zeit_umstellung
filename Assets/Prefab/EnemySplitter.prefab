@@ -4983,6 +4983,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec29db754c791942ae5fa0e9600e2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 3
   initSpeed: 0.25
   initHealth: 1
   healthbar: {fileID: 6105599656787540163}
