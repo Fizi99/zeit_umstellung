@@ -121,7 +121,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            text = $"{timeSpan:hh':'mm':'ss}";
+            text = $"Verbleibend: {timeSpan:hh':'mm':'ss}";
             //foreach (TMP_Text countdownDisplay in this.countdown)
             //    countdownDisplay.fontSize = 36;
         }
@@ -134,7 +134,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateUhraniumText()
     {
-        this.uhraniumText.text = "Uhranium: "+(int)this.gameManager.player.uhranium;
+        this.uhraniumText.text = "Gesammelt: "+(int)this.gameManager.player.uhranium;
     }
 
     private void UpdateZeitsandText()
