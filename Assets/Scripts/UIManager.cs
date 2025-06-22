@@ -15,6 +15,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text zeitsandText;
     [SerializeField] private TMP_Text uhraniumText;
     [SerializeField] private TMP_Text lvlFinishedText;
+    [SerializeField] private GameObject mainCamera;
+    [SerializeField] private Toggle screenShakeToggle;
+    [SerializeField] private Toggle vignetteToggle;
     [Space(10)]
     [Header("Panel for navigation")]
     [SerializeField] private GameObject lvlSelectionPanel;
@@ -22,6 +25,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject startMenuPanel;
     [SerializeField] private GameObject upgradingMenuPanel;
     [SerializeField] private GameObject lvlEndPanel;
+    [SerializeField] private GameObject settingsPanel;
 
     [SerializeField] private GameObject distanceToStopText;
 
@@ -68,6 +72,15 @@ public class UIManager : MonoBehaviour
     private void HideDebug()
     {
         this.debugText.GetComponent<TMP_Text>().text = "";
+    }
+
+    public void ToggleScreenShake()
+    {
+        this.mainCamera.GetComponent<PlayerHitEffect>().SetToggleScreenshake(this.screenShakeToggle.isOn);
+    }
+    public void ToggleVignette()
+    {
+        this.mainCamera.GetComponent<PlayerHitEffect>().SetToggleVignette(this.vignetteToggle.isOn);
     }
 
     // check if bus information got updated for example to update bus selection buttons or countdown. use value later
@@ -158,6 +171,7 @@ public class UIManager : MonoBehaviour
                 this.startMenuPanel.SetActive(false);
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(false);
+                this.settingsPanel.SetActive(false);
                 break;
 
             case GameState.LEVELPLAYING:
@@ -166,6 +180,7 @@ public class UIManager : MonoBehaviour
                 this.startMenuPanel.SetActive(false);
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(false);
+                this.settingsPanel.SetActive(false);
                 break;
 
             case GameState.UPGRADING:
@@ -174,6 +189,7 @@ public class UIManager : MonoBehaviour
                 this.startMenuPanel.SetActive(false);
                 this.upgradingMenuPanel.SetActive(true);
                 this.lvlEndPanel.SetActive(false);
+                this.settingsPanel.SetActive(false);
                 break;
             case GameState.MAINMENU:
                 this.lvlSelectionPanel.SetActive(false);
@@ -181,6 +197,7 @@ public class UIManager : MonoBehaviour
                 this.startMenuPanel.SetActive(true);
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(false);
+                this.settingsPanel.SetActive(false);
                 break;
             case GameState.LEVELEND:
                 this.lvlSelectionPanel.SetActive(false);
@@ -188,7 +205,18 @@ public class UIManager : MonoBehaviour
                 this.startMenuPanel.SetActive(false);
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(true);
+                this.settingsPanel.SetActive(false);
+                break;
+            case GameState.SETTINGS:
+                this.lvlSelectionPanel.SetActive(false);
+                this.lvlPlayingPanel.SetActive(false);
+                this.startMenuPanel.SetActive(false);
+                this.upgradingMenuPanel.SetActive(false);
+                this.lvlEndPanel.SetActive(false);
+                this.settingsPanel.SetActive(true);
 
+                break;
+            default:
                 break;
         }
 
@@ -212,11 +240,15 @@ public class UIManager : MonoBehaviour
 
                 break;
             case GameState.MAINMENU:
+                break;
+            case GameState.SETTINGS:
 
                 break;
             case GameState.LEVELEND:
                 UpdateLvlFinishedText();
 
+                break;
+            default:
                 break;
         }
     }
@@ -259,6 +291,12 @@ public class UIManager : MonoBehaviour
     {
         // Update UI
         this.gameManager.ChangeGameState(GameState.LEVELSELECTION);
+    }
+
+    public void NavigateToSettings()
+    {
+        // Update UI
+        this.gameManager.ChangeGameState(GameState.SETTINGS);
     }
 
     public void NavigateToMainMenu()
