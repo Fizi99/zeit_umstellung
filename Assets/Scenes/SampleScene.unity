@@ -4514,11 +4514,15 @@ MonoBehaviour:
   zeitsandText: {fileID: 933148220}
   uhraniumText: {fileID: 422066360}
   lvlFinishedText: {fileID: 275935577}
+  mainCamera: {fileID: 330585543}
+  screenShakeToggle: {fileID: 101208846}
+  vignetteToggle: {fileID: 102945078}
   lvlSelectionPanel: {fileID: 669502349}
   lvlPlayingPanel: {fileID: 196146801}
   startMenuPanel: {fileID: 1029649713}
   upgradingMenuPanel: {fileID: 1359439705}
   lvlEndPanel: {fileID: 1875031961}
+  settingsPanel: {fileID: 1481871012}
   distanceToStopText: {fileID: 636393289}
   debugText: {fileID: 110484339}
 --- !u!4 &772188670
@@ -5528,6 +5532,7 @@ RectTransform:
   m_Children:
   - {fileID: 1029649716}
   - {fileID: 1359439708}
+  - {fileID: 1481871013}
   - {fileID: 669502352}
   - {fileID: 196146802}
   - {fileID: 110484340}
