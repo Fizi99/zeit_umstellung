@@ -139,8 +139,6 @@ public class EnemyAI : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("collision");
-        Debug.Log(collision.gameObject.tag);
         if (collision.gameObject.CompareTag("Busstop"))
         {
             Debug.Log("hit busstop");

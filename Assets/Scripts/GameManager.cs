@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public Player player;
     [SerializeField] public buildManager buildManager;
     [SerializeField] public GameObject floatingTextPrefab;
+    [SerializeField] public GameObject mainCamera;
 
     [Header("Container")]
     [Space(10)]
@@ -58,6 +59,11 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         
+    }
+
+    public void TriggerScreenEffect()
+    {
+        this.mainCamera.GetComponent<PlayerHitEffect>().TriggerEffect();
     }
 
     public void ChangeGameState(GameState gameState)

@@ -80,6 +80,7 @@ public class Player : MonoBehaviour
         this.uhranium = Mathf.Max(this.uhranium, 0);
         this.lives -= dmg;
         this.gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "-" + dmg);
+        this.gameManager.TriggerScreenEffect();
 
     }
 

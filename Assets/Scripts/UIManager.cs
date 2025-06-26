@@ -332,36 +332,26 @@ public class UIManager : MonoBehaviour
                 btn.GetComponent<Button>().Select();
             }
             this.busSelectionBtns.Add(btn);
-
         }
-
     }
 
     private void UpdateDistanceToStopText()
     {
-
-       
-            //double pLat = this.gameManager.GetPlayerLat();
-            //double pLon = this.gameManager.GetPlayerLon();
-            double pLat = 53.837951;
-            double pLon = 10.700337;
-            double sLat = this.gameManager.busStop.lat;
-            double sLon = this.gameManager.busStop.lon;
-            this.distanceToStop = this.gameManager.CalcDistanceBetweenCordsInM(pLat, pLon, sLat, sLon);
+        //double pLat = this.gameManager.GetPlayerLat();
+        //double pLon = this.gameManager.GetPlayerLon();
+        double pLat = 53.837951;
+        double pLon = 10.700337;
+        double sLat = this.gameManager.busStop.lat;
+        double sLon = this.gameManager.busStop.lon;
+        this.distanceToStop = this.gameManager.CalcDistanceBetweenCordsInM(pLat, pLon, sLat, sLon);
             
-            if (this.distanceToStop > this.gameManager.GetDistanceThreshhold())
-            {
-                distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m, please get closer to the bus stop.";
-            }
-            else
-            {
-                distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m";
-            }
-            
-        
-        
-
+        if (this.distanceToStop > this.gameManager.GetDistanceThreshhold())
+        {
+            distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m, please get closer to the bus stop.";
+        }
+        else
+        {
+            distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m";
+        }
     }
-
-
 }
