@@ -306,11 +306,29 @@ public class UIManager : MonoBehaviour
             GameObject btn = GameObject.Instantiate(this.busSelectorBtnPrefab);
             btn.transform.SetParent(this.scrollerContent.transform);
             btn.GetComponent<BusSelectorBtn>().bus = newList[i];
-            btn.GetComponentInChildren<TMP_Text>().text = newList[i].line + " Richtung: " + newList[i].headsign + " um " + $"{System.DateTimeOffset.FromUnixTimeSeconds(newList[i].time).LocalDateTime.TimeOfDay:hh\\:mm}" + "+" + System.DateTimeOffset.FromUnixTimeSeconds(newList[i].realtime - newList[i].time).Minute;
+            
+            // Display bus line infos
+            var bus = newList[i];
+            string timeStr = $"{System.DateTimeOffset.FromUnixTimeSeconds(bus.time).LocalDateTime.TimeOfDay:hh\\:mm}";
+            btn.transform.Find("RectBlack").Find("BusLabel").GetComponent<TMP_Text>().text = "Bus " + bus.line;
+            btn.transform.Find("RouteLabel").GetComponent<TMP_Text>().text = bus.headsign;
+            btn.transform.Find("TimeLabel").GetComponent<TMP_Text>().text = $"{timeStr} (+ {System.DateTimeOffset.FromUnixTimeSeconds(bus.realtime - bus.time).Minute})";
+
+            // Display the play time for each bus line
+            TimeSpan playTime = (System.DateTimeOffset.FromUnixTimeSeconds(bus.realtime).LocalDateTime - System.DateTime.Now);
+            int playTimeInMinutes = (int) playTime.TotalMinutes;
+            btn.transform.Find("TimeLabel").GetComponent<TMP_Text>().text += $"\n{playTimeInMinutes} Min Spielzeit";
 
             // change color of button of selected bus
             if (this.gameManager.selectedBus != null && this.gameManager.busses[i].line == this.gameManager.selectedBus.line && this.gameManager.busses[i].time == this.gameManager.selectedBus.time)
             {
+                // Set 'selected' color
+                /*Button button = btn.GetComponent<Button>();
+                ColorBlock cb = button.colors;
+                cb.selectedColor = new Color32(39, 135, 195, 255);
+                button.colors = cb;*/
+
+                // Set the state to 'selected'
                 btn.GetComponent<Button>().Select();
             }
             this.busSelectionBtns.Add(btn);
