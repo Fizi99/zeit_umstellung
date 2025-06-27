@@ -20,6 +20,7 @@ public class TurretAI : MonoBehaviour
     public float speed = 30f;
     public float stopAndShootRange = 5f;
     private float turretEfficiency = 0f;
+    private bool isVisible = true;
 
 
     public float fireRate = 15f;
@@ -190,11 +191,34 @@ public class TurretAI : MonoBehaviour
     {
         useAmount = useAmount - usageUsed;
         useBar.fillAmount =  useAmount / initUseAmount;
-        if (useAmount <= 0)
+        if(useAmount <= 3f)
         {
-            Destroy(gameObject);
-            return;
+            InvokeRepeating("ToggleVisibility", 1f,1f);
+            if (useAmount <= 0)
+            {
+                Destroy(gameObject);
+                return;
+            }
         }
+    }
+
+    void ToggleVisibility()
+    {
+        isVisible = !isVisible;
+        GetComponent<SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
+        if (!isVisible)
+        {
+            //GetComponent<SpriteRenderer>().color.a = 0;
+        }
+        else
+        {
+            //GetComponent<SpriteRenderer>().color.a = 1;
+        }
+    }
+
+    void onDestroy()
+    {
+        CancelInvoke("ToggleVisibility");
     }
 
     private int GetSpriteIndex(float angle)
