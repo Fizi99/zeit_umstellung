@@ -8,5 +8,4 @@ public enum GameState
     MAINMENU,
     LEVELEND,
     SETTINGS
-
 }
