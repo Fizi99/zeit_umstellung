@@ -22,7 +22,6 @@ public class RouteManager : MonoBehaviour
     private int maxScaleTries = 5;
 
     [SerializeField]
-    private GameObject boundingBoxForNodeLoading;
     private Vector3 boxCenter = Vector3.zero;
     private Vector3 boxSize = new Vector3(25, 15, 1);
     [HideInInspector]
@@ -36,13 +35,31 @@ public class RouteManager : MonoBehaviour
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        this.boxCenter = boundingBoxForNodeLoading.transform.position;
-        this.boxSize = boundingBoxForNodeLoading.transform.localScale;
+
+        CreateBoundingBox();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    // create bounding box for node culling from screen size
+    private void CreateBoundingBox()
+    {
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+
+        Vector3 bottomLeft = this.gameManager.mainCamera.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 0, 0));
+        Vector3 topRight = this.gameManager.mainCamera.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(screenWidth, screenHeight, 0));
+
+        this.boxCenter = (bottomLeft + topRight) / 2f;
+        this.boxCenter.z = 0;
+        Vector3 size = topRight - bottomLeft;
+        // add a little bit of margin to boundingbox so enemies spawn slightly outside of view
+        this.boxSize = new Vector3(size.x + 1, size.y + 1, 1);
 
     }
 
@@ -181,14 +198,18 @@ public class RouteManager : MonoBehaviour
     // fill the dictionary for all nodes with neighbour nodes of that node
     public void FillDictionaryWithStreets(Dictionary<long, List<Edge>> graph)
     {
+        // ids for by intersection created nodes
+        long nodeIdForNewNodes = 2;
         for (int i = 0; i < this.gameManager.streets.Count; i++)
         {
             Street street = this.gameManager.streets[i].GetComponent<Street>();
+
             for (int j = 0; j < street.nodeIds.Count; j++)
             {
                 // cull nodes that are too far away, so they are not traversed and enemies dont spawn
                 if (IsNodeInBounds(this.gameManager.nodeLocationDictionary[street.nodeIds[j]]))
                 {
+
                     // create a new list of connected nodes to currently watched list, if no entry exists
                     if (!graph.ContainsKey(street.nodeIds[j]))
                     {
@@ -201,8 +222,30 @@ public class RouteManager : MonoBehaviour
                         // check first, if node is cutoff point and node should be handled as leaf, when node before is out of bounds
                         if (IsNodeInBounds(this.gameManager.nodeLocationDictionary[street.nodeIds[j - 1]]))
                         {
+ 
                             float cost = (this.gameManager.nodeLocationDictionary[street.nodeIds[j]] - this.gameManager.nodeLocationDictionary[street.nodeIds[j - 1]]).magnitude;
                             graph[street.nodeIds[j]].Add(new Edge(street.nodeIds[j], street.nodeIds[j - 1], cost));
+                        }
+                        else
+                        {
+
+                            // get intersection of bounding box and street section
+                            if (FindIntersectionWithBounds(this.gameManager.nodeLocationDictionary[street.nodeIds[j]], this.gameManager.nodeLocationDictionary[street.nodeIds[j - 1]], new Bounds(this.boxCenter, this.boxSize), out Vector3 intersection))
+                            {
+                                // add intersectionpoint as new node
+                                this.gameManager.nodeLocationDictionary[nodeIdForNewNodes] = intersection;
+                                // add edge between node and newly created intersection point
+                                float cost = (this.gameManager.nodeLocationDictionary[street.nodeIds[j]] - this.gameManager.nodeLocationDictionary[nodeIdForNewNodes]).magnitude;
+                                graph[street.nodeIds[j]].Add(new Edge(street.nodeIds[j], nodeIdForNewNodes, cost));
+                                // also add created node as possible start node to dictionary
+                                if (!graph.ContainsKey(nodeIdForNewNodes))
+                                {
+                                    graph[nodeIdForNewNodes] = new List<Edge>();
+                                    graph[nodeIdForNewNodes].Add(new Edge(nodeIdForNewNodes, street.nodeIds[j], cost));
+                                }
+
+                                nodeIdForNewNodes++;
+                            }
                         }
 
                     }
@@ -211,13 +254,34 @@ public class RouteManager : MonoBehaviour
                         // check first, if node is cutoff point and node should be handled as leaf, when node after is out of bounds
                         if (IsNodeInBounds(this.gameManager.nodeLocationDictionary[street.nodeIds[j + 1]]))
                         {
+
                             float cost = (this.gameManager.nodeLocationDictionary[street.nodeIds[j]] - this.gameManager.nodeLocationDictionary[street.nodeIds[j + 1]]).magnitude;
                             graph[street.nodeIds[j]].Add(new Edge(street.nodeIds[j], street.nodeIds[j + 1], cost));
+                        }
+                        else
+                        {
+   
+                            // get intersection of bounding box and street section
+                            if (FindIntersectionWithBounds(this.gameManager.nodeLocationDictionary[street.nodeIds[j]], this.gameManager.nodeLocationDictionary[street.nodeIds[j + 1]], new Bounds(this.boxCenter, this.boxSize), out Vector3 intersection))
+                            {
+                                // add intersectionpoint as new node
+                                this.gameManager.nodeLocationDictionary[nodeIdForNewNodes] = intersection;
+                                // add edge between node and newly created intersection point
+                                float cost = (this.gameManager.nodeLocationDictionary[street.nodeIds[j]] - this.gameManager.nodeLocationDictionary[nodeIdForNewNodes]).magnitude;
+                                graph[street.nodeIds[j]].Add(new Edge(street.nodeIds[j], nodeIdForNewNodes, cost));
+                                // also add created node as possible leaf node to dictionary
+                                if (!graph.ContainsKey(nodeIdForNewNodes))
+                                {
+                                    graph[nodeIdForNewNodes] = new List<Edge>();
+                                    graph[nodeIdForNewNodes].Add(new Edge(nodeIdForNewNodes, street.nodeIds[j], cost));
+                                }
+        
+                                nodeIdForNewNodes++;
+                            }
                         }
 
                     }
                 }
-
 
             }
         }
@@ -290,8 +354,31 @@ public class RouteManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pInside"></param>
+    /// <param name="pOutside"></param>
+    /// <param name="bounds"></param>
+    /// <param name="intersection"></param>
+    /// <returns></returns>
+    public static bool FindIntersectionWithBounds(Vector3 pInside, Vector3 pOutside, Bounds bounds, out Vector3 intersection)
+    {
+        intersection = Vector3.zero;
 
+        Vector3 direction =  pInside- pOutside;
+        float maxDistance = direction.magnitude;
+        Ray ray = new Ray(pOutside, direction.normalized);
 
+        // Raycast gegen AABB (Bounds)
+        if (bounds.IntersectRay(ray, out float distance) && distance <= maxDistance)
+        {
+            intersection = ray.GetPoint(distance);
+            return true;
+        }
+
+        return false;
+    }
 
 
 
