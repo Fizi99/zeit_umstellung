@@ -150,6 +150,7 @@ public class EnemyAI : MonoBehaviour
     {
         health -= amount;
         healthbar.fillAmount =  health / initHealth;
+        
         if(health <= 0)
         {
             Die();
