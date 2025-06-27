@@ -18,6 +18,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private Toggle screenShakeToggle;
     [SerializeField] private Toggle vignetteToggle;
+    [SerializeField] private Button startLevelButton;
+    [SerializeField] private GameObject visualizeLoadoutParent; // referenziert "VisualizeLoadout"
+    [SerializeField] private List<Sprite> turretSprites;
+
     [Space(10)]
     [Header("Panel for navigation")]
     [SerializeField] private GameObject lvlSelectionPanel;
@@ -38,10 +42,16 @@ public class UIManager : MonoBehaviour
     private double distanceToStop = 0;
 
     private Bus selectedBus;
+
+    private Dictionary<TurretType, Sprite> turretTypeToSprite;
+    private List<Image> loadoutImages = new List<Image>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        initLoadout();
     }
 
     // Update is called once per frame
@@ -50,6 +60,8 @@ public class UIManager : MonoBehaviour
         UpdateSelectedBus();
         UpdateCountdown();
         CheckForBusInfoUpdate();
+        UpdateLoadoutVisualization();
+
         if (busInfoUpdated)
         {
             GenerateBusSelection();
@@ -78,6 +90,7 @@ public class UIManager : MonoBehaviour
     {
         this.mainCamera.GetComponent<PlayerHitEffect>().SetToggleScreenshake(this.screenShakeToggle.isOn);
     }
+
     public void ToggleVignette()
     {
         this.mainCamera.GetComponent<PlayerHitEffect>().SetToggleVignette(this.vignetteToggle.isOn);
@@ -104,6 +117,9 @@ public class UIManager : MonoBehaviour
         if(this.gameManager.selectedBus != this.selectedBus)
         {
             this.selectedBus = this.gameManager.selectedBus;
+
+            // Button aktivieren oder deaktivieren
+            startLevelButton.interactable = (this.selectedBus != null);
         }
     }
 
@@ -173,7 +189,6 @@ public class UIManager : MonoBehaviour
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
                 break;
-
             case GameState.LEVELPLAYING:
                 this.lvlSelectionPanel.SetActive(false);
                 this.lvlPlayingPanel.SetActive(true);
@@ -182,7 +197,6 @@ public class UIManager : MonoBehaviour
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
                 break;
-
             case GameState.UPGRADING:
                 this.lvlSelectionPanel.SetActive(false);
                 this.lvlPlayingPanel.SetActive(false);
@@ -214,12 +228,10 @@ public class UIManager : MonoBehaviour
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(true);
-
                 break;
             default:
                 break;
         }
-
         UpdateComponentsOnGameStateChange();
     }
 
@@ -231,22 +243,19 @@ public class UIManager : MonoBehaviour
             case GameState.LEVELSELECTION:
                 GenerateBusSelection();
                 break;
-
             case GameState.LEVELPLAYING:
-
                 break;
-
             case GameState.UPGRADING:
-
                 break;
             case GameState.MAINMENU:
+                this.selectedBus = null;
+                this.gameManager.selectedBus = null;
+                this.startLevelButton.interactable = false; // Standard state for the START btn
                 break;
             case GameState.SETTINGS:
-
                 break;
             case GameState.LEVELEND:
                 UpdateLvlFinishedText();
-
                 break;
             default:
                 break;
@@ -342,7 +351,7 @@ public class UIManager : MonoBehaviour
         {
             // create new selection button and set grid as parent
             GameObject btn = GameObject.Instantiate(this.busSelectorBtnPrefab);
-            btn.transform.SetParent(this.scrollerContent.transform);
+            btn.transform.SetParent(this.scrollerContent.transform, false);
             btn.GetComponent<BusSelectorBtn>().bus = newList[i];
             
             // Display bus line infos
@@ -390,6 +399,39 @@ public class UIManager : MonoBehaviour
         else
         {
             distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m";
+        }
+    }
+
+    private void initLoadout()
+    {
+        // Mapping erstellen
+        turretTypeToSprite = new Dictionary<TurretType, Sprite>();
+        TurretType[] types = (TurretType[]) System.Enum.GetValues(typeof(TurretType));
+
+        for (int i = 0; i < types.Length && i < turretSprites.Count; i++)
+            turretTypeToSprite[types[i]] = turretSprites[i];
+
+        // Kinder-Images automatisch finden
+        foreach (Transform child in visualizeLoadoutParent.transform)
+        {
+            Image img = child.GetComponent<Image>();
+            if (img != null)
+                loadoutImages.Add(img);
+        }
+
+        UpdateLoadoutVisualization(); // Initial anzeigen
+    }
+
+    private void UpdateLoadoutVisualization()
+    {
+        List<TurretType> loadout = this.gameManager.player.chosenLoadout;
+
+        for (int i = 0; i < loadoutImages.Count && i < loadout.Count; i++)
+        {
+            if (turretTypeToSprite.TryGetValue(loadout[i], out Sprite sprite))
+            {
+                loadoutImages[i].sprite = sprite;
+            }
         }
     }
 }

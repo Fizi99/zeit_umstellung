@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -22,6 +23,13 @@ public class Player : MonoBehaviour
 
     private GameManager gameManager;
 
+    public List<TurretType> chosenLoadout = new List<TurretType>()
+    {
+        TurretType.STANDARD,
+        TurretType.MISSILE,
+        TurretType.DRONEBASE,
+        TurretType.LASER
+    };
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -87,5 +95,10 @@ public class Player : MonoBehaviour
     public void setZeitsandRatePerSec(float zeitSandRate)
     {
         this.zeitsandRatePerSec = zeitSandRate;
+    }
+
+    public void SetLoadout(List<TurretType> newLoadout)
+    {
+        this.chosenLoadout = newLoadout;
     }
 }
