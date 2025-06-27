@@ -357,8 +357,8 @@ public class UIManager : MonoBehaviour
             // Display bus line infos
             var bus = newList[i];
             string timeStr = $"{System.DateTimeOffset.FromUnixTimeSeconds(bus.time).LocalDateTime.TimeOfDay:hh\\:mm}";
-            btn.transform.Find("RectBlack").Find("BusLabel").GetComponent<TMP_Text>().text = "Bus " + bus.line;
-            btn.transform.Find("RouteLabel").GetComponent<TMP_Text>().text = bus.headsign;
+            btn.transform.Find("Route").Find("RectBlack").Find("BusLabel").GetComponent<TMP_Text>().text = "Bus " + bus.line;
+            btn.transform.Find("Route").Find("RouteLabel").GetComponent<TMP_Text>().text = bus.headsign;
             btn.transform.Find("TimeLabel").GetComponent<TMP_Text>().text = $"{timeStr} (+ {System.DateTimeOffset.FromUnixTimeSeconds(bus.realtime - bus.time).Minute})";
 
             // Display the play time for each bus line
