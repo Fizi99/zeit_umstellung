@@ -3,24 +3,23 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-
     public double lat;
     public double lon;
     public int lives;
     public int startLives = 20;
 
+    // Related to zeitsand
     public float zeitsand = 0;
-    public float uhranium = 0;
-
     public float maxZeitsand = 100;
     public float zeitsandStartValue = 00;
     public float zeitsandRatePerSec = 1;
 
+    // related to uhranium
+    public float uhranium = 0;
     public float savedUhranium = 0;
     public float uhrraniumRatePerSec = 1;
     public int savableThreshhold = 10;
-    // to display uhranium gain, after it has been reset
-    public float uhraniumGain = 0;
+    public float uhraniumGain = 0; // to display uhranium gain, after it has been reset
 
     private GameManager gameManager;
 
@@ -50,7 +49,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
     public void SetPlayerCoords(double lat, double lon)
     {
         this.lat = lat;
@@ -59,7 +57,6 @@ public class Player : MonoBehaviour
 
     private void UpdateZeitsand()
     {
-       
         zeitsand += Time.deltaTime * zeitsandRatePerSec;
         zeitsand = Mathf.Clamp(zeitsand, 0, maxZeitsand);
     }
@@ -68,25 +65,30 @@ public class Player : MonoBehaviour
     {
         zeitsand = adjustedZeitsand;
     }
+
     private void UpdateUhranium()
     {
-
         uhranium += Time.deltaTime * uhrraniumRatePerSec;
     }
 
     public void SaveUhranium()
     {
-        this.savedUhranium += (int)this.uhranium;
-        this.uhraniumGain += (int)this.uhranium;
+        this.savedUhranium += (int) this.uhranium;
+        this.uhraniumGain += (int) this.uhranium;
         this.uhranium = 0;
+
+        // Check if updating the uhranium highscore is needed (while being in-game)
+        float lastUhraniumLevelSaved = this.savedUhranium;
+        if (SaveManager.LoadUhraniumHighscore() < lastUhraniumLevelSaved)
+        {
+            SaveManager.SaveUhraniumHighscore(lastUhraniumLevelSaved);
+        }
     }
 
     public void ResetUhraniumGain()
     {
         this.uhraniumGain = 0;
     }
-
-
 
     public void TakeDamage(int dmg)
     {
@@ -95,7 +97,6 @@ public class Player : MonoBehaviour
         this.lives -= dmg;
         this.gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "-" + dmg, Color.red);
         this.gameManager.TriggerScreenEffect();
-
     }
 
     public void setZeitsandRatePerSec(float zeitSandRate)

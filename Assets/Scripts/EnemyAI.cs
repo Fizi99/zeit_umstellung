@@ -248,11 +248,19 @@ public class EnemyAI : MonoBehaviour
 
     IEnumerator AnimateDelayedBar()
     {
-        yield return new WaitForSeconds(0.05f);
+        float flashSpeed = 0.02f;
+        int flashDurationInCycles = 3;
+
         delayedHealthBar.color = Color.white;
-        yield return new WaitForSeconds(0.05f);
-        delayedHealthBar.color = new Color(33f / 255f, 34f / 255f, 52f / 255f); // Can be turned off (i.e. set to White aswell) for a smoother (less pixelated) experience
-        yield return new WaitForSeconds(0.05f);
+        for (int i = 0; i < flashDurationInCycles; i++)
+        {
+            
+            yield return new WaitForSeconds(flashSpeed);
+            delayedHealthBar.color = new Color(33f / 255f, 34f / 255f, 52f / 255f); // Can be turned off (i.e. set to White aswell) for a smoother (less pixelated) experience
+            yield return new WaitForSeconds(flashSpeed);
+            delayedHealthBar.color = Color.white;
+            yield return new WaitForSeconds(flashSpeed);
+        }
         delayedHealthBar.color = Color.white;
 
         float start = delayedHealthBar.fillAmount;

@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [Header("Controlled components")]
-
     [SerializeField] private TMP_InputField busSearchInputField;
     [SerializeField] private List<TMP_Text> countdown;
     [SerializeField] private GameObject scrollerContent;
@@ -20,11 +19,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Toggle screenShakeToggle;
     [SerializeField] private Toggle vignetteToggle;
     [SerializeField] private Button startLevelButton;
-    [SerializeField] private GameObject visualizeLoadoutParent; // referenziert "VisualizeLoadout"
+    [SerializeField] private GameObject visualizeLoadoutParent;
     [SerializeField] private List<Sprite> turretSprites;
     [SerializeField] private GameObject zeitsandContainer;
 
     [Space(10)]
+
     [Header("Panel for navigation")]
     [SerializeField] private GameObject lvlSelectionPanel;
     [SerializeField] private GameObject lvlPlayingPanel;
@@ -45,8 +45,14 @@ public class UIManager : MonoBehaviour
 
     private Bus selectedBus;
 
+    // For loadout display
     private Dictionary<TurretType, Sprite> turretTypeToSprite;
     private List<Image> loadoutImages = new List<Image>();
+
+    // For zeitsand shake animation
+    private Coroutine shakeCoroutine;
+    private bool isShaking = false;
+    private Quaternion originalRotation;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -69,7 +75,7 @@ public class UIManager : MonoBehaviour
             GenerateBusSelection();
         }
 
-        if(this.gameManager.gameState == GameState.LEVELPLAYING)
+        if (this.gameManager.gameState == GameState.LEVELPLAYING)
         {
             UpdateUhraniumText();
             UpdateZeitsandText();
@@ -148,6 +154,14 @@ public class UIManager : MonoBehaviour
             if(this.gameManager.gameState == GameState.LEVELPLAYING)
             {
                 text = "Bus departed! Level finished!";
+
+                // Check if updating the uhranium highscore is needed
+                float finalUhraniumAcquired = this.gameManager.player.savedUhranium;
+                if (SaveManager.LoadUhraniumHighscore() < finalUhraniumAcquired)
+                {
+                    SaveManager.SaveUhraniumHighscore(finalUhraniumAcquired);
+                }
+
                 this.gameManager.ChangeGameState(GameState.LEVELEND);
             }
             //else
@@ -172,12 +186,12 @@ public class UIManager : MonoBehaviour
 
     private void UpdateUhraniumText()
     {
-        this.uhraniumText.text = "Gesammelt: "+(int)this.gameManager.player.uhranium + " Gesichert: (" + (int)this.gameManager.player.uhraniumGain + ")";
+        this.uhraniumText.text = "Gesammelt: " + (int) this.gameManager.player.uhranium + " Gesichert: (" + (int) this.gameManager.player.uhraniumGain + ")";
     }
 
     private void UpdateZeitsandText()
     {
-        this.zeitsandText.text = "" + (int)this.gameManager.player.zeitsand;
+        this.zeitsandText.text = "" + (int) this.gameManager.player.zeitsand;
     }
 
     private void UpdateLvlFinishedText()
@@ -253,6 +267,7 @@ public class UIManager : MonoBehaviour
                 GenerateBusSelection();
                 break;
             case GameState.LEVELPLAYING:
+                //this.gameManager.highscoreTracker.resetTracker();
                 break;
             case GameState.UPGRADING:
                 break;
@@ -289,8 +304,9 @@ public class UIManager : MonoBehaviour
         {
             return;
         }*/
-            // empty bus selection list
-            foreach (GameObject busSelectionBtn in this.busSelectionBtns)
+
+        // empty bus selection list
+        foreach (GameObject busSelectionBtn in this.busSelectionBtns)
         {
             Destroy(busSelectionBtn);
         }
@@ -378,12 +394,6 @@ public class UIManager : MonoBehaviour
             // change color of button of selected bus
             if (this.gameManager.selectedBus != null && this.gameManager.busses[i].line == this.gameManager.selectedBus.line && this.gameManager.busses[i].time == this.gameManager.selectedBus.time)
             {
-                // Set 'selected' color
-                /*Button button = btn.GetComponent<Button>();
-                ColorBlock cb = button.colors;
-                cb.selectedColor = new Color32(39, 135, 195, 255);
-                button.colors = cb;*/
-
                 // Set the state to 'selected'
                 btn.GetComponent<Button>().Select();
             }
@@ -443,10 +453,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
-    private Coroutine shakeCoroutine;
-    private bool isShaking = false;
-    private Quaternion originalRotation;
 
     public void SetZeitsandShake(bool shouldShake)
     {

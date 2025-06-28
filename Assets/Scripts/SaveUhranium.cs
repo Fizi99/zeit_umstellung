@@ -5,7 +5,6 @@ public class SaveUhranium : MonoBehaviour
 {
     private GameManager gameManager;
 
-    
     public GameObject popupText;
     public GameObject particleEffect;
     public GameObject fillableUhraniumBar;
@@ -40,7 +39,6 @@ public class SaveUhranium : MonoBehaviour
                 SaveUhraniumClicked();
             }
         }
-
     }
 
     // save currently collected uhranium
@@ -50,9 +48,7 @@ public class SaveUhranium : MonoBehaviour
         {
             this.gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "+" + (int)this.gameManager.player.uhranium, new Color(0.5800107f, 0.9245283f, 0.8310998f));
             this.gameManager.player.SaveUhranium();
-            
         }
-
     }
 
     // update particle system, popup text and fillbar every frame, depending on collected uhranium
@@ -71,7 +67,5 @@ public class SaveUhranium : MonoBehaviour
             this.popupText.SetActive(false);
             this.particleEffect.SetActive(false);
         }
-
     }
-
 }

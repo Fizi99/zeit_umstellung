@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public buildManager buildManager;
     [SerializeField] public GameObject floatingTextPrefab;
     [SerializeField] public GameObject mainCamera;
+    [SerializeField] public GameObject highscoreTracker;
 
     [Header("Container")]
     [Space(10)]
@@ -47,6 +48,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] public List<GameObject> enemyPrefabs;
     [SerializeField] public List<GameObject> turretPrefabs;
 
+    void Awake()
+    {
+        // Reset all persistently saved data if first time started the app on a build
+        if (!Application.isEditor)
+        {
+            if (PlayerPrefs.GetInt("FirstPlay", 1) == 1)
+            {
+                PlayerPrefs.DeleteAll();
+                PlayerPrefs.SetInt("FirstPlay", 0);
+                PlayerPrefs.Save();
+            }
+        }
+
+        // List all the data we want to load on app start
+        SaveManager.LoadUhraniumHighscore();
+    }
+
     void Start()
     {
         this.gameState = GameState.MAINMENU;
@@ -58,7 +76,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        
     }
 
     public void TriggerScreenEffect()
@@ -202,5 +219,11 @@ public class GameManager : MonoBehaviour
 
     }
 
-
+    public void ResetProgress()
+    {
+        Debug.Log("Resetting all progress ...");
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+        Debug.Log("Highscore is now (after reset): " + PlayerPrefs.GetFloat("Highscore", 0f));
+    }
 }
