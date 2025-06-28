@@ -56,7 +56,7 @@ public class StreetViewMap : MonoBehaviour
         JSONNode data = null;
         if (www.result == UnityWebRequest.Result.Success)
         {
-            //File.WriteAllTextAsync("C:/Users/anton/Documents/GitHub/zeit_umstellung/Assets/DebugMapData.txt", www.downloadHandler.text);
+            //File.WriteAllTextAsync(Application.dataPath+"/DebugMapData.json", www.downloadHandler.text);
             data = JSON.Parse(www.downloadHandler.text);
             
         }
@@ -64,9 +64,8 @@ public class StreetViewMap : MonoBehaviour
         {
             Debug.LogError("Fehler beim Abrufen der OSM-Daten: " + www.error);
             // in case of connection error read json with layout around technische hochschule
-            StreamReader sr = new StreamReader(Application.dataPath + "/" + "DebugMapData.txt");
-            string fileContents = sr.ReadToEnd();
-            sr.Close();
+            TextAsset jsonFile = Resources.Load<TextAsset>("DebugMapData");
+            string fileContents = jsonFile.text;
             data = JSON.Parse(fileContents);
 
         }
