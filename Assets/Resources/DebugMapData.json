@@ -2,7 +2,7 @@
   "version": 0.6,
   "generator": "Overpass API 0.7.62.7 375dc00a",
   "osm3s": {
-    "timestamp_osm_base": "2025-06-13T10:47:56Z",
+    "timestamp_osm_base": "2025-06-28T11:45:30Z",
     "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
   },
   "elements": [
@@ -695,10 +695,11 @@
   "tags": {
     "barrier": "lift_gate",
     "bicycle": "yes",
-    "check_date:opening_hours": "2024-02-06",
+    "check_date:opening_hours": "2025-06-19",
     "foot": "yes",
     "motor_vehicle": "no",
-    "opening_hours": "Mo-Fr 22:00-05:00"
+    "opening_hours": "Mo-Fr 22:00-05:00",
+    "opening_hours:signed": "no"
   }
 },
 {
@@ -1163,12 +1164,6 @@
     "railway": "level_crossing",
     "railway:position:exact": "6.284"
   }
-},
-{
-  "type": "node",
-  "id": 52752069,
-  "lat": 53.8342804,
-  "lon": 10.6995252
 },
 {
   "type": "node",
@@ -2090,8 +2085,8 @@
 {
   "type": "node",
   "id": 295625583,
-  "lat": 53.8351259,
-  "lon": 10.6987028
+  "lat": 53.8351168,
+  "lon": 10.6986524
 },
 {
   "type": "node",
@@ -4724,7 +4719,8 @@
     "barrier": "bollard",
     "bicycle": "yes",
     "bollard": "rising",
-    "foot": "yes"
+    "foot": "yes",
+    "maxwidth:physical": "2"
   }
 },
 {
@@ -10988,7 +10984,8 @@
     "barrier": "gate",
     "bicycle": "yes",
     "foot": "yes",
-    "gate": "dusk-to-dawn closen"
+    "gate": "dusk-to-dawn closen",
+    "maxwidth:physical": "1.5"
   }
 },
 {
@@ -20791,7 +20788,10 @@
   "type": "node",
   "id": 5225492727,
   "lat": 53.8340457,
-  "lon": 10.7063313
+  "lon": 10.7063313,
+  "tags": {
+    "entrance": "service"
+  }
 },
 {
   "type": "node",
@@ -22036,8 +22036,8 @@
 {
   "type": "node",
   "id": 5240221480,
-  "lat": 53.8342869,
-  "lon": 10.6995189
+  "lat": 53.8342716,
+  "lon": 10.6994601
 },
 {
   "type": "node",
@@ -22070,8 +22070,8 @@
 {
   "type": "node",
   "id": 5240221488,
-  "lat": 53.8351203,
-  "lon": 10.6987082
+  "lat": 53.8351073,
+  "lon": 10.6986590
 },
 {
   "type": "node",
@@ -27515,6 +27515,12 @@
   "lon": 10.7075920
 },
 {
+  "type": "node",
+  "id": 12942127531,
+  "lat": 53.8342804,
+  "lon": 10.6995252
+},
+{
   "type": "way",
   "id": 4089315,
   "nodes": [
@@ -31662,7 +31668,7 @@
     1949570798,
     5233649482,
     5240221481,
-    52752069,
+    12942127531,
     5240221480,
     5240221488,
     295625583
@@ -33689,7 +33695,8 @@
   ],
   "tags": {
     "highway": "footway",
-    "ownership": "private"
+    "ownership": "private",
+    "surface": "paving_stones"
   }
 },
 {
@@ -40569,7 +40576,10 @@
     "handrail:left": "yes",
     "handrail:right": "yes",
     "highway": "steps",
+    "incline": "down",
     "lit": "yes",
+    "ramp": "separate",
+    "ramp:wheelchair": "separate",
     "surface": "paved"
   }
 },
@@ -43789,7 +43799,8 @@
     "lit": "yes",
     "ramp": "no",
     "step_count": "8",
-    "surface": "concrete"
+    "surface": "concrete",
+    "tactile_paving": "no"
   }
 },
 {
@@ -48054,7 +48065,8 @@
   "tags": {
     "handrail": "no",
     "highway": "steps",
-    "incline": "up"
+    "incline": "up",
+    "surface": "paving_stones"
   }
 },
 {
@@ -48104,7 +48116,8 @@
   "tags": {
     "handrail": "no",
     "highway": "steps",
-    "incline": "up"
+    "incline": "up",
+    "surface": "paving_stones"
   }
 },
 {
@@ -48141,7 +48154,8 @@
   "tags": {
     "handrail": "no",
     "highway": "steps",
-    "incline": "up"
+    "incline": "up",
+    "surface": "paving_stones"
   }
 },
 {
@@ -48201,7 +48215,8 @@
   ],
   "tags": {
     "highway": "path",
-    "informal": "yes"
+    "informal": "yes",
+    "surface": "dirt"
   }
 },
 {
@@ -48330,7 +48345,8 @@
     11819461752
   ],
   "tags": {
-    "highway": "footway"
+    "highway": "footway",
+    "surface": "gravel"
   }
 },
 {
@@ -48762,9 +48778,11 @@
     "foot": "yes",
     "handrail": "yes",
     "highway": "steps",
+    "incline": "up",
     "ramp": "yes",
     "ramp:wheelchair": "yes",
-    "surface": "paved"
+    "surface": "paving_stones",
+    "tactile_paving": "no"
   }
 },
 {
