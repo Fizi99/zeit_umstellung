@@ -1,10 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-
 public class DrawCircle : MonoBehaviour
 {
-    // keine ahnung wie man die farbe ändert. DER RADIUS SKALIERT MIT DER SCALE DES OBJEKTS
     [Range(0, 50)]
     public int segments = 50;
     [Range(0, 5)]
@@ -13,13 +11,21 @@ public class DrawCircle : MonoBehaviour
     public float yradius = 5;
     public LineRenderer line;
 
+    public float lineWidth = 0.05f;
+
     void Start()
     {
-        line.SetVertexCount(segments + 1);
-        line.SetWidth(0.1f, 0.1f);
-        Color c1 = new Color(0f, 0f, 0f, 1);
+        line.positionCount = segments + 1;
+
+        line.startWidth = lineWidth;
+        line.endWidth = lineWidth;
+
         line.useWorldSpace = false;
         CreatePoints();
+
+        line.material = new Material(Shader.Find("Sprites/Default"));
+        line.startColor = new Color(0, 0, 1, 0.5f);  // Startfarbe
+        line.endColor = new Color(0, 0, 1, 0.5f);    // Endfarbe
     }
 
     void CreatePoints()

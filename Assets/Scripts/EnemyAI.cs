@@ -36,6 +36,13 @@ public class EnemyAI : MonoBehaviour
     public Vector3 blobShadowScale = new Vector3(1f, 1f, 1f);
     public Vector3 blobShadowRotation = Vector3.zero;
 
+    public Image healthBar; // z.B. grün
+    public Image delayedHealthBar; // z.B. rot
+    public float maxWidth;
+    public float damageLerpSpeed = 2f;
+    private float targetHealthRatio;
+    private Coroutine damageAnim;
+
     void Awake()
     {
         speed=initSpeed;
@@ -149,12 +156,26 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(float amount)
     {
         health -= amount;
-        healthbar.fillAmount =  health / initHealth;
-        
-        if(health <= 0)
+        health = Mathf.Max(health, 0);
+        targetHealthRatio = health / initHealth;
+
+        // Wenn keine Healthbar gesetzt: alte Variante nutzen (sicherer Fallback)
+        if (healthbar == null || delayedHealthBar == null)
         {
-            Die();
+            if (healthbar != null)
+                healthbar.fillAmount = targetHealthRatio;
+
+            if (health <= 0) Die();
+            return;
         }
+
+        // neue Variante mit zwei Balken
+        healthbar.fillAmount = targetHealthRatio;
+
+        if (damageAnim != null) StopCoroutine(damageAnim);
+        damageAnim = StartCoroutine(AnimateDelayedBar());
+
+        if (health <= 0) Die();
     }
 
     public void Slow(float slowMultiplier, float freezeDuration) {
@@ -223,5 +244,33 @@ public class EnemyAI : MonoBehaviour
     IEnumerator waiter()
     {
         yield return new WaitForSeconds(1);
+    }
+
+    IEnumerator AnimateDelayedBar()
+    {
+        yield return new WaitForSeconds(0.05f);
+        delayedHealthBar.color = Color.white;
+        yield return new WaitForSeconds(0.05f);
+        delayedHealthBar.color = new Color(33f / 255f, 34f / 255f, 52f / 255f); // Can be turned off (i.e. set to White aswell) for a smoother (less pixelated) experience
+        yield return new WaitForSeconds(0.05f);
+        delayedHealthBar.color = Color.white;
+
+        float start = delayedHealthBar.fillAmount;
+        float t = 0f;
+
+        while (t < 0.6f)
+        {
+            t += Time.deltaTime * damageLerpSpeed;
+            float eased = Mathf.SmoothStep(start, targetHealthRatio, t);
+            delayedHealthBar.fillAmount = eased;
+            yield return null;
+        }
+
+        delayedHealthBar.fillAmount = targetHealthRatio;
+    }
+
+    void SetBarWidth(RectTransform bar, float ratio)
+    {
+        bar.sizeDelta = new Vector2(maxWidth * ratio, bar.sizeDelta.y);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -21,6 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button startLevelButton;
     [SerializeField] private GameObject visualizeLoadoutParent; // referenziert "VisualizeLoadout"
     [SerializeField] private List<Sprite> turretSprites;
+    [SerializeField] private GameObject zeitsandContainer;
 
     [Space(10)]
     [Header("Panel for navigation")]
@@ -73,6 +75,13 @@ public class UIManager : MonoBehaviour
             UpdateZeitsandText();
         }
 
+        if (this.gameManager.player.zeitsand >= this.gameManager.player.maxZeitsand)
+        {
+            SetZeitsandShake(true);
+        } else
+        {
+            SetZeitsandShake(false);
+        }
     }
 
     public void ShowDebug(string msg)
@@ -432,6 +441,40 @@ public class UIManager : MonoBehaviour
             {
                 loadoutImages[i].sprite = sprite;
             }
+        }
+    }
+
+    private Coroutine shakeCoroutine;
+    private bool isShaking = false;
+    private Quaternion originalRotation;
+
+    public void SetZeitsandShake(bool shouldShake)
+    {
+        if (shouldShake && !isShaking)
+        {
+            originalRotation = zeitsandContainer.transform.localRotation;
+            shakeCoroutine = StartCoroutine(ShakeRotationRoutine());
+            isShaking = true;
+        }
+        else if (!shouldShake && isShaking)
+        {
+            StopCoroutine(shakeCoroutine);
+            zeitsandContainer.transform.localRotation = originalRotation;
+            isShaking = false;
+        }
+    }
+
+    IEnumerator ShakeRotationRoutine()
+    {
+        float angleMagnitude = 2f; // max degrees left/right
+        float shakeFrequency = 0.05f;
+
+        while (true)
+        {
+            float zAngle = UnityEngine.Random.Range(-angleMagnitude, angleMagnitude);
+            zeitsandContainer.transform.localRotation = originalRotation * Quaternion.Euler(0f, 0f, zAngle);
+
+            yield return new WaitForSeconds(shakeFrequency);
         }
     }
 }
