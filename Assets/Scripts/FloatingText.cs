@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class FloatingText : MonoBehaviour
@@ -6,6 +7,7 @@ public class FloatingText : MonoBehaviour
     private float countdown = 0f;
 
     public float riseSpeed = 1f;
+    public TMP_Text tmpText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,5 +26,11 @@ public class FloatingText : MonoBehaviour
             this.countdown += Time.deltaTime;
             transform.position = new Vector3(transform.position.x, transform.position.y + riseSpeed * Time.deltaTime, transform.position.z);
         }
+    }
+
+    public void SetFloatingText(string text, Color color)
+    {
+        this.tmpText.text = text;
+        this.tmpText.color = color;
     }
 }

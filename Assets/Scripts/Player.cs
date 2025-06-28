@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 
     public float savedUhranium = 0;
     public float uhrraniumRatePerSec = 1;
+    public int savableThreshhold = 10;
     // to display uhranium gain, after it has been reset
     public float uhraniumGain = 0;
 
@@ -76,8 +77,13 @@ public class Player : MonoBehaviour
     public void SaveUhranium()
     {
         this.savedUhranium += (int)this.uhranium;
-        this.uhraniumGain = (int)this.uhranium;
+        this.uhraniumGain += (int)this.uhranium;
         this.uhranium = 0;
+    }
+
+    public void ResetUhraniumGain()
+    {
+        this.uhraniumGain = 0;
     }
 
 
@@ -87,7 +93,7 @@ public class Player : MonoBehaviour
         this.uhranium -= dmg;
         this.uhranium = Mathf.Max(this.uhranium, 0);
         this.lives -= dmg;
-        this.gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "-" + dmg);
+        this.gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "-" + dmg, Color.red);
         this.gameManager.TriggerScreenEffect();
 
     }

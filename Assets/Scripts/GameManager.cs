@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
             this.player.SaveUhranium();
         }
         this.uiManager.UpdateUI();
+        this.player.ResetUhraniumGain();
     }
 
     // Remove all enemies and turrets from scene
@@ -117,11 +118,11 @@ public class GameManager : MonoBehaviour
         this.busStopGO = newBusStop;
     }
 
-    public void SpawnFloatingText(Vector3 pos, string text)
+    public void SpawnFloatingText(Vector3 pos, string text, Color color)
     {
         GameObject floatingText = Instantiate(this.floatingTextPrefab);
         floatingText.transform.position = pos;
-        floatingText.GetComponentInChildren<TMP_Text>().text = text;
+        floatingText.GetComponent<FloatingText>().SetFloatingText(text, color);
     }
 
     // generate new streets. Set them so other scripts can access them, get the closest street to the bus stop and add that point as last destination to every street
