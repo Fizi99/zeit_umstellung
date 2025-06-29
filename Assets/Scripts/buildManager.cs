@@ -20,18 +20,25 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     public Camera mainCamera;
     private float turretLoadoutEfficiency = 1f;
     private float loadOutSize = 4f;
+    public Button Button1;
+    public Button Button2;
+    public Button Button3;
+    public Button Button4;
+
+    public GameObject DragObject;
 
     public PlaceableZone placeableZone;
-    private GameObject lastlySelectedButton;
+    private Button lastlySelectedButton;
 
     public bool isBuildPossible = false;
     private bool isDragging = false;
 
     private GameManager gameManager;
 
-
-    public GameObject DragObject;
     private GameObject CurrentDragObject;
+    private bool isHovering;
+    private displayTurretCost buttonScript;
+    
 
     void Awake()
     {
@@ -68,6 +75,10 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             {
                 spawnTurret(turretToBuild);
             }
+            if (Input.GetMouseButtonDown(0) &&  Input.mousePosition.x < 400f)
+            {
+                clearHighlight();
+            }
         }
 
 
@@ -91,7 +102,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         this.DragObject = DragObject;
     }
 
-    public void highlightTowerSelected(GameObject button)
+    public void highlightTowerSelected(Button button)
     {
         clearHighlight();
         lastlySelectedButton = button;
@@ -116,8 +127,39 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     public void OnBeginDrag(PointerEventData eventData)
     {
         isDragging = true;
-        if (isBuildPossible)
+
+        //if (isBuildPossible)
+        if (Button1.GetComponent<displayTurretCost>().isHovering)
         {
+            isHovering = true;
+            lastlySelectedButton = Button1;
+            buttonScript = Button1.GetComponent<displayTurretCost>();
+        }
+        else if (Button2.GetComponent<displayTurretCost>().isHovering)
+        {
+            isHovering = true;
+            lastlySelectedButton = Button2;
+            buttonScript = Button2.GetComponent<displayTurretCost>();
+        }
+        else if(Button3.GetComponent<displayTurretCost>().isHovering)
+        {
+            isHovering = true;
+            lastlySelectedButton = Button3;
+            buttonScript = Button3.GetComponent<displayTurretCost>();
+        }
+        else if(Button4.GetComponent<displayTurretCost>().isHovering)
+        {
+            isHovering = true;
+            lastlySelectedButton = Button4;
+            buttonScript = Button4.GetComponent<displayTurretCost>();
+        }
+
+        if((isBuildPossible || isHovering) && buttonScript.turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
+        {
+            SetTurretToBuild(buttonScript.turret);
+            highlightTowerSelected(lastlySelectedButton);
+            SetDragObject(buttonScript.DragObject);
+            isBuildPossible = true;
             Debug.Log("Start drag");
             Vector3 mousePosition = Input.mousePosition;
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
@@ -134,13 +176,13 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (isBuildPossible)
+        if (CurrentDragObject != null)
         {
             Debug.Log("Dragging");
             Vector3 mousePosition = Input.mousePosition;
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit) && CurrentDragObject != null)
+            if (Physics.Raycast(ray, out hit))
             {
                 Vector3 spawnPosition = hit.point;
                 spawnPosition.z = 0; // Make the tower be in the base depth
@@ -153,6 +195,8 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     {
         isDragging = false;
         spawnTurret(turretToBuild);
+        CurrentDragObject = null;
+        isHovering = false;
     }
 
     void spawnTurret(GameObject turret)
