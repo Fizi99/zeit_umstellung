@@ -44,9 +44,9 @@ public class StreetViewMap : MonoBehaviour
     {
   
         // so toString method converts decimal point correctly (1.2 instead of 1,2)
-        string searchCenterLatStr = searchCenterLat.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string searchCenterLonStr = searchCenterLon.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-        string searchRadiusStr = searchRadius.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+        string searchCenterLatStr = searchCenterLat.ToString("G", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+        string searchCenterLonStr = searchCenterLon.ToString("G", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+        string searchRadiusStr = searchRadius.ToString("G", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
 
         // WebRequest to Open Street View as JSON in specified area
         string url = "https://overpass-api.de/api/interpreter?data=[out:json];way['highway'](around:" + searchRadiusStr + "," + searchCenterLatStr + "," + searchCenterLonStr + ");(._;>;);out;";

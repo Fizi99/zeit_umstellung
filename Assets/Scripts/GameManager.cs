@@ -189,15 +189,28 @@ public class GameManager : MonoBehaviour
         this.player.SetPlayerCoords(lat, lon);
     }
 
+    public void SearchClosestStopToPLayer()
+    {
+        this.busTimeScraper.FindClosestBusStop();
+    }
+
+    // for testing: hardcoded coords of lübeck zob
     public double GetPlayerLat()
     {
+        //return 53.8656862;
         return this.player.lat;
     }
     public double GetPlayerLon()
     {
+        //return 10.6704442;
         return this.player.lon;
     }
 
+    public void UpdateBusStopSearchInputFieldInUI(string text)
+    {
+        this.uiManager.UpdateInputFieldText(text);
+
+    }
     public double GetDistanceThreshhold()
     {
         return this.gpsTracker.GetDistanceThreshhold();

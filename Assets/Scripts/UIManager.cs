@@ -355,6 +355,18 @@ public class UIManager : MonoBehaviour
         this.gameManager.SearchBusStop(this.busSearchInputField.text);
     }
 
+    // call, when busstop is searched in searchfield
+    public void SearchClosestStopBtnPressed()
+    {
+        this.gameManager.SearchClosestStopToPLayer();
+    }
+
+    // Update search text when busstopsearch is updated externally for example with closest search
+    public void UpdateInputFieldText(string text)
+    {
+        this.busSearchInputField.text = text;
+    }
+
     private void GenerateBusSelection()
     {
         UpdateDistanceToStopText();
