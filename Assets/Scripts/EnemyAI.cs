@@ -256,7 +256,8 @@ public class EnemyAI : MonoBehaviour
         {
             
             yield return new WaitForSeconds(flashSpeed);
-            delayedHealthBar.color = new Color(33f / 255f, 34f / 255f, 52f / 255f); // Can be turned off (i.e. set to White aswell) for a smoother (less pixelated) experience
+            //delayedHealthBar.color = new Color(33f / 255f, 34f / 255f, 52f / 255f); // Can be turned off (i.e. set to White aswell) for a smoother (less pixelated) experience
+            delayedHealthBar.color = Color.white;
             yield return new WaitForSeconds(flashSpeed);
             delayedHealthBar.color = Color.white;
             yield return new WaitForSeconds(flashSpeed);
