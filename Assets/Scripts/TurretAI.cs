@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class TurretAI : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class TurretAI : MonoBehaviour
     public float stopAndShootRange = 5f;
     private float turretEfficiency = 0f;
     private bool isVisible = true;
+    private bool invokedRepeating = false;
 
 
     public float fireRate = 15f;
@@ -41,6 +43,11 @@ public class TurretAI : MonoBehaviour
     public Vector3 blobShadowRotation = Vector3.zero;
 
     private float explosionMult = 1f;
+
+    public float threshold = 3f;  // Only start toggling below this
+    public float minFrequency = 1f; //max and min visibility toggling frequency
+    public float maxFrequency = 0.01f;
+    private Coroutine toggleCoroutine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -140,6 +147,7 @@ public class TurretAI : MonoBehaviour
 
             if (isMoving)
             {
+                Debug.Log("useamount: " + useAmount);
                 float distanceThisFrame = speed * Time.deltaTime;
 
 
@@ -191,34 +199,41 @@ public class TurretAI : MonoBehaviour
     {
         useAmount = useAmount - usageUsed;
         useBar.fillAmount =  useAmount / initUseAmount;
-        if(useAmount <= 3f)
+        if(useAmount <= 3f && !invokedRepeating)
         {
-            InvokeRepeating("ToggleVisibility", 1f,1f);
-            if (useAmount <= 0)
+            toggleCoroutine = StartCoroutine(ToggleLoop());
+            invokedRepeating = true;
+
+        }
+        if (useAmount <= 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    IEnumerator ToggleLoop()
+    {
+        while (true)
+        {
+            // Calculate interval
+            float normalizedValue = 0f;
+            if (isMoving)
             {
-                Destroy(gameObject);
-                return;
+                normalizedValue = Mathf.Clamp01((useAmount/2) / threshold);
+
             }
-        }
-    }
+            else
+            {
+                normalizedValue = Mathf.Clamp01(useAmount / threshold);
+            }
+            float interval = Mathf.Lerp(maxFrequency, minFrequency, normalizedValue);
 
-    void ToggleVisibility()
-    {
-        isVisible = !isVisible;
-        GetComponent<SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
-        if (!isVisible)
-        {
-            //GetComponent<SpriteRenderer>().color.a = 0;
-        }
-        else
-        {
-            //GetComponent<SpriteRenderer>().color.a = 1;
-        }
-    }
+            // Toggle visibility
+            GetComponent < SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
 
-    void onDestroy()
-    {
-        CancelInvoke("ToggleVisibility");
+            yield return new WaitForSeconds(interval);
+        }
     }
 
     private int GetSpriteIndex(float angle)

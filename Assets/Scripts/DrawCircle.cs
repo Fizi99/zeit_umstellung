@@ -37,8 +37,8 @@ public class DrawCircle : MonoBehaviour
 
         for (int i = 0; i < (segments + 1); i++)
         {
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * xradius;
-            y = Mathf.Cos(Mathf.Deg2Rad * angle) * yradius;
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * xradius/transform.localScale.x;
+            y = Mathf.Cos(Mathf.Deg2Rad * angle) * yradius / transform.localScale.x;
 
             line.SetPosition(i, new Vector3(x, y, 0));
 
