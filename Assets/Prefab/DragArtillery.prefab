@@ -231,6 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   segments: 50
-  xradius: 2
-  yradius: 2
+  xradius: 3
+  yradius: 3
   line: {fileID: -6050396991918643269}
+  lineWidth: 0.05

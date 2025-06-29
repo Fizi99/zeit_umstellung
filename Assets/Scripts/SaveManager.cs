@@ -6,12 +6,12 @@ public static class SaveManager
     {
         PlayerPrefs.SetFloat("Highscore", score);
         PlayerPrefs.Save();
-        Debug.Log("Current All-Time Highscore: " + PlayerPrefs.GetFloat("Highscore", 0f));
+        //Debug.Log("Current All-Time Highscore: " + PlayerPrefs.GetFloat("Highscore", 0f));
     }
 
     public static float LoadUhraniumHighscore()
     {
-        Debug.Log("Loaded Highscore: " + PlayerPrefs.GetFloat("Highscore", 0f));
+        //Debug.Log("Loaded Highscore: " + PlayerPrefs.GetFloat("Highscore", 0f));
         return PlayerPrefs.GetFloat("Read of Highscore Value gives: ", 0f);
     }
 }
