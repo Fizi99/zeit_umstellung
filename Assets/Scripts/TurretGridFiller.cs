@@ -11,7 +11,7 @@ public class TurretGridFiller : MonoBehaviour
     public Transform gridParent;
 
     [Header("Icon Mapping")]
-    public Sprite defaultTurretImage;
+    public Texture defaultTurretTexture;
     public List<TurretIconMapping> imageMappings;
 
     void Start()
@@ -22,24 +22,34 @@ public class TurretGridFiller : MonoBehaviour
     void PopulateGrid()
     {
         var purchasedTurrets = SaveManager.LoadPurchasedTurrets();
+
         foreach (TurretType turret in Enum.GetValues(typeof(TurretType)))
         {
+
+            // We have dronebase and drone as own turret types, so skip the drone
+            if (turret == TurretType.DRONE)
+                continue;
+
             GameObject turretFrame = Instantiate(turretFramePrefab, gridParent);
-            Image turretImage = turretFrame.transform.Find("TurretImage").GetComponent<Image>();
-            turretImage.sprite = GetSpriteForTurret(turret);
+
+            // Hol das RawImage-UI-Element
+            RawImage turretImage = turretFrame.transform.Find("TurretImage").GetComponent<RawImage>();
+            turretImage.texture = GetTextureForTurret(turret);
 
             // Schloss-Overlay aktivieren/deaktivieren (SPÄTER)
-            /*Transform lockOverlay = turretFrame.transform.Find("LockIcon");
+            /*
+            Transform lockOverlay = turretFrame.transform.Find("LockIcon");
             bool isUnlocked = purchasedTurrets.Contains(turret);
             if (lockOverlay != null)
-                lockOverlay.gameObject.SetActive(!isUnlocked);*/
+                lockOverlay.gameObject.SetActive(!isUnlocked);
+            */
         }
     }
 
-    Sprite GetSpriteForTurret(TurretType type)
+    Texture GetTextureForTurret(TurretType type)
     {
         var entry = imageMappings.FirstOrDefault(m => m.turretType == type);
-        return entry != null ? entry.icon : defaultTurretImage;
+        return entry != null ? entry.icon : defaultTurretTexture;
     }
 }
 
@@ -47,5 +57,5 @@ public class TurretGridFiller : MonoBehaviour
 public class TurretIconMapping
 {
     public TurretType turretType;
-    public Sprite icon;
+    public Texture icon; // RawImage braucht Texture
 }
