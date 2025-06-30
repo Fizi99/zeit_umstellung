@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     public float maxZeitsand = 100;
     public float zeitsandStartValue = 00;
     public float zeitsandRatePerSec = 1;
-
+    
     // related to uhranium
     public float uhranium = 0;
     public float savedUhranium = 0;

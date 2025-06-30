@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GPSTracker : MonoBehaviour
 {
-
+    // TODO: probably needs different architecture to only init location service once and update every some seconds
     private UIManager uiManager;
     private GameManager gameManager;
     [SerializeField] private double distanceThreshhold = 20;
@@ -13,7 +13,7 @@ public class GPSTracker : MonoBehaviour
     {
         this.uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        StartCoroutine(UpdatePosition());
+        InvokeRepeating("UpdateGPSPosition", 0f, 10f);
     }
 
     public void UpdateGPSPosition()
@@ -23,8 +23,8 @@ public class GPSTracker : MonoBehaviour
 
     IEnumerator UpdatePosition()
     {
-        if (!Input.location.isEnabledByUser)
-            Debug.Log("Location not enabled on device or app does not have permission to access location");
+        //if (!Input.location.isEnabledByUser)
+            //Debug.Log("Location not enabled on device or app does not have permission to access location");
 
         // Starts the location service.
 
@@ -34,14 +34,14 @@ public class GPSTracker : MonoBehaviour
         Input.location.Start(desiredAccuracyInMeters, updateDistanceInMeters);
 
         // Waits until the location service initializes
-        int maxWait = 20;
+        int maxWait =9;
         while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
         {
             yield return new WaitForSeconds(1);
             maxWait--;
         }
 
-        // If the service didn't initialize in 20 seconds this cancels location service use.
+        // If the service didn't initialize in 9 seconds this cancels location service use.
         if (maxWait < 1)
         {
             Debug.Log("Timed out");
@@ -51,14 +51,14 @@ public class GPSTracker : MonoBehaviour
         // If the connection failed this cancels location service use.
         if (Input.location.status == LocationServiceStatus.Failed)
         {
-            Debug.LogError("Unable to determine device location");
+            //Debug.LogError("Unable to determine device location");
             yield break;
         }
         else
         {
             // If the connection succeeded, this retrieves the device's current location and displays it in the Console window.
             //this.uiManager.ShowDebug("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
-            Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+            //Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
             this.gameManager.SetPlayerCoords(Input.location.lastData.latitude, Input.location.lastData.longitude);
         }
 
