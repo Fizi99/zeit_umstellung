@@ -222,7 +222,9 @@ MonoBehaviour:
   costText: {fileID: 213749937737633788}
   cost: 0
   turret: {fileID: 4655690105588628940, guid: 28037954cc3401a449c7c57dd6319cf5, type: 3}
+  DragObject: {fileID: 0}
   isTowerSelected: 0
+  isHovering: 0
 --- !u!1 &4910575912539231182
 GameObject:
   m_ObjectHideFlags: 0
