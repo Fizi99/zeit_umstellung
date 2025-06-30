@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject upgradingMenuPanel;
     [SerializeField] private GameObject lvlEndPanel;
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject loadoutPanel;
 
     [SerializeField] private GameObject distanceToStopText;
 
@@ -84,7 +85,8 @@ public class UIManager : MonoBehaviour
         if (this.gameManager.player.zeitsand >= this.gameManager.player.maxZeitsand)
         {
             SetZeitsandShake(true);
-        } else
+        }
+        else
         {
             SetZeitsandShake(false);
         }
@@ -114,7 +116,7 @@ public class UIManager : MonoBehaviour
     // check if bus information got updated for example to update bus selection buttons or countdown. use value later
     private void CheckForBusInfoUpdate()
     {
-        if(this.gameManager.busses != this.busses)
+        if (this.gameManager.busses != this.busses)
         {
             this.busInfoUpdated = true;
         }
@@ -129,7 +131,7 @@ public class UIManager : MonoBehaviour
     // check if a bus was selected
     private void UpdateSelectedBus()
     {
-        if(this.gameManager.selectedBus != this.selectedBus)
+        if (this.gameManager.selectedBus != this.selectedBus)
         {
             this.selectedBus = this.gameManager.selectedBus;
 
@@ -148,10 +150,10 @@ public class UIManager : MonoBehaviour
         string text = "";
         TimeSpan timeSpan = (System.DateTimeOffset.FromUnixTimeSeconds(this.selectedBus.realtime).LocalDateTime - System.DateTime.Now);
         // handle countdown if bus already departed
-        if(timeSpan.Seconds < 0)
+        if (timeSpan.Seconds < 0)
         {
             // if player is playing and bus departs, finish level, else dont allow levelstart
-            if(this.gameManager.gameState == GameState.LEVELPLAYING)
+            if (this.gameManager.gameState == GameState.LEVELPLAYING)
             {
                 text = "Bus departed! Level finished!";
 
@@ -166,7 +168,7 @@ public class UIManager : MonoBehaviour
             }
             //else
             //{
-                //text = "Bus already departed. pick another";
+            //text = "Bus already departed. pick another";
             //}
             //foreach(TMP_Text countdownDisplay in this.countdown)
             //    countdownDisplay.fontSize = 12;
@@ -186,12 +188,12 @@ public class UIManager : MonoBehaviour
 
     private void UpdateUhraniumText()
     {
-        this.uhraniumText.text = "Gesammelt: " + (int) this.gameManager.player.uhranium + " Gesichert: (" + (int) this.gameManager.player.uhraniumGain + ")";
+        this.uhraniumText.text = "Gesammelt: " + (int)this.gameManager.player.uhranium + " Gesichert: (" + (int)this.gameManager.player.uhraniumGain + ")";
     }
 
     private void UpdateZeitsandText()
     {
-        this.zeitsandText.text = "" + (int) this.gameManager.player.zeitsand;
+        this.zeitsandText.text = "" + (int)this.gameManager.player.zeitsand;
     }
 
     private void UpdateLvlFinishedText()
@@ -211,6 +213,7 @@ public class UIManager : MonoBehaviour
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
+                this.loadoutPanel.SetActive(false);
                 break;
             case GameState.LEVELPLAYING:
                 this.lvlSelectionPanel.SetActive(false);
@@ -219,6 +222,7 @@ public class UIManager : MonoBehaviour
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
+                this.loadoutPanel.SetActive(false);
                 break;
             case GameState.UPGRADING:
                 this.lvlSelectionPanel.SetActive(false);
@@ -227,6 +231,7 @@ public class UIManager : MonoBehaviour
                 this.upgradingMenuPanel.SetActive(true);
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
+                this.loadoutPanel.SetActive(false);
                 break;
             case GameState.MAINMENU:
                 this.lvlSelectionPanel.SetActive(false);
@@ -235,6 +240,7 @@ public class UIManager : MonoBehaviour
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
+                this.loadoutPanel.SetActive(false);
                 break;
             case GameState.LEVELEND:
                 this.lvlSelectionPanel.SetActive(false);
@@ -243,6 +249,7 @@ public class UIManager : MonoBehaviour
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(true);
                 this.settingsPanel.SetActive(false);
+                this.loadoutPanel.SetActive(false);
                 break;
             case GameState.SETTINGS:
                 this.lvlSelectionPanel.SetActive(false);
@@ -251,6 +258,16 @@ public class UIManager : MonoBehaviour
                 this.upgradingMenuPanel.SetActive(false);
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(true);
+                this.loadoutPanel.SetActive(false);
+                break;
+            case GameState.LOADOUTCREATION:
+                this.lvlSelectionPanel.SetActive(false);
+                this.lvlPlayingPanel.SetActive(false);
+                this.startMenuPanel.SetActive(false);
+                this.upgradingMenuPanel.SetActive(false);
+                this.lvlEndPanel.SetActive(false);
+                this.settingsPanel.SetActive(false);
+                this.loadoutPanel.SetActive(true);
                 break;
             default:
                 break;
@@ -289,7 +306,7 @@ public class UIManager : MonoBehaviour
     public void StartLevel()
     {
         // dont want to start level, if selected bus already departed or no bus is selected or player is too far away from busstop
-        if(this.selectedBus == null)
+        if (this.selectedBus == null)
         {
             return;
         }
@@ -349,6 +366,11 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void NavigateToLoadout()
+    {
+        this.gameManager.ChangeGameState(GameState.LOADOUTCREATION);
+    }
+
     // call, when busstop is searched in searchfield
     public void BusSearchInputFieldChanged()
     {
@@ -390,7 +412,7 @@ public class UIManager : MonoBehaviour
             GameObject btn = GameObject.Instantiate(this.busSelectorBtnPrefab);
             btn.transform.SetParent(this.scrollerContent.transform, false);
             btn.GetComponent<BusSelectorBtn>().bus = newList[i];
-            
+
             // Display bus line infos
             var bus = newList[i];
             string timeStr = $"{System.DateTimeOffset.FromUnixTimeSeconds(bus.time).LocalDateTime.TimeOfDay:hh\\:mm}";
@@ -400,7 +422,7 @@ public class UIManager : MonoBehaviour
 
             // Display the play time for each bus line
             TimeSpan playTime = (System.DateTimeOffset.FromUnixTimeSeconds(bus.realtime).LocalDateTime - System.DateTime.Now);
-            int playTimeInMinutes = (int) playTime.TotalMinutes;
+            int playTimeInMinutes = (int)playTime.TotalMinutes;
             btn.transform.Find("TimeLabel").GetComponent<TMP_Text>().text += $"\n{playTimeInMinutes} Min Spielzeit";
 
             // change color of button of selected bus
@@ -422,7 +444,7 @@ public class UIManager : MonoBehaviour
         double sLat = this.gameManager.busStop.lat;
         double sLon = this.gameManager.busStop.lon;
         this.distanceToStop = this.gameManager.CalcDistanceBetweenCordsInM(pLat, pLon, sLat, sLon);
-            
+
         if (this.distanceToStop > this.gameManager.GetDistanceThreshhold())
         {
             distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m, please get closer to the bus stop.";
@@ -437,7 +459,7 @@ public class UIManager : MonoBehaviour
     {
         // Mapping erstellen
         turretTypeToSprite = new Dictionary<TurretType, Sprite>();
-        TurretType[] types = (TurretType[]) System.Enum.GetValues(typeof(TurretType));
+        TurretType[] types = (TurretType[])System.Enum.GetValues(typeof(TurretType));
 
         for (int i = 0; i < types.Length && i < turretSprites.Count; i++)
             turretTypeToSprite[types[i]] = turretSprites[i];
