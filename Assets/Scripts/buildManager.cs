@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.UI;
+
 
 public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -38,7 +42,20 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     private GameObject CurrentDragObject;
     private bool isHovering = false;
     private displayTurretCost buttonScript;
-    
+
+    public UIManager UiManager;
+
+    public List<GameObject> uiLoadoutList;
+    public List<GameObject> emptySlots = new List<GameObject>();
+    public List<Button> ButtonList = new List<Button>();
+
+    public Sprite currentButtonSprite;
+
+    public Canvas canvas;
+
+    public GameObject frameObject;
+
+
 
     void Awake()
     {
@@ -58,11 +75,29 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             turretRocket.GetComponent<TurretAI>().getTurretEfficiency()+
             turretDrone.GetComponent<TurretAI>().getTurretEfficiency() )/ loadOutSize)/4;*/
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.UiManager = gameManager.uiManager;
+
+        Debug.Log("getting empty slots");
+        emptySlots = gameManager.uiManager.loadoutPanel
+            .GetComponentsInChildren<Transform>()
+            .Where(t => t.name.StartsWith("emptySlot"))
+            .Select(t => t.gameObject)
+            .ToList();
+        ButtonList.Add(Button1 );
+        ButtonList.Add(Button2 );  
+        ButtonList.Add(Button3 );
+        ButtonList.Add(Button4 );
     }
 
     public float getLoadoutEfficiency()
     {
         return turretLoadoutEfficiency;
+    }
+
+    public void addToUiLoadoutList(GameObject gameObject)
+    {
+        uiLoadoutList.Add(gameObject);
+        Debug.Log("added to UILoadoutList "+ uiLoadoutList.Count);
     }
 
     void Update()
@@ -127,6 +162,31 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     public void OnBeginDrag(PointerEventData eventData)
     {
         isDragging = true;
+        if (gameManager.gameState == GameState.LOADOUTCREATION)
+        {
+            Debug.Log("in loadoutCreation");
+            Debug.Log("can we check loadoutList?: " + uiLoadoutList.Count);
+            for (int i = 0; i < uiLoadoutList.Count; i++)
+            {
+                Debug.Log("checking turret " + i + " of " + uiLoadoutList.Count);
+                if (uiLoadoutList[i].GetComponent<displayTurretCost>().isHovering)
+                {
+                    Debug.Log("is hovering over turret "+i);
+                    currentButtonSprite = uiLoadoutList[i].GetComponent<displayTurretCost>().ButtonSprite;
+                    
+                    CurrentDragObject = Instantiate(uiLoadoutList[i].GetComponent<displayTurretCost>().DragObject, Input.mousePosition, Quaternion.identity);
+                    CurrentDragObject.transform.Find("TurretImage").GetComponent<RawImage>().texture = uiLoadoutList[i].GetComponent<displayTurretCost>().texture;
+                    //CurrentDragObject = Instantiate(frameObject, Input.mousePosition, Quaternion.identity);
+                    RectTransform rt = CurrentDragObject.GetComponent<RectTransform>();
+                        rt.anchoredPosition = Vector2.zero; // Mitte
+                        rt.sizeDelta = new Vector2(100, 100); // Sichtbare Fläche, falls leer
+                        CurrentDragObject.transform.SetParent(canvas.transform, false);
+                        CurrentDragObject.transform.SetAsLastSibling(); // Ganz oben zeichnen (sichtbar)
+
+                        return;
+                }
+            }
+        }
 
         //if (isBuildPossible)
         if (Button1.GetComponent<displayTurretCost>().isHovering)
@@ -162,7 +222,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             SetDragObject(buttonScript.DragObject);
             setIsBuild(true);
         }
-        if(isBuildPossible  && buttonScript.turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
+        if(gameManager.gameState == GameState.LEVELPLAYING && isBuildPossible && buttonScript.turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
         {
             Debug.Log("Start drag");
             Vector3 mousePosition = Input.mousePosition;
@@ -180,9 +240,9 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (CurrentDragObject != null)
+        if (CurrentDragObject != null && gameManager.gameState == GameState.LEVELPLAYING)
         {
-            Debug.Log("Dragging");
+            //Debug.Log("Dragging");
             Vector3 mousePosition = Input.mousePosition;
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
             RaycastHit hit;
@@ -193,12 +253,33 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 CurrentDragObject.transform.position = spawnPosition;
             }
         }
+        else if (CurrentDragObject != null && gameManager.gameState == GameState.LOADOUTCREATION)
+        {
+            CurrentDragObject.transform.position = Input.mousePosition;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (gameManager.gameState == GameState.LOADOUTCREATION && CurrentDragObject != null)
+        {
+            Debug.Log("changing empty slot");
+            for (int i = 0; i < emptySlots.Count; i++)
+            {
+                Debug.Log("empty slot " + i + " is changing");
+                if (emptySlots[i].GetComponent<EmptySlotHover>().isHovering)
+                {
+                   emptySlots[i].GetComponent<Image>().sprite = currentButtonSprite;
+                    Debug.Log("empty slot changed success "+i);
+                }
+            }
+
+            Destroy(CurrentDragObject);
+        }
+        if (gameManager.gameState == GameState.LEVELPLAYING) {
+            spawnTurret(turretToBuild);
+        }
         isDragging = false;
-        spawnTurret(turretToBuild);
         CurrentDragObject = null;
         isHovering = false;
     }
