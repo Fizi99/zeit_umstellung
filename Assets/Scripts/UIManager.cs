@@ -62,11 +62,15 @@ public class UIManager : MonoBehaviour
     private bool isShaking = false;
     private Quaternion originalRotation;
 
+    private EpochChooser epochChooser;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+
+        epochChooser = new EpochChooser();
 
         initLoadout();
     }
@@ -337,8 +341,10 @@ public class UIManager : MonoBehaviour
                 break;
             case GameState.LEVELPLAYING:
                 //this.gameManager.highscoreTracker.resetTracker();
-                int epochDice = UnityEngine.Random.Range(0, 3);
-                this.gameManager.ApplySpritesForEpoch(epochDice);
+
+                // Within 5 runs, each era is guaranteed to appear at least once
+                int epoch = epochChooser.GetNextEpoch();
+                this.gameManager.ApplySpritesForEpoch(epoch);
                 break;
             case GameState.UPGRADING:
                 break;
