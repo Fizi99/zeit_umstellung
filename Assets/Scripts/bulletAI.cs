@@ -11,6 +11,15 @@ public class bulletAI : MonoBehaviour
     public float SlowMultiplier = 0;
     public float freezeDuration = 5f;
 
+    private AudioManager audioManager;
+
+    private void Start()
+    {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        audioManager.PlaySfx(audioManager.soundLibrary.sfxTurretWristwatchArtilleryFire);
+
+    }
+
     public void SetBulletTarget(Transform targetSetter)
     {
         target = targetSetter;
