@@ -50,6 +50,9 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     public List<Button> ButtonList = new List<Button>();
 
     public Sprite currentButtonSprite;
+    public Texture currentTexture;
+    public GameObject CurrentTurret;
+    public GameObject changedDragObject;
 
     public Canvas canvas;
 
@@ -176,6 +179,8 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                     
                     CurrentDragObject = Instantiate(uiLoadoutList[i].GetComponent<displayTurretCost>().DragObject, Input.mousePosition, Quaternion.identity);
                     CurrentDragObject.transform.Find("TurretImage").GetComponent<RawImage>().texture = uiLoadoutList[i].GetComponent<displayTurretCost>().texture;
+                    CurrentTurret = uiLoadoutList[i].GetComponent<displayTurretCost>().turret;
+                    changedDragObject = uiLoadoutList[i].transform.GetComponent<displayTurretCost>().ChangedDragObject;
                     //CurrentDragObject = Instantiate(frameObject, Input.mousePosition, Quaternion.identity);
                     RectTransform rt = CurrentDragObject.GetComponent<RectTransform>();
                         rt.anchoredPosition = Vector2.zero; // Mitte
@@ -222,6 +227,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             SetDragObject(buttonScript.DragObject);
             setIsBuild(true);
         }
+
         if(gameManager.gameState == GameState.LEVELPLAYING && isBuildPossible && buttonScript.turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
         {
             Debug.Log("Start drag");
@@ -269,7 +275,10 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 Debug.Log("empty slot " + i + " is changing");
                 if (emptySlots[i].GetComponent<EmptySlotHover>().isHovering)
                 {
-                   emptySlots[i].GetComponent<Image>().sprite = currentButtonSprite;
+                    emptySlots[i].GetComponent<Image>().sprite = currentButtonSprite;
+                    emptySlots[i].GetComponent<EmptySlotHover>().texture = CurrentDragObject.transform.Find("TurretImage").GetComponent<RawImage>().texture;
+                    emptySlots[i].GetComponent<EmptySlotHover>().Turret = CurrentTurret;
+                    emptySlots[i].GetComponent<EmptySlotHover>().changedDragObject = changedDragObject;
                     Debug.Log("empty slot changed success "+i);
                 }
             }
@@ -354,5 +363,32 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         setIsBuild(false);
     }
 
+
+    public void SetBuyButtons()
+    {
+        Button1.transform.Find("TurretImage").GetComponent<RawImage>().texture = emptySlots[0].GetComponent< EmptySlotHover > ().texture;
+        Button1.GetComponent<displayTurretCost>().turret = emptySlots[0].GetComponent<EmptySlotHover>().Turret;
+        Button1.GetComponent<displayTurretCost>().updateTurretCostText();
+        Button1.GetComponent<displayTurretCost>().DragObject = emptySlots[0].GetComponent<EmptySlotHover>().changedDragObject;
+
+        Button2.transform.Find("TurretImage").GetComponent<RawImage>().texture = emptySlots[1].GetComponent< EmptySlotHover > ().texture;
+        Button2.GetComponent<displayTurretCost>().turret = emptySlots[1].GetComponent<EmptySlotHover>().Turret;
+        Button2.GetComponent<displayTurretCost>().updateTurretCostText();
+        Button2.GetComponent<displayTurretCost>().DragObject = emptySlots[1].GetComponent<EmptySlotHover>().changedDragObject;
+
+        Button3.transform.Find("TurretImage").GetComponent<RawImage>().texture = emptySlots[2].GetComponent< EmptySlotHover > ().texture;
+        Button3.GetComponent<displayTurretCost>().turret = emptySlots[2].GetComponent<EmptySlotHover>().Turret;
+        Button3.GetComponent<displayTurretCost>().updateTurretCostText();
+        Button3.GetComponent<displayTurretCost>().DragObject = emptySlots[2].GetComponent<EmptySlotHover>().changedDragObject;
+
+        Button4.transform.Find("TurretImage").GetComponent<RawImage>().texture = emptySlots[3].GetComponent< EmptySlotHover > ().texture;
+        Button4.GetComponent<displayTurretCost>().turret = emptySlots[3].GetComponent<EmptySlotHover>().Turret;
+        Button4.GetComponent<displayTurretCost>().updateTurretCostText();
+        Button4.GetComponent<displayTurretCost>().DragObject = emptySlots[3].GetComponent<EmptySlotHover>().changedDragObject;
+
+
+
+
+    }
 
 }

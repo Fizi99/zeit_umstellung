@@ -36,8 +36,10 @@ public class TurretGridFiller : MonoBehaviour
             DragObject.transform.Find("TurretImage").GetComponent<RawImage>().texture = mapping.data.turretIconTexture;
             frame.transform.GetComponent<displayTurretCost>().turret = mapping.prefab;
             frame.transform.GetComponent<displayTurretCost>().ButtonSprite = mapping.buttonSprite;
+            DragObject.GetComponent<CarryTurretInfo>().Turret = mapping.prefab;
             frame.transform.GetComponent<displayTurretCost>().DragObject = DragObject;
             frame.transform.GetComponent<displayTurretCost>().texture = mapping.data.turretIconTexture;
+            frame.transform.GetComponent<displayTurretCost>().ChangedDragObject = mapping.DragObject;
 
 
 
@@ -49,8 +51,9 @@ public class TurretGridFiller : MonoBehaviour
             {
                 turretInfoUIElem.DisplayFromData(mapping.data);
             });
-
+            if(6 >  BuildManager.uiLoadoutList.Count) { 
             BuildManager.addToUiLoadoutList(frame);
+            }
         }
     }
 }
@@ -59,6 +62,7 @@ public class TurretGridFiller : MonoBehaviour
 public class TurretPrefabMapping
 {
     public GameObject prefab;
+    public GameObject DragObject;
     public TurretData data;
     public Sprite buttonSprite;
 }

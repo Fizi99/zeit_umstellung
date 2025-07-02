@@ -5,6 +5,10 @@ public class EmptySlotHover : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 {
 
     public bool isHovering = false;
+    public GameObject Turret;
+    public GameObject changedDragObject;
+
+    public Texture texture;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

@@ -45,13 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13055cd454c10c748bee9040dd0df25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 5
   damage: 10
   explosionRadius: 5
   useFreeze: 1
   shootSelf: 0
   SlowMultiplier: 0
   freezeDuration: 1
+  turretType: 0
 --- !u!212 &1903888343521763784
 SpriteRenderer:
   m_ObjectHideFlags: 0

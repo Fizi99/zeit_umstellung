@@ -72,7 +72,7 @@ MonoBehaviour:
   range: 3
   enemyTag: Enemy
   isSingleUse: 1
-  useTimeInsteadOfAmmo: 0
+  useTimeInsteadOfAmmo: 1
   initUseAmount: 60
   useAmount: 1
   buildingCost: 15

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 734fc02ef0205804596c70cb51db2fd4, type: 3}
+  m_Texture: {fileID: 2800000, guid: 9aca50b1b310a3d4a9d473bcb7280286, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -82,6 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6860482830855375882}
   - component: {fileID: 2672380883816236511}
+  - component: {fileID: -2850018882727508243}
   m_Layer: 5
   m_Name: UiDragObject
   m_TagString: Untagged
@@ -118,6 +119,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3226881726085387095}
   m_CullTransparentMesh: 1
+--- !u!114 &-2850018882727508243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3226881726085387095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e41fe6d7dfbe7b44ae3641670e88872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Turret: {fileID: 0}
 --- !u!1 &4910575912539231182
 GameObject:
   m_ObjectHideFlags: 0

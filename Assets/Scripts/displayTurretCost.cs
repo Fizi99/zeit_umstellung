@@ -9,6 +9,7 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public float cost;
     public GameObject turret;
     public GameObject DragObject;
+    public GameObject ChangedDragObject;
 
     private GameManager gameManager;
     public bool isTowerSelected = false;
@@ -18,20 +19,27 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public Texture texture;
 
+    public Button button;
+    public buildManager BuildManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        costText.text = (turret.GetComponent<TurretAI>().buildingCost).ToString();
+        updateTurretCostText();
+        if (button != null)
+        {
+            button.onClick.AddListener(OnButtonClick);
+        }
     }
 
     private void Update()
     {
 
-         
 
-    // Desaturate button image if not enough zeitsand to buy the tower
-    var childImage = gameObject.GetComponentInChildren<RawImage>();
+
+        // Desaturate button image if not enough zeitsand to buy the tower
+        var childImage = gameObject.GetComponentInChildren<RawImage>();
 
         if (turret.GetComponent<TurretAI>().buildingCost > gameManager.player.zeitsand)
         {
@@ -53,5 +61,18 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         Debug.Log("Pointer exited button!");
         isHovering = false;
+    }
+
+    void OnButtonClick()
+    {
+        BuildManager.highlightTowerSelected(button);
+        BuildManager.SetTurretToBuild(turret);
+        BuildManager.SetDragObject(DragObject);
+
+    }
+
+    public void updateTurretCostText(){
+    
+        costText.text = (turret.GetComponent<TurretAI>().buildingCost).ToString();
     }
 }

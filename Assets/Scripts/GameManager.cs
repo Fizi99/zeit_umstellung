@@ -90,7 +90,12 @@ public class GameManager : MonoBehaviour
     public void ChangeGameState(GameState gameState)
     {
         this.gameState = gameState;
-        if(gameState == GameState.LEVELEND)
+
+        if (gameState == GameState.LEVELPLAYING)
+        {
+            buildManager.SetBuyButtons();
+        }
+        if (gameState == GameState.LEVELEND)
         {
             ClearScene();
             this.player.SaveUhranium();
