@@ -36,7 +36,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     private GameManager gameManager;
 
     private GameObject CurrentDragObject;
-    private bool isHovering;
+    private bool isHovering = false;
     private displayTurretCost buttonScript;
     
 
@@ -154,12 +154,16 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             buttonScript = Button4.GetComponent<displayTurretCost>();
         }
 
-        if((isBuildPossible || isHovering) && buttonScript.turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
+        //isbuildpossible muss andere if bedingung sein
+        if (isHovering)
         {
             SetTurretToBuild(buttonScript.turret);
             highlightTowerSelected(lastlySelectedButton);
             SetDragObject(buttonScript.DragObject);
-            isBuildPossible = true;
+            setIsBuild(true);
+        }
+        if(isBuildPossible  && buttonScript.turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
+        {
             Debug.Log("Start drag");
             Vector3 mousePosition = Input.mousePosition;
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
@@ -238,7 +242,8 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                         }
                         else
                         {
-                            Debug.Log("Turret already at this location!");
+                            gameManager.SpawnFloatingText(spawnPosition, "Turm bereits hier!", Color.red);
+                            //Debug.Log("Turret already at this location!");
                         }
                     }
                     else
@@ -248,12 +253,14 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 }
                 else
                 {
-                    Debug.Log("Not enough Zeitsand!");
+                    gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "kein Zeitsand!", Color.red);
+                    //Debug.Log("Not enough Zeitsand!");
                 }
             }
             else
             {
-                Debug.Log("Turret outside of placeable Zone!");
+                gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "Hier nicht!", Color.red);
+                //Debug.Log("Turret outside of placeable Zone!");
             }
 
         }
