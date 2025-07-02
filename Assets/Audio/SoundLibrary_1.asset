@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f7b581836a2d614096fa298994f3433, type: 3}
   m_Name: SoundLibrary_1
   m_EditorClassIdentifier: 
-  musicMainScore: {fileID: 8300000, guid: a95afda6c01741348b50e5941f7badcd, type: 3}
-  sfxTurretWristwatchArtilleryFire: {fileID: 8300000, guid: b6681f6518eab7e45bd74ab188c68584, type: 3}
+  musicMainScore: {fileID: 8300000, guid: 69b1f4e172ed60342b0b20db68fd03a1, type: 3}
+  sfxTurretWristwatchArtilleryFire: {fileID: 8300000, guid: d6ae6ff65ff943c4fb879ea5703d8521, type: 3}

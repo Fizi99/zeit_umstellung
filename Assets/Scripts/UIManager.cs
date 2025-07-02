@@ -18,6 +18,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private Toggle screenShakeToggle;
     [SerializeField] private Toggle vignetteToggle;
+    [SerializeField] private Toggle audioToggle;
+    [SerializeField] private Toggle sfxToggle;
+    [SerializeField] private Toggle musicToggle;
+    [SerializeField] private Slider audioVolumeSlider;
+    [SerializeField] private Slider musicVolumeSlider;
+    [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private Button startLevelButton;
     [SerializeField] private GameObject visualizeLoadoutParent;
     [SerializeField] private List<Sprite> turretSprites;
@@ -39,6 +45,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject debugText;
 
     private GameManager gameManager;
+    private AudioManager audioManager;
     private List<Bus> busses;
     private List<GameObject> busSelectionBtns = new List<GameObject>();
     private bool busInfoUpdated = false;
@@ -59,6 +66,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         initLoadout();
     }
@@ -103,6 +111,10 @@ public class UIManager : MonoBehaviour
         this.debugText.GetComponent<TMP_Text>().text = "";
     }
 
+    /// <summary>
+    /// SETTINGSMENU
+    /// </summary>
+
     public void ToggleScreenShake()
     {
         this.mainCamera.GetComponent<PlayerHitEffect>().SetToggleScreenshake(this.screenShakeToggle.isOn);
@@ -111,6 +123,46 @@ public class UIManager : MonoBehaviour
     public void ToggleVignette()
     {
         this.mainCamera.GetComponent<PlayerHitEffect>().SetToggleVignette(this.vignetteToggle.isOn);
+    }
+
+    // audio toggle for music sfx and overall
+    public void ToggleSfxMute()
+    {
+        if (!this.audioToggle.isOn)
+        {
+            this.audioManager.SfxMute(this.sfxToggle.isOn);
+        }
+    }
+
+    public void ToggleMusicMute()
+    {
+        if (!this.audioToggle.isOn)
+        {
+            this.audioManager.MusicMute(this.musicToggle.isOn);
+        }
+    }
+
+    public void ToggleAudioMute()
+    {
+        this.audioManager.SfxMute(this.audioToggle.isOn);
+        this.audioManager.MusicMute(this.audioToggle.isOn);
+    }
+
+    // volume slider for all audio, music and sfx. sfx and music volume is multiplied by state of overall audio slider
+    public void SliderAudioVolume()
+    {
+        SliderMusicVolume();
+        SliderSfxVolume();
+    }
+
+    public void SliderMusicVolume()
+    {
+        this.audioManager.MusicVolume(this.musicVolumeSlider.value * this.audioVolumeSlider.value);
+    }
+
+    public void SliderSfxVolume()
+    {
+        this.audioManager.SfxVolume(this.sfxVolumeSlider.value * this.audioVolumeSlider.value);
     }
 
     // check if bus information got updated for example to update bus selection buttons or countdown. use value later
