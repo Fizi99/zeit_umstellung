@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject upgradingMenuPanel;
     [SerializeField] private GameObject lvlEndPanel;
     [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private GameObject loadoutPanel;
+    [SerializeField] public GameObject loadoutPanel;
 
     [SerializeField] private GameObject distanceToStopText;
 
