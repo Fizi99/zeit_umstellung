@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public GameObject busStopGO = null;
     public Dictionary<long, Vector3> nodeLocationDictionary;
+
+    private readonly string[] epochs = { "pharaohs", "medieval", "prehistoric" };
 
     public GameState gameState;
 
@@ -47,6 +50,7 @@ public class GameManager : MonoBehaviour
     [Space(10)]
     [SerializeField] public List<GameObject> enemyPrefabs;
     [SerializeField] public List<GameObject> turretPrefabs;
+    [SerializeField] private Sprite[] allEpochSpecificSprites;
 
     void Awake()
     {
@@ -238,5 +242,55 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
         Debug.Log("Highscore is now (after reset): " + PlayerPrefs.GetFloat("Highscore", 0f));
+    }
+
+    public void ApplySpritesForEpoch(int choice)
+    {
+        if (choice < 0 || choice >= epochs.Length)
+            return;
+
+        string epoch = epochs[choice];
+
+        foreach (GameObject enemyPrefab in enemyPrefabs)
+        {
+            string prefabName = enemyPrefab.name; // z. B. "EnemyFast"
+
+            // Mapping von Klassennamen zu Sprite-Stilnamen
+            string type = prefabName switch
+            {
+                "EnemyStd" => "std",
+                "EnemyFast" => "fast",
+                "EnemyTank" => "tank",
+                "EnemySupport" => "support",
+                "EnemySplitter" => "splitter",
+                _ => null
+            };
+
+            if (type == null)
+            {
+                Debug.LogWarning($"Unbekannter Gegnertyp: {prefabName}");
+                continue;
+            }
+
+            string expectedSpriteName = $"enemy-{type}-{epoch}";
+
+            Sprite newSprite = allEpochSpecificSprites.FirstOrDefault(s => s.name.ToLower() == expectedSpriteName);
+            if (newSprite == null)
+            {
+                Debug.LogWarning($"Kein Sprite gefunden: {expectedSpriteName}");
+                continue;
+            }
+
+            SpriteRenderer sr = enemyPrefab.GetComponent<SpriteRenderer>();
+            if (sr == null)
+            {
+                Debug.LogWarning($"Kein SpriteRenderer an: {prefabName}");
+                continue;
+            }
+
+            sr.sprite = newSprite;
+        }
+
+        Debug.Log("Epoch-Sprites angewendet: " + epoch);
     }
 }

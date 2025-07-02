@@ -337,6 +337,8 @@ public class UIManager : MonoBehaviour
                 break;
             case GameState.LEVELPLAYING:
                 //this.gameManager.highscoreTracker.resetTracker();
+                int epochDice = UnityEngine.Random.Range(0, 3);
+                this.gameManager.ApplySpritesForEpoch(epochDice);
                 break;
             case GameState.UPGRADING:
                 break;
