@@ -10,14 +10,34 @@ public class bulletAI : MonoBehaviour
     public bool shootSelf = false;
     public float SlowMultiplier = 0;
     public float freezeDuration = 5f;
+    public TurretType turretType = TurretType.STANDARD;
 
     private AudioManager audioManager;
 
     private void Start()
     {
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        audioManager.PlaySfx(audioManager.soundLibrary.sfxTurretWristwatchArtilleryFire);
 
+        PlayShootAudio();
+    }
+
+    private void PlayShootAudio()
+    {
+        AudioClip clip = null;
+        switch (turretType)
+        {
+            case TurretType.STANDARD:
+                clip = this.audioManager.soundLibrary.sfxTurretWristwatchArtilleryFire;
+                break;
+
+            default:
+                break;
+        }
+
+        if(clip != null) {
+            this.audioManager.PlaySfx(clip);
+        }
+        
     }
 
     public void SetBulletTarget(Transform targetSetter)

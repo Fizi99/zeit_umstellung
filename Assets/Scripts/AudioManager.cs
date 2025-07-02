@@ -41,7 +41,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(AudioClip audio)
     {
+        // break if trying to init same music twice
         if (this.musicSource.clip == audio) return;
+        // else play music
         this.musicSource.clip = audio;
         this.musicSource.loop = true;
         this.musicSource.Play();
