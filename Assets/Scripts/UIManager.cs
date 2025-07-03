@@ -419,7 +419,9 @@ public class UIManager : MonoBehaviour
     public void NavigateToEndLvl()
     {
         // when level is ended, regenerate bus selection: TODO: LATER CHANGE SO SHOWN UI DEPENDS ON GAMESTATE
-        //GenerateBusSelection();
+        //GenerateBusSelection()
+        // reset uhranium so only saved uhranium is added to account. prevents exploit of ending game before a big wave hits without being able to save current uhranium amount
+        this.gameManager.player.ResetUhranium();
 
         // Update UI
         this.gameManager.ChangeGameState(GameState.LEVELEND);

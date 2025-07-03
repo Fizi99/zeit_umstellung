@@ -82,6 +82,11 @@ public class GameManager : MonoBehaviour
     {
     }
 
+    public void CenterCameraToBusstop()
+    {
+
+    }
+
     public void TriggerScreenEffect()
     {
         this.mainCamera.GetComponent<PlayerHitEffect>().TriggerEffect();

@@ -71,6 +71,12 @@ public class Player : MonoBehaviour
         uhranium += Time.deltaTime * uhrraniumRatePerSec;
     }
 
+    // reset uhranium for example if lvl is finished over button press. this way, not saved uhranium is not saved
+    public void ResetUhranium()
+    {
+        this.uhranium = 0;
+    }
+
     public void SaveUhranium()
     {
         this.savedUhranium += (int) this.uhranium;
