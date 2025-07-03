@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
     {
         this.gameState = GameState.MAINMENU;
         InvokeRepeating("UpdateBusInformation", 1, 5);
+        // get busstop location based
+        this.uiManager.SearchClosestStopBtnPressed();
         //LocationService location = new LocationService();
         //location.Start();
         //Debug.Log(location.status);

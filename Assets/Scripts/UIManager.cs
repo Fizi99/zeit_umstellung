@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject visualizeLoadoutParent;
     [SerializeField] private List<Sprite> turretSprites;
     [SerializeField] private GameObject zeitsandContainer;
+    [SerializeField] private GameObject locationTrackedIcon;
 
     [Space(10)]
 
@@ -436,12 +437,14 @@ public class UIManager : MonoBehaviour
     // call, when busstop is searched in searchfield
     public void BusSearchInputFieldChanged()
     {
+        this.locationTrackedIcon.SetActive(false);
         this.gameManager.SearchBusStop(this.busSearchInputField.text);
     }
 
     // call, when busstop is searched in searchfield
     public void SearchClosestStopBtnPressed()
     {
+        this.locationTrackedIcon.SetActive(true);
         this.gameManager.SearchClosestStopToPLayer();
     }
 
