@@ -53,6 +53,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     public Texture currentTexture;
     public GameObject CurrentTurret;
     public GameObject changedDragObject;
+    public TurretType currentTurretType;
 
     public Canvas canvas;
 
@@ -86,6 +87,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             .Where(t => t.name.StartsWith("emptySlot"))
             .Select(t => t.gameObject)
             .ToList();
+        UiManager.initTemporaryLoadouts();
         ButtonList.Add(Button1 );
         ButtonList.Add(Button2 );  
         ButtonList.Add(Button3 );
@@ -181,6 +183,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                     CurrentDragObject.transform.Find("TurretImage").GetComponent<RawImage>().texture = uiLoadoutList[i].GetComponent<displayTurretCost>().texture;
                     CurrentTurret = uiLoadoutList[i].GetComponent<displayTurretCost>().turret;
                     changedDragObject = uiLoadoutList[i].transform.GetComponent<displayTurretCost>().ChangedDragObject;
+                    currentTurretType = uiLoadoutList[i].transform.GetComponent<displayTurretCost>().turretType;
                     //CurrentDragObject = Instantiate(frameObject, Input.mousePosition, Quaternion.identity);
                     RectTransform rt = CurrentDragObject.GetComponent<RectTransform>();
                         rt.anchoredPosition = Vector2.zero; // Mitte
@@ -275,11 +278,21 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 Debug.Log("empty slot " + i + " is changing");
                 if (emptySlots[i].GetComponent<EmptySlotHover>().isHovering)
                 {
+                    if (CurrentTurret.GetComponent<TurretAI>().isPossesed)
+                    {
+
                     emptySlots[i].GetComponent<Image>().sprite = currentButtonSprite;
                     emptySlots[i].GetComponent<EmptySlotHover>().texture = CurrentDragObject.transform.Find("TurretImage").GetComponent<RawImage>().texture;
                     emptySlots[i].GetComponent<EmptySlotHover>().Turret = CurrentTurret;
                     emptySlots[i].GetComponent<EmptySlotHover>().changedDragObject = changedDragObject;
-                    Debug.Log("empty slot changed success "+i);
+                        emptySlots[i].GetComponent<EmptySlotHover>().turretType = currentTurretType;
+                        this.gameManager.uiManager.shownLoadout[i] = currentTurretType;
+                        Debug.Log("empty slot changed success "+i);
+                    }
+                    else
+                    {
+                        gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "Turm erst kaufen!", Color.red);
+                    }
                 }
             }
 
@@ -366,29 +379,22 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     public void SetBuyButtons()
     {
-        Button1.transform.Find("TurretImage").GetComponent<RawImage>().texture = emptySlots[0].GetComponent< EmptySlotHover > ().texture;
-        Button1.GetComponent<displayTurretCost>().turret = emptySlots[0].GetComponent<EmptySlotHover>().Turret;
-        Button1.GetComponent<displayTurretCost>().updateTurretCostText();
-        Button1.GetComponent<displayTurretCost>().DragObject = emptySlots[0].GetComponent<EmptySlotHover>().changedDragObject;
-
-        Button2.transform.Find("TurretImage").GetComponent<RawImage>().texture = emptySlots[1].GetComponent< EmptySlotHover > ().texture;
-        Button2.GetComponent<displayTurretCost>().turret = emptySlots[1].GetComponent<EmptySlotHover>().Turret;
-        Button2.GetComponent<displayTurretCost>().updateTurretCostText();
-        Button2.GetComponent<displayTurretCost>().DragObject = emptySlots[1].GetComponent<EmptySlotHover>().changedDragObject;
-
-        Button3.transform.Find("TurretImage").GetComponent<RawImage>().texture = emptySlots[2].GetComponent< EmptySlotHover > ().texture;
-        Button3.GetComponent<displayTurretCost>().turret = emptySlots[2].GetComponent<EmptySlotHover>().Turret;
-        Button3.GetComponent<displayTurretCost>().updateTurretCostText();
-        Button3.GetComponent<displayTurretCost>().DragObject = emptySlots[2].GetComponent<EmptySlotHover>().changedDragObject;
-
-        Button4.transform.Find("TurretImage").GetComponent<RawImage>().texture = emptySlots[3].GetComponent< EmptySlotHover > ().texture;
-        Button4.GetComponent<displayTurretCost>().turret = emptySlots[3].GetComponent<EmptySlotHover>().Turret;
-        Button4.GetComponent<displayTurretCost>().updateTurretCostText();
-        Button4.GetComponent<displayTurretCost>().DragObject = emptySlots[3].GetComponent<EmptySlotHover>().changedDragObject;
+        List <Button> buttonList = new List<Button> ();
+        buttonList.Add(Button1);
+        buttonList.Add(Button2);
+        buttonList.Add(Button3);
+        buttonList.Add(Button4);
+        for (int buttonIndex = 0; buttonIndex < buttonList.Count; buttonIndex++)
+        {
+            List<TurretPrefabMapping> turretMappings = this.gameManager.uiManager.loadoutPanel.GetComponentInChildren<TurretGridFiller>().turretMappings;
+            var result = turretMappings.FirstOrDefault(x => x.data.turretType == this.gameManager.player.chosenLoadout[buttonIndex]);
 
 
-
-
+            buttonList[buttonIndex].transform.Find("TurretImage").GetComponent<RawImage>().texture = result.data.turretIconTexture;
+            buttonList[buttonIndex].GetComponent<displayTurretCost>().turret = result.prefab;
+            buttonList[buttonIndex].GetComponent<displayTurretCost>().DragObject = result.DragObject;
+            buttonList[buttonIndex].GetComponent<displayTurretCost>().updateTurretCostText();
+        }
     }
 
 }

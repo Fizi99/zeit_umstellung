@@ -21,6 +21,7 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public Button button;
     public buildManager BuildManager;
+    public TurretType turretType;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

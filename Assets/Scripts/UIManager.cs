@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] public GameObject loadoutPanel;
 
+    [SerializeField] public TMPro.TMP_Dropdown dropdown;
+
     [SerializeField] private GameObject distanceToStopText;
 
     [SerializeField] private GameObject debugText;
@@ -63,6 +66,15 @@ public class UIManager : MonoBehaviour
     private Quaternion originalRotation;
 
     private EpochChooser epochChooser;
+
+    public List<TurretType> shownLoadout = new List<TurretType>();
+    public List<List<TurretType>> temporaryLoadouts = new List<List<TurretType>>();
+    private bool initializedTemporaryLoadouts = false;
+
+    public Button Arsenal1;
+    public int currentLoadoutIndex=1;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -535,7 +547,7 @@ public class UIManager : MonoBehaviour
         UpdateLoadoutVisualization(); // Initial anzeigen
     }
 
-    private void UpdateLoadoutVisualization()
+    public void UpdateLoadoutVisualization()
     {
         List<TurretType> loadout = this.gameManager.player.chosenLoadout;
 
@@ -576,5 +588,47 @@ public class UIManager : MonoBehaviour
 
             yield return new WaitForSeconds(shakeFrequency);
         }
+    }
+
+    public void fillEmptySlots(List<TurretType> shownLoadout)
+    {
+        for (int emptySlotIndex = 0; emptySlotIndex < shownLoadout.Count; emptySlotIndex++)
+        {
+            List<TurretPrefabMapping> turretMappings = this.loadoutPanel.GetComponentInChildren<TurretGridFiller>().turretMappings;
+            var result = turretMappings.FirstOrDefault(x => x.data.turretType == shownLoadout[emptySlotIndex]);
+            var currentEmptySlot = this.gameManager.buildManager.emptySlots[emptySlotIndex];
+            currentEmptySlot.GetComponent<Image>().sprite = result.buttonSprite;
+            currentEmptySlot.GetComponent<EmptySlotHover>().texture = result.data.turretIconTexture;
+            currentEmptySlot.GetComponent<EmptySlotHover>().Turret = result.prefab;
+            currentEmptySlot.GetComponent<EmptySlotHover>().changedDragObject = result.DragObject;
+            currentEmptySlot.GetComponent<EmptySlotHover>().turretType = result.data.turretType;
+
+        }
+    }
+
+    public void initTemporaryLoadouts()
+    {
+        if (initializedTemporaryLoadouts)
+        {
+
+            for (int i = 0; i < 4; i++)
+            {
+                temporaryLoadouts[i] = SaveManager.LoadLoadout(i + 1);
+            }
+        }
+        else
+        {
+            initializedTemporaryLoadouts = true;
+            for (int i = 0; i < 4; i++)
+            {
+                temporaryLoadouts.Add(SaveManager.LoadLoadout(i + 1));
+                Debug.Log("temporaryLoadouts["+i +"].Count: " + temporaryLoadouts[i].Count);
+            }
+            Debug.Log("temporaryLoadouts.Count: " + temporaryLoadouts.Count);
+        }
+        //button hervorheben 1
+        shownLoadout = temporaryLoadouts[currentLoadoutIndex-1];
+        Debug.Log("shownLoadout.Count: " + shownLoadout.Count);
+        fillEmptySlots(shownLoadout);
     }
 }

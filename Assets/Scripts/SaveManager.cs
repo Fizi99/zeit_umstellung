@@ -22,7 +22,7 @@ public static class SaveManager
     /*
      * Because PlayerPrefs can only handle primitives, we serialize a list of enum values to a string
      * and deserialize it when loading 
-     */ 
+     */
 
     public static void SavePurchasedTurrets(List<TurretType> purchasedTurrets)
     {
@@ -40,7 +40,47 @@ public static class SaveManager
 
         return serializedData
             .Split(',')
-            .Select(s => (TurretType) Enum.Parse(typeof(TurretType), s))
+            .Select(s => (TurretType)Enum.Parse(typeof(TurretType), s))
             .ToList();
+    }
+
+    public static void SaveLoadout(int loadOutIndex, List<TurretType> chosenTurrets)
+    {
+        if (4 >= loadOutIndex && loadOutIndex > 0)
+        {
+
+            string data = string.Join(",", chosenTurrets.Select(e => e.ToString()));
+            PlayerPrefs.SetString("Loadout" + loadOutIndex, data);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            Debug.Log("loadoutindex out of range");
+        }
+    }
+
+    public static List<TurretType> LoadLoadout(int loadOutIndex)
+    {
+        if (4 >= loadOutIndex && loadOutIndex > 0)
+        {
+            string serializedData = PlayerPrefs.GetString("Loadout" + loadOutIndex, "");
+
+            if (string.IsNullOrEmpty(serializedData))
+                return new List<TurretType>() {
+                    TurretType.STANDARD,
+                    TurretType.MISSILE,
+                    TurretType.DRONEBASE,
+                    TurretType.LASER };
+
+            return serializedData
+                .Split(',')
+                .Select(s => (TurretType)Enum.Parse(typeof(TurretType), s))
+                .ToList();
+        }
+        else
+        {
+            Debug.Log("loadoutindex out of range");
+            return new List<TurretType>();
+        }
     }
 }

@@ -96,6 +96,7 @@ MonoBehaviour:
   threshold: 3
   minFrequency: 1
   maxFrequency: 0.01
+  isPossesed: 1
 --- !u!212 &-4397106788098684653
 SpriteRenderer:
   m_ObjectHideFlags: 0

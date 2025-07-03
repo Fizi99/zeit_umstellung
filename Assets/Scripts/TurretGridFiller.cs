@@ -40,6 +40,7 @@ public class TurretGridFiller : MonoBehaviour
             frame.transform.GetComponent<displayTurretCost>().DragObject = DragObject;
             frame.transform.GetComponent<displayTurretCost>().texture = mapping.data.turretIconTexture;
             frame.transform.GetComponent<displayTurretCost>().ChangedDragObject = mapping.DragObject;
+            frame.transform.GetComponent<displayTurretCost>().turretType = mapping.data.turretType;
 
 
 

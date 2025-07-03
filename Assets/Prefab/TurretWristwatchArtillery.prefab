@@ -168,6 +168,10 @@ MonoBehaviour:
   blobShadowOffset: {x: 0, y: -0.05, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}
   blobShadowRotation: {x: 0, y: 0, z: 0}
+  threshold: 3
+  minFrequency: 1
+  maxFrequency: 0.01
+  isPossesed: 1
 --- !u!212 &-8030238242359327509
 SpriteRenderer:
   m_ObjectHideFlags: 0

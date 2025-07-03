@@ -23,17 +23,24 @@ public class Player : MonoBehaviour
 
     private GameManager gameManager;
 
-    public List<TurretType> chosenLoadout = new List<TurretType>()
-    {
-        TurretType.STANDARD,
-        TurretType.MISSILE,
-        TurretType.DRONEBASE,
-        TurretType.LASER
-    };
+    public List<TurretType> chosenLoadout = new List<TurretType>();
 
+    //public List<TurretType> changedLoadoutSth = new List<TurretType>()
+    //{
+    //    TurretType.MISSILE,
+    //    TurretType.MISSILE,
+    //    TurretType.MISSILE,
+    //    TurretType.MISSILE
+    //};
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        chosenLoadout = SaveManager.LoadLoadout(1);
+        //SaveManager.SaveLoadout(1, changedLoadoutSth);
+        //SaveManager.SaveLoadout(2, changedLoadoutSth);
+        //SaveManager.SaveLoadout(3, changedLoadoutSth);
+        //SaveManager.SaveLoadout(4, changedLoadoutSth);
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         lives = startLives;
         this.zeitsand = this.zeitsandStartValue;

@@ -49,6 +49,8 @@ public class TurretAI : MonoBehaviour
     public float maxFrequency = 0.01f;
     private Coroutine toggleCoroutine;
 
+    public bool isPossesed = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

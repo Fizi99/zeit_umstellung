@@ -7,6 +7,7 @@ public class EmptySlotHover : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public bool isHovering = false;
     public GameObject Turret;
     public GameObject changedDragObject;
+    public TurretType turretType;
 
     public Texture texture;
 
