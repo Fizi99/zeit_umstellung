@@ -52,6 +52,7 @@ MonoBehaviour:
   shootSelf: 0
   SlowMultiplier: 0
   freezeDuration: 5
+  turretType: 2
 --- !u!212 &-2640076053996855403
 SpriteRenderer:
   m_ObjectHideFlags: 0

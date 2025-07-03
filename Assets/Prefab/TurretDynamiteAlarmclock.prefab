@@ -246,13 +246,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 6
-  range: 3
+  range: 2
   enemyTag: Enemy
   isSingleUse: 1
   useTimeInsteadOfAmmo: 0
   initUseAmount: 1
   useAmount: 1
-  buildingCost: 5
+  buildingCost: 8
   useBar: {fileID: 1532770538324716315}
   calculateBuildingCost: 0
   isMoving: 0
