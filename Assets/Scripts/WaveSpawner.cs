@@ -201,20 +201,27 @@ public class WaveSpawner : MonoBehaviour
         }
         for (int i = 0; i < maxRoutes; i++)
         {
-            // randomly choose a route index and set it as possible spawn
-            int j = UnityEngine.Random.Range(0, routeIndices.Count);
-            this.wave.Add(routeIndices[j], new Queue<EnemyType>());
-            // remove that index from possible indices, so value isnt overwritten
-            usedRouteIndices.Add(routeIndices[j]);
-            routeIndices.RemoveAt(j);
+            if (routeIndices.Count > 0)
+            {
+                // randomly choose a route index and set it as possible spawn
+                int j = UnityEngine.Random.Range(0, routeIndices.Count);
+                this.wave.Add(routeIndices[j], new Queue<EnemyType>());
+                // remove that index from possible indices, so value isnt overwritten
+                usedRouteIndices.Add(routeIndices[j]);
+                routeIndices.RemoveAt(j);
+            }
+            
 
 
         }
         // distribute enemies to routes randomly
         foreach (EnemyType enemy in this.currentWaveEnemies)
         {
-            int j = UnityEngine.Random.Range(0, usedRouteIndices.Count);
-            this.wave[usedRouteIndices[j]].Enqueue(enemy);
+            if (usedRouteIndices.Count > 0)
+            {
+                int j = UnityEngine.Random.Range(0, usedRouteIndices.Count);
+                this.wave[usedRouteIndices[j]].Enqueue(enemy);
+            }
         }
 
 

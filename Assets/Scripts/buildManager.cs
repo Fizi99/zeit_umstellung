@@ -314,7 +314,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             Debug.Log("Pointer position: " + Input.mousePosition);
             Destroy(CurrentDragObject);
 
-            if (Input.mousePosition.x < 1915f && 400f < Input.mousePosition.x && Input.mousePosition.y < 1075 && 0 < Input.mousePosition.y)
+            if (Input.mousePosition.x < Screen.width && 400f < Input.mousePosition.x && Input.mousePosition.y < Screen.height && 0 < Input.mousePosition.y)
             {
                 if (turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
                 {

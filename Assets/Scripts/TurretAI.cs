@@ -49,6 +49,9 @@ public class TurretAI : MonoBehaviour
     public float maxFrequency = 0.01f;
     private Coroutine toggleCoroutine;
 
+    // bool, to check if flicker is currently in on state
+    private bool on = true;
+
     public bool isPossesed = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -216,8 +219,10 @@ public class TurretAI : MonoBehaviour
 
     IEnumerator ToggleLoop()
     {
+        
         while (true)
         {
+            
             // Calculate interval
             float normalizedValue = 0f;
             if (isMoving)
@@ -230,9 +235,20 @@ public class TurretAI : MonoBehaviour
                 normalizedValue = Mathf.Clamp01(useAmount / threshold);
             }
             float interval = Mathf.Lerp(maxFrequency, minFrequency, normalizedValue);
+            SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+            if (this.on)
+            {
+                this.on = false;
+                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 0.6f);
+            }
+            else
+            {
+                this.on = true;
+                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 1f);
+            }
 
             // Toggle visibility
-            GetComponent < SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
+            //GetComponent < SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
 
             yield return new WaitForSeconds(interval);
         }
