@@ -73,7 +73,7 @@ MonoBehaviour:
   enemyTag: Enemy
   isSingleUse: 1
   useTimeInsteadOfAmmo: 1
-  initUseAmount: 60
+  initUseAmount: 10
   useAmount: 1
   buildingCost: 15
   useBar: {fileID: 6508452559795865937}
@@ -81,7 +81,7 @@ MonoBehaviour:
   isMoving: 0
   speed: 30
   stopAndShootRange: 5
-  fireRate: 0.5
+  fireRate: 10
   bulletPrefab: {fileID: 9084643237093435201, guid: ac75afabaf1caef448dc23a0fb12afde, type: 3}
   firePoint: {fileID: 0}
   towerSprites:

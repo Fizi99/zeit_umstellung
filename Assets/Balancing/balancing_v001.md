@@ -98,38 +98,38 @@ SlowMultiplier: 0
 freezeDuration: 5
 
 ### FREEZE
-range: 5
+range: 3
 isSingleUse: True
 useAmount: 1
-buildingCost: 4
+buildingCost: 15
 isMoving: False
 speed: 30
 stopAndShootRange: 5
-fireRate: 0,5
+fireRate: 10
 #### bullet stats
-speed: 1
-damage: 10
-explosionRadius: 5
+speed: 5
+damage: 0
+explosionRadius: 3
 useFreeze: True
-shootSelf: False
-SlowMultiplier: 0
+shootSelf: True
+SlowMultiplier: 0,1
 freezeDuration: 1
 
 ### DYNAMITE
-range: 5
+range: 2
 isSingleUse: True
 useAmount: 1
-buildingCost: 2
+buildingCost: 8
 isMoving: False
 speed: 30
 stopAndShootRange: 5
 fireRate: 1
 #### bullet stats
-speed: 10
-damage: 2
-explosionRadius: 5
+speed: 5
+damage: 1
+explosionRadius: 3
 useFreeze: False
-shootSelf: False
+shootSelf: True
 SlowMultiplier: 0
 freezeDuration: 5
 

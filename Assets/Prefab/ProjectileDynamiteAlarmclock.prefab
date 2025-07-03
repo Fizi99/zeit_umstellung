@@ -46,13 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  damage: 2
+  damage: 1
   explosionRadius: 3
   useFreeze: 0
   shootSelf: 1
   SlowMultiplier: 0
   freezeDuration: 5
-  turretType: 0
+  turretType: 6
 --- !u!212 &5776246726507500832
 SpriteRenderer:
   m_ObjectHideFlags: 0
