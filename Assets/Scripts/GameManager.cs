@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public List<GameObject> turretPrefabs;
     [SerializeField] private Sprite[] allEpochSpecificSprites;
 
+    private bool firstStart = true;
+
     void Awake()
     {
         // Reset all persistently saved data if first time started the app on a build
@@ -74,7 +76,7 @@ public class GameManager : MonoBehaviour
         this.gameState = GameState.MAINMENU;
         InvokeRepeating("UpdateBusInformation", 1, 5);
         // get busstop location based
-        this.uiManager.SearchClosestStopBtnPressed();
+        
         //LocationService location = new LocationService();
         //location.Start();
         //Debug.Log(location.status);
@@ -97,6 +99,14 @@ public class GameManager : MonoBehaviour
     public void ChangeGameState(GameState gameState)
     {
         this.gameState = gameState;
+        if(gameState == GameState.LEVELSELECTION)
+        {
+            if (this.firstStart)
+            {
+                this.uiManager.SearchClosestStopBtnPressed();
+                this.firstStart = false;
+            }
+        }
 
         if (gameState == GameState.LEVELPLAYING)
         {
