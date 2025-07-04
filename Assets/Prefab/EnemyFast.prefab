@@ -4985,6 +4985,10 @@ MonoBehaviour:
   delayedHealthBar: {fileID: 7477906104905755297}
   maxWidth: 80
   damageLerpSpeed: 2
+  sprites:
+  - {fileID: 21300000, guid: 1fdbb71cae607f24bb3ef28484a803e1, type: 3}
+  - {fileID: 21300000, guid: d86457226b0bb474fa4d4cc5640e238d, type: 3}
+  - {fileID: 21300000, guid: 0a9e6a8390459e840830ceb11bda6462, type: 3}
 --- !u!212 &8613936685823846041
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -356,8 +356,7 @@ public class UIManager : MonoBehaviour
                 //this.gameManager.highscoreTracker.resetTracker();
 
                 // Within 5 runs, each era is guaranteed to appear at least once
-                int epoch = epochChooser.GetNextEpoch();
-                this.gameManager.ApplySpritesForEpoch(epoch);
+
                 break;
             case GameState.UPGRADING:
                 break;

@@ -44,13 +44,14 @@ public class TurretAI : MonoBehaviour
 
     private float explosionMult = 1f;
 
-    public float threshold = 3f;  // Only start toggling below this
-    public float minFrequency = 1f; //max and min visibility toggling frequency
-    public float maxFrequency = 0.01f;
+    private float threshold = 3f;  // Only start toggling below this
+    private float minFrequency = 0.5f; //max and min visibility toggling frequency
+    private float maxFrequency = 0.1f;
     private Coroutine toggleCoroutine;
 
     // bool, to check if flicker is currently in on state
     private bool on = true;
+    private float currFlickerTime = 0f;
 
     public bool isPossesed = false;
 
@@ -134,6 +135,7 @@ public class TurretAI : MonoBehaviour
         if (isSingleUse && useTimeInsteadOfAmmo)
         {
             UpdateUseAmount(Time.deltaTime);
+            UpdateVisibility();
         }
         if (target != null)
         {
@@ -204,11 +206,12 @@ public class TurretAI : MonoBehaviour
     {
         useAmount = useAmount - usageUsed;
         useBar.fillAmount =  useAmount / initUseAmount;
-        if(useAmount <= 3f && !invokedRepeating)
-        {
-            toggleCoroutine = StartCoroutine(ToggleLoop());
-            invokedRepeating = true;
-        }
+        //if(useAmount <= 3f && !invokedRepeating)
+        //{
+        //    //toggleCoroutine = StartCoroutine(ToggleLoop());
+        //    invokedRepeating = true;
+
+        //}
         if (useAmount <= 0)
         {
             Destroy(gameObject);
@@ -216,42 +219,73 @@ public class TurretAI : MonoBehaviour
         }
     }
 
-    IEnumerator ToggleLoop()
+    private void UpdateVisibility()
     {
-        
-        while (true)
+
+        if (useAmount <= 3f)
         {
-            
-            // Calculate interval
-            float normalizedValue = 0f;
-            if (isMoving)
-            {
-                normalizedValue = Mathf.Clamp01((useAmount/2) / threshold);
+            float normalizedValue = Mathf.Clamp01(useAmount / threshold);
+            float frequency = Mathf.Lerp(maxFrequency, minFrequency, normalizedValue);
 
+            this.currFlickerTime += Time.deltaTime;
+            float interpolation = this.currFlickerTime / frequency;
+            float alpha;
+            if (on)
+            {
+                alpha = Mathf.Lerp(0.6f, 1f, interpolation);
             }
             else
             {
-                normalizedValue = Mathf.Clamp01(useAmount / threshold);
+                alpha = Mathf.Lerp(1f, 0.6f, interpolation);
             }
-            float interval = Mathf.Lerp(maxFrequency, minFrequency, normalizedValue);
             SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-            if (this.on)
+            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, alpha);
+            if (this.currFlickerTime >= frequency)
             {
-                this.on = false;
-                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 0.6f);
+                on = !on;
+                this.currFlickerTime = 0;
             }
-            else
-            {
-                this.on = true;
-                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 1f);
-            }
-
-            // Toggle visibility
-            //GetComponent < SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
-
-            yield return new WaitForSeconds(interval);
         }
     }
+
+    //IEnumerator ToggleLoop()
+    //{
+        
+    //    while (true)
+    //    {
+            
+    //        // Calculate interval
+    //        float normalizedValue = 0f;
+    //        if (isMoving)
+    //        {
+    //            normalizedValue = Mathf.Clamp01((useAmount/2) / threshold);
+
+    //        }
+    //        else
+    //        {
+    //            normalizedValue = Mathf.Clamp01(useAmount / threshold);
+    //        }
+    //        float interval = Mathf.Lerp(maxFrequency, minFrequency, normalizedValue);
+    //        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+
+    //        Debug.Log("interval: " + interval);
+    //        if (this.on)
+    //        {
+    //            this.on = false;
+    //            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 0.6f);
+    //        }
+    //        else
+    //        {
+    //            this.on = true;
+    //            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 1f);
+    //        }
+
+    //        // Toggle visibility
+    //        //GetComponent < SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
+
+    //        yield return new WaitForSeconds(interval);
+    //    }
+    //}
 
     private int GetSpriteIndex(float angle)
     {

@@ -51,6 +51,8 @@ public class EnemyAI : MonoBehaviour
     private float targetHealthRatio;
     private Coroutine damageAnim;
 
+    public List<Sprite> sprites;
+
     void Awake()
     {
         speed=initSpeed;
@@ -64,7 +66,30 @@ public class EnemyAI : MonoBehaviour
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         CreateBlobShadow();
+        ChooseSprite();
+    }
+
+    private void ChooseSprite()
+    {
+        Sprite sprite;
+        switch (this.gameManager.epochChooser.currentEpoch)
+        {
+            case Epoch.PREHISTORIC:
+                sprite = sprites[0];
+                break;
+            case Epoch.PHARAOH:
+                sprite = sprites[1];
+                break;
+            case Epoch.MEDIEVAL:
+                sprite = sprites[2];
+                break;
+            default:
+                sprite = sprites[0];
+                break;
+        }
+        gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
     void setTargetList(List<GameObject> targetList)
