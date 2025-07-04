@@ -110,14 +110,36 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         // only place turrets, when lvl is in session
         if (this.gameManager.gameState == GameState.LEVELPLAYING)
         {
-           
-                if (Input.GetMouseButtonUp(0) && 400f < Input.mousePosition.x)
+
+            if (Input.GetMouseButtonUp(0) && 400f < Input.mousePosition.x)
             {
                 spawnTurret(turretToBuild);
             }
-            if (Input.GetMouseButtonDown(0) &&  Input.mousePosition.x < 400f)
+            if (Input.GetMouseButtonDown(0) && Input.mousePosition.x < 400f)
             {
                 clearHighlight();
+            }
+            if (Input.GetMouseButtonDown(0) && 400f < Input.mousePosition.x)
+            {
+                Vector3 mousePosition = Input.mousePosition;
+                Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Vector3 spawnPosition = hit.point;
+                    Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.1f);
+                    foreach (Collider collider in collidersHit)
+                    {
+                        if (collider.tag == "Drop")
+                        {
+                            float dropAmount = collider.gameObject.GetComponent<DropProperties>().dropAmount;
+                            this.gameManager.player.addZeitsand(dropAmount);
+                            gameManager.SpawnFloatingText(collider.transform.position, "+"+ dropAmount+" Zeitsand!", Color.yellow);
+                            Destroy(collider.gameObject);
+                        }
+                    }
+                }
             }
         }
 
@@ -187,7 +209,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                     //CurrentDragObject = Instantiate(frameObject, Input.mousePosition, Quaternion.identity);
                     RectTransform rt = CurrentDragObject.GetComponent<RectTransform>();
                         rt.anchoredPosition = Vector2.zero; // Mitte
-                        rt.sizeDelta = new Vector2(100, 100); // Sichtbare Fläche, falls leer
+                        rt.sizeDelta = new Vector2(100, 100); // Sichtbare Flï¿½che, falls leer
                         CurrentDragObject.transform.SetParent(canvas.transform, false);
                         CurrentDragObject.transform.SetAsLastSibling(); // Ganz oben zeichnen (sichtbar)
 

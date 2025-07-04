@@ -4994,6 +4994,11 @@ MonoBehaviour:
   waypointIndex: 0
   cost: 20
   randomWeight: 25
+  dropProbability: 10
+  dropAmount: 0
+  dropMaximum: 10
+  dropMinimum: 5
+  itemToDrop: {fileID: 8836995480696342377, guid: 275bc91844f52a84fae1886743c4056d, type: 3}
   damage: 10
   blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
   blobShadowOffset: {x: 0, y: 0, z: 0}
@@ -5047,7 +5052,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8751b4e12abe10e4f83b70c8f592b8f1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fc2558ca225e189448c75634161c6c5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -208,7 +208,6 @@ public class TurretAI : MonoBehaviour
         {
             toggleCoroutine = StartCoroutine(ToggleLoop());
             invokedRepeating = true;
-
         }
         if (useAmount <= 0)
         {

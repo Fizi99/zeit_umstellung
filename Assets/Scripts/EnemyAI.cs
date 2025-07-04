@@ -27,6 +27,14 @@ public class EnemyAI : MonoBehaviour
 
     public int cost = 10;
     public int randomWeight = 1;
+    private bool hasDrop = false;
+    [Header("1 in DropProbability chance to drop zeitsand")]
+    public int dropProbability = 10;
+    public float dropAmount = 0;
+    public int dropMaximum = 10;
+    public int dropMinimum = 5;
+    public GameObject itemToDrop;
+    public float dropDuration = 10;
 
     public int damage = 1;
 
@@ -47,6 +55,10 @@ public class EnemyAI : MonoBehaviour
     {
         speed=initSpeed;
         health = initHealth;
+        if(Random.Range(1, dropProbability)==1){
+            hasDrop = true;
+            dropAmount = (float) (Random.Range(dropMinimum, dropMaximum));
+        }
     }
 
     private void Start()
@@ -201,8 +213,18 @@ public class EnemyAI : MonoBehaviour
             }
             //StartCoroutine(waiter());
         }
-            Destroy(gameObject);
+        if (hasDrop)
+        {
+            GameObject droppedItem = Instantiate(itemToDrop, transform.position, transform.rotation);
+            droppedItem.GetComponent<DropProperties>().dropAmount = this.dropAmount;
+            droppedItem.GetComponent<DropProperties>().survivalDuration = dropDuration;
+            droppedItem.GetComponent<DropProperties>().remainingDuration = dropDuration;
+            Destroy(droppedItem, dropDuration);
+        }
+        Destroy(gameObject);
     }
+
+   
 
     /*private void CreateGroundShadow()
     {
