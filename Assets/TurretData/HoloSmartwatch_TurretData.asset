@@ -16,6 +16,7 @@ MonoBehaviour:
   turretName: Holo Smartwatch
   description: Lorem Ipsum
   turretIcon: {fileID: 21300000, guid: 2e90a0b8cea995a49b159b168188d0f1, type: 3}
+  turretIconFramed: {fileID: 2800000, guid: fb7807d5d85701945ad29c92db49924e, type: 3}
   turretIconTexture: {fileID: 2800000, guid: 2e90a0b8cea995a49b159b168188d0f1, type: 3}
   cost: 15
   stats: []
