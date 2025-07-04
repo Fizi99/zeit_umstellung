@@ -117,6 +117,18 @@ public class Player : MonoBehaviour
         this.zeitsandRatePerSec = zeitSandRate;
     }
 
+    public void addZeitsand(float zeitSandAmount)
+    {
+        if (this.zeitsand + zeitSandAmount > maxZeitsand)
+        {
+            this.zeitsand = maxZeitsand;
+        }
+        else
+        {
+            this.zeitsand += zeitSandAmount;
+        }
+    }
+
     public void SetLoadout(List<TurretType> newLoadout)
     {
         this.chosenLoadout = newLoadout;

@@ -31,6 +31,8 @@ public class RouteManager : MonoBehaviour
     [HideInInspector]
     public List<GameObject> enemyRouteVisualizer = new List<GameObject>();
 
+    [SerializeField] private List<Material> materials;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -69,6 +71,38 @@ public class RouteManager : MonoBehaviour
         CalcClosestStreetToBusStop();
         CalculateRoutes();
         SpawnWaypoints();
+    }
+
+    public void UpdateStreetMaterial()
+    {
+        Material mat;
+        switch (this.gameManager.epochChooser.currentEpoch)
+        {
+            case Epoch.PREHISTORIC:
+                mat = materials[0];
+                break;
+            case Epoch.PHARAOH:
+                mat = materials[1];
+                break;
+            case Epoch.MEDIEVAL:
+                mat = materials[2];
+                break;
+            default:
+                mat = materials[0];
+                break;
+        }
+
+        this.streetMat = mat;
+
+        for (int i = 0; i < this.routeVisualizerContainer.transform.childCount; i++)
+        {
+            Transform child = this.routeVisualizerContainer.transform.GetChild(i);
+            if(child.name == "Route")
+            {
+                child.GetComponent<LineRenderer>().material = this.streetMat;
+            }
+          
+        }
     }
 
     // calculate closest point to bus stop and draw that point as sphere

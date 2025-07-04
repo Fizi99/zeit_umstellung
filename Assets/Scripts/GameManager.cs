@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject floatingTextPrefab;
     [SerializeField] public GameObject mainCamera;
     [SerializeField] public GameObject highscoreTracker;
+    [SerializeField] public GameObject backGroundPlane;
     public EpochChooser epochChooser = new EpochChooser();
 
     [Header("Container")]
@@ -112,6 +113,8 @@ public class GameManager : MonoBehaviour
         if (gameState == GameState.LEVELPLAYING)
         {
             this.epochChooser.GetNextEpoch();
+            this.backGroundPlane.GetComponent<Background>().UpdateBackGroundSprite();
+            this.routeManager.UpdateStreetMaterial();
            // this.gameManager.ApplySpritesForEpoch(epoch);
             buildManager.SetBuyButtons();
         }
@@ -269,53 +272,55 @@ public class GameManager : MonoBehaviour
         Debug.Log("Highscore is now (after reset): " + PlayerPrefs.GetFloat("Highscore", 0f));
     }
 
-    public void ApplySpritesForEpoch(int choice)
-    {
-        if (choice < 0 || choice >= epochs.Length)
-            return;
+    
 
-        string epoch = epochs[choice];
+    //public void ApplySpritesForEpoch(int choice)
+    //{
+    //    if (choice < 0 || choice >= epochs.Length)
+    //        return;
 
-        foreach (GameObject enemyPrefab in enemyPrefabs)
-        {
-            string prefabName = enemyPrefab.name; // z. B. "EnemyFast"
+    //    string epoch = epochs[choice];
 
-            // Mapping von Klassennamen zu Sprite-Stilnamen
-            string type = prefabName switch
-            {
-                "EnemyStd" => "std",
-                "EnemyFast" => "fast",
-                "EnemyTank" => "tank",
-                "EnemySupport" => "support",
-                "EnemySplitter" => "splitter",
-                _ => null
-            };
+    //    foreach (GameObject enemyPrefab in enemyPrefabs)
+    //    {
+    //        string prefabName = enemyPrefab.name; // z. B. "EnemyFast"
 
-            if (type == null)
-            {
-                Debug.LogWarning($"Unbekannter Gegnertyp: {prefabName}");
-                continue;
-            }
+    //        // Mapping von Klassennamen zu Sprite-Stilnamen
+    //        string type = prefabName switch
+    //        {
+    //            "EnemyStd" => "std",
+    //            "EnemyFast" => "fast",
+    //            "EnemyTank" => "tank",
+    //            "EnemySupport" => "support",
+    //            "EnemySplitter" => "splitter",
+    //            _ => null
+    //        };
 
-            string expectedSpriteName = $"enemy-{type}-{epoch}";
+    //        if (type == null)
+    //        {
+    //            Debug.LogWarning($"Unbekannter Gegnertyp: {prefabName}");
+    //            continue;
+    //        }
 
-            Sprite newSprite = allEpochSpecificSprites.FirstOrDefault(s => s.name.ToLower() == expectedSpriteName);
-            if (newSprite == null)
-            {
-                Debug.LogWarning($"Kein Sprite gefunden: {expectedSpriteName}");
-                continue;
-            }
+    //        string expectedSpriteName = $"enemy-{type}-{epoch}";
 
-            SpriteRenderer sr = enemyPrefab.GetComponent<SpriteRenderer>();
-            if (sr == null)
-            {
-                Debug.LogWarning($"Kein SpriteRenderer an: {prefabName}");
-                continue;
-            }
+    //        Sprite newSprite = allEpochSpecificSprites.FirstOrDefault(s => s.name.ToLower() == expectedSpriteName);
+    //        if (newSprite == null)
+    //        {
+    //            Debug.LogWarning($"Kein Sprite gefunden: {expectedSpriteName}");
+    //            continue;
+    //        }
 
-            sr.sprite = newSprite;
-        }
+    //        SpriteRenderer sr = enemyPrefab.GetComponent<SpriteRenderer>();
+    //        if (sr == null)
+    //        {
+    //            Debug.LogWarning($"Kein SpriteRenderer an: {prefabName}");
+    //            continue;
+    //        }
 
-        Debug.Log("Epoch-Sprites angewendet: " + epoch);
-    }
+    //        sr.sprite = newSprite;
+    //    }
+
+    //    Debug.Log("Epoch-Sprites angewendet: " + epoch);
+    //}
 }
