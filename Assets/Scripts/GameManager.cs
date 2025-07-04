@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GPSTracker gpsTracker;
     [SerializeField] public WaveSpawner waveSpawner;
     [SerializeField] public RouteManager routeManager;
+    [SerializeField] public TutorialManager tutorialManager;
     [SerializeField] public Player player;
     [SerializeField] public buildManager buildManager;
     [SerializeField] public GameObject floatingTextPrefab;
@@ -115,6 +116,7 @@ public class GameManager : MonoBehaviour
             this.epochChooser.GetNextEpoch();
             this.backGroundPlane.GetComponent<Background>().UpdateBackGroundSprite();
             this.routeManager.UpdateStreetMaterial();
+            this.tutorialManager.PlayTutorial();
            // this.gameManager.ApplySpritesForEpoch(epoch);
             buildManager.SetBuyButtons();
         }

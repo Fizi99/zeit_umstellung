@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider audioVolumeSlider;
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
+    [SerializeField] private Toggle tutorialToggle;
     [SerializeField] private Button startLevelButton;
     [SerializeField] private GameObject visualizeLoadoutParent;
     [SerializeField] private List<Sprite> turretSprites;
@@ -66,7 +67,7 @@ public class UIManager : MonoBehaviour
     private bool isShaking = false;
     private Quaternion originalRotation;
 
-    private EpochChooser epochChooser;
+    //private EpochChooser epochChooser;
 
     public List<TurretType> shownLoadout = new List<TurretType>();
     public List<List<TurretType>> temporaryLoadouts = new List<List<TurretType>>();
@@ -74,6 +75,8 @@ public class UIManager : MonoBehaviour
 
     public Button Arsenal1;
     public int currentLoadoutIndex=1;
+
+    private bool tutorialtoggleSet = false;
 
 
 
@@ -83,7 +86,7 @@ public class UIManager : MonoBehaviour
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
-        epochChooser = new EpochChooser();
+        //epochChooser = new EpochChooser();
 
         initLoadout();
     }
@@ -180,6 +183,11 @@ public class UIManager : MonoBehaviour
     public void SliderSfxVolume()
     {
         this.audioManager.SfxVolume(this.sfxVolumeSlider.value * this.audioVolumeSlider.value);
+    }
+
+    public void ToggleTutorial()
+    {
+        this.gameManager.player.playTutorial = this.tutorialToggle.isOn;
     }
 
     // check if bus information got updated for example to update bus selection buttons or countdown. use value later
@@ -366,6 +374,12 @@ public class UIManager : MonoBehaviour
                 this.startLevelButton.interactable = false; // Standard state for the START btn
                 break;
             case GameState.SETTINGS:
+                // set toggle for tutorial the first time settingsmenu is opened
+                if (!this.tutorialtoggleSet)
+                {
+                    this.tutorialToggle.isOn = this.gameManager.player.firstTimePlaying;
+                    this.tutorialtoggleSet = true;
+                }
                 break;
             case GameState.LEVELEND:
                 UpdateLvlFinishedText();

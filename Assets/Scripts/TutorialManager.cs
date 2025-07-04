@@ -1,0 +1,109 @@
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class TutorialManager : MonoBehaviour
+{
+    [SerializeField] public GameObject tutorialPanel;
+    [SerializeField] public List<TutorialDataSObj> tutorialParts;
+    [SerializeField] public TMP_Text tutorialText;
+
+
+    [HideInInspector] public bool playTutorial = true;
+    private bool isActive = false;
+
+    private int currentPart;
+
+    // which aspekts should be controlled by tutorial?:
+    // - enemyspawning
+    // - zeitsand
+    // - turretplacing
+    // - uhraniumrate
+
+    private float defaultZeitsandRate;
+    private float defaultUhraniumRate;
+
+
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+
+    private void Update()
+    {
+        if (this.isActive)
+        {
+            // if tapped, go to next part of tutorial
+            if (Input.GetMouseButtonDown(0))
+            {
+                NextPart();
+            }
+
+            if(this.gameManager.gameState != GameState.LEVELPLAYING)
+            {
+                FinishTutorial();
+            }
+        }
+    }
+
+    // start the tutorial if player is playing for first time or explicitly activated tutorial
+    public void PlayTutorial()
+    {
+        if (this.gameManager.player.playTutorial)
+        {
+            if (this.gameManager.gameState == GameState.LEVELPLAYING)
+            {
+                this.tutorialPanel.SetActive(true);
+                this.isActive = true;
+                this.currentPart = 0;
+                this.tutorialText.text = this.tutorialParts[this.currentPart].text;
+            }
+        }
+        
+    }
+
+    // show the next part of the tutorial
+    public void NextPart()
+    {
+        this.currentPart++;
+        if(this.currentPart < this.tutorialParts.Count)
+        {
+            this.tutorialText.text = this.tutorialParts[this.currentPart].text;
+        }
+        else
+        {
+            FinishTutorial();
+        }
+        
+    }
+
+    // finish the tutorial and save, that player played the game before
+    public void FinishTutorial()
+    {
+        this.tutorialPanel.SetActive(false);
+        this.currentPart = 0;
+        this.isActive = false;
+        SaveManager.SaveFirstTimePlaying(false);
+
+    }
+
+    private void ControlVariablesForTutorial()
+    {
+        // contorl zeitsand
+        this.defaultZeitsandRate = this.gameManager.player.zeitsandRatePerSec;
+        this.gameManager.player.zeitsandRatePerSec = 0;
+
+        // control uhranium
+        this.defaultUhraniumRate = this.gameManager.player.uhrraniumRatePerSec;
+        this.gameManager.player.uhrraniumRatePerSec = 1;
+    }
+
+    private void ResetControlledVariables()
+    {
+        this.gameManager.player.zeitsandRatePerSec = this.defaultZeitsandRate;
+        this.gameManager.player.uhrraniumRatePerSec = this.defaultUhraniumRate;
+    }
+}
