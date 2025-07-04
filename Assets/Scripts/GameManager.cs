@@ -114,6 +114,7 @@ public class GameManager : MonoBehaviour
         {
             this.epochChooser.GetNextEpoch();
             this.backGroundPlane.GetComponent<Background>().UpdateBackGroundSprite();
+            this.routeManager.UpdateStreetMaterial();
            // this.gameManager.ApplySpritesForEpoch(epoch);
             buildManager.SetBuyButtons();
         }
