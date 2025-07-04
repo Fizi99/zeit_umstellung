@@ -3,24 +3,27 @@ using UnityEngine;
 
 public class EpochChooser
 {
-    private List<int> epochBag = new List<int>();
-    private readonly int[] allEpochs = { 0, 1, 2 };
+    private List<Epoch> epochBag = new List<Epoch>();
+    private readonly Epoch[] allEpochs = { Epoch.PREHISTORIC, Epoch.PHARAOH, Epoch.MEDIEVAL };
     private const int totalPerCycle = 5;
 
-    public int GetNextEpoch()
+    public Epoch currentEpoch = Epoch.PHARAOH;
+
+    public Epoch GetNextEpoch()
     {
         if (epochBag.Count == 0)
             RefillEpochBag();
 
-        int next = epochBag[0];
+        Epoch next = epochBag[0];
         epochBag.RemoveAt(0);
+        this.currentEpoch = next;
         return next;
     }
 
     private void RefillEpochBag()
     {
         // Fuge jede Epoche garantiert einmal hinzu
-        List<int> newEpochs = new List<int>(allEpochs);
+        List<Epoch> newEpochs = new List<Epoch>(allEpochs);
 
         // Fuge weitere (zufallige) Epochen hinzu, bis wir 5 haben
         while (newEpochs.Count < totalPerCycle)
@@ -34,9 +37,9 @@ public class EpochChooser
         Debug.Log("EpochBag neu gefullt: " + string.Join(", ", epochBag));
     }
 
-    private int RandomEpoch()
+    private Epoch RandomEpoch()
     {
-        return Random.Range(0, allEpochs.Length); // UnityEngine.Random
+        return allEpochs[Random.Range(0, allEpochs.Length)]; // UnityEngine.Random
     }
 
     private void Shuffle<T>(List<T> list)

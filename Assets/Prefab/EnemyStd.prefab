@@ -166,7 +166,7 @@ MonoBehaviour:
   waypointIndex: 0
   cost: 10
   randomWeight: 100
-  damage: 5
+  damage: 50
   blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
   blobShadowOffset: {x: 0, y: 0, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}
@@ -175,6 +175,10 @@ MonoBehaviour:
   delayedHealthBar: {fileID: 4747846267614008904}
   maxWidth: 0
   damageLerpSpeed: 2
+  sprites:
+  - {fileID: 21300000, guid: 0d5eaa3e473550a42a5358aca37a600e, type: 3}
+  - {fileID: 21300000, guid: ffc5f3aa1da8a9949a9f10cc44fb6114, type: 3}
+  - {fileID: 21300000, guid: 26e1cabc9613ff74692acdc1782c9ff0, type: 3}
 --- !u!212 &-1596351032587085455
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -219,7 +223,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 26e1cabc9613ff74692acdc1782c9ff0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0d5eaa3e473550a42a5358aca37a600e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
