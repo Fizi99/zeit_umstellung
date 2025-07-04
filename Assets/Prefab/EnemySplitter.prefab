@@ -4998,7 +4998,12 @@ MonoBehaviour:
   waypointIndex: 0
   cost: 30
   randomWeight: 50
-  damage: 300
+  dropProbability: 10
+  dropAmount: 0
+  dropMaximum: 10
+  dropMinimum: 5
+  itemToDrop: {fileID: 8836995480696342377, guid: 275bc91844f52a84fae1886743c4056d, type: 3}
+  damage: 30
   blobShadowPrefab: {fileID: 6663658646726982896, guid: 9cf925923f722ae429d68f111bf4c1fa, type: 3}
   blobShadowOffset: {x: 0, y: -0.1, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}
