@@ -143,6 +143,13 @@ public class TurretAI : MonoBehaviour
             UpdateUseAmount(Time.deltaTime);
             UpdateVisibility();
         }
+
+        // deactivate linerenderer for laser if it has no target
+        if (name == TurretType.LASER)
+        {
+            gameObject.GetComponent<LineRenderer>().enabled = false;
+        }
+
         if (target != null)
         {
             Vector3 dir = target.position - transform.position;
@@ -181,6 +188,7 @@ public class TurretAI : MonoBehaviour
                 Shoot();
                 fireCountdown = 1f / fireRate;
             }
+            
             fireCountdown -= Time.deltaTime;
         }
         else
@@ -198,11 +206,20 @@ public class TurretAI : MonoBehaviour
         GameObject currentBullet;
         if (bulletPrefab.tag == "Drone")
         {
-            currentBullet = (GameObject)Instantiate(bulletPrefab, transform.position + firePoint, transform.rotation);
+            currentBullet = (GameObject)Instantiate(bulletPrefab, transform.position + this.firePoint, transform.rotation);
         }
         else
         {
-            currentBullet = (GameObject)Instantiate(bulletPrefab, transform.position + firePoint, Quaternion.Euler(0f, 0f, currentLookAngle));
+            currentBullet = (GameObject)Instantiate(bulletPrefab, transform.position + this.firePoint, Quaternion.Euler(0f, 0f, currentLookAngle));
+        }
+
+        if(this.name == TurretType.LASER)
+        {
+            LineRenderer lr = gameObject.GetComponent<LineRenderer>();
+            lr.widthMultiplier = 0.2f;
+            lr.enabled = true;
+            lr.SetPosition(0,transform.position + this.firePoint);
+            lr.SetPosition(1, target.position);
         }
         currentBullet.transform.parent = this.gameManager.turretContainer.transform;
         bulletAI bullet = currentBullet.GetComponent<bulletAI>();
@@ -312,22 +329,22 @@ public class TurretAI : MonoBehaviour
         // 4 Richtungen: 0°=Rechts, 90°=Oben, 180°=Links, 270°=Unten
         if (angle >= 315 || angle < 45)
         {
-            firePoint = firePointRight;
+            this.firePoint = this.firePointRight;
             return 0;      // Rechts
         }
         else if (angle >= 45 && angle < 135)
         {
-            firePoint = firePointUp;
+            this.firePoint = this.firePointUp;
             return 1;  // Oben
         }
         else if (angle >= 135 && angle < 225)
         {
-            firePoint = firePointLeft;
+            this.firePoint = this.firePointLeft;
             return 2; // Links
         }
         else
         {
-            firePoint = firePointDown;
+            this.firePoint = this.firePointDown;
             return 3;// Unten
         }
     }
