@@ -245,6 +245,12 @@ public class TurretAI : MonoBehaviour
                 on = !on;
                 this.currFlickerTime = 0;
             }
+
+            // Also recolor decay timer to red
+            //Transform child = transform.Find(".../...");
+            var urgentColor = Color.red;
+            if (useBar != null && useBar.color != urgentColor)
+                useBar.GetComponent<Image>().color = urgentColor;
         }
     }
 
