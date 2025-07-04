@@ -15,6 +15,13 @@ public class PlaceableZone : MonoBehaviour
     private List<GameObject> currentMasks = new List<GameObject>();
     private bool isZoneVisible = false;
 
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
     void Update()
     {
         if (!isZoneVisible || overlayObj == null) return;
@@ -124,6 +131,25 @@ public class PlaceableZone : MonoBehaviour
                 maskObj.transform.localScale = turret.localScale * new Vector2(5f,5f);
 
                 maskObj.transform.parent = overlayObj.transform;
+            }
+        }
+
+        // Zusätzliche Maske für BusStopGO erzeugen
+        GameObject busStopGO = GameObject.FindWithTag("Busstop");
+        if (busStopGO != null)
+        {
+            SpriteRenderer busStopRenderer = busStopGO.GetComponent<SpriteRenderer>();
+            if (busStopRenderer != null && busStopRenderer.sprite != null)
+            {
+                GameObject busStopMaskObj = new GameObject("BusStopMask");
+                var mask = busStopMaskObj.AddComponent<SpriteMask>();
+                mask.sprite = busStopRenderer.sprite;
+
+                busStopMaskObj.transform.position = busStopGO.transform.position;
+                busStopMaskObj.transform.rotation = busStopGO.transform.rotation;
+                busStopMaskObj.transform.localScale = busStopGO.transform.localScale * new Vector2(5f, 5f);
+
+                busStopMaskObj.transform.parent = overlayObj.transform;
             }
         }
 
