@@ -119,7 +119,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             {
                 clearHighlight();
             }
-            if (Input.GetMouseButtonDown(0) && 400f < Input.mousePosition.x)
+            if (Input.GetMouseButtonDown(0) && 400f < Input.mousePosition.x )
             {
                 Vector3 mousePosition = Input.mousePosition;
                 Ray ray = mainCamera.ScreenPointToRay(mousePosition);
@@ -128,7 +128,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 if (Physics.Raycast(ray, out hit))
                 {
                     Vector3 spawnPosition = hit.point;
-                    Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.1f);
+                    Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.03f);
                     foreach (Collider collider in collidersHit)
                     {
                         if (collider.tag == "Drop")
@@ -300,7 +300,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 Debug.Log("empty slot " + i + " is changing");
                 if (emptySlots[i].GetComponent<EmptySlotHover>().isHovering)
                 {
-                    if (CurrentTurret.GetComponent<TurretAI>().isPossesed)
+                    if (SaveManager.LoadPurchasedTurrets().Contains(CurrentTurret.GetComponent<TurretAI>().name) )
                     {
 
                     emptySlots[i].GetComponent<Image>().sprite = currentButtonSprite;

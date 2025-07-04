@@ -59,7 +59,8 @@ public class TurretAI : MonoBehaviour
     private bool on = true;
     private float currFlickerTime = 0f;
 
-    public bool isPossesed = false;
+    public bool isPosessed = false;
+    public float uhraniumPrice = 1f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

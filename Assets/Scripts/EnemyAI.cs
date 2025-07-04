@@ -235,6 +235,9 @@ public class EnemyAI : MonoBehaviour
                 newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[waypointIndex];
                 newEnemy.GetComponent<EnemyAI>().waypointIndex = waypointIndex;
                 newEnemy.transform.parent = gameManager.enemyContainer.transform;
+                newEnemy.GetComponent<EnemyAI>().hasDrop = false;
+                newEnemy.GetComponent<EnemyAI>().dropAmount = 0;
+
             }
             //StartCoroutine(waiter());
         }

@@ -22,11 +22,15 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public Button button;
     public buildManager BuildManager;
     public TurretType turretType;
+    public GameObject lockImage;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        
         updateTurretCostText();
         if (button != null)
         {
@@ -66,9 +70,13 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     void OnButtonClick()
     {
-        BuildManager.highlightTowerSelected(button);
-        BuildManager.SetTurretToBuild(turret);
-        BuildManager.SetDragObject(DragObject);
+        if(this.gameManager.gameState == GameState.LEVELPLAYING)
+        {
+            BuildManager.highlightTowerSelected(button);
+            BuildManager.SetTurretToBuild(turret);
+            BuildManager.SetDragObject(DragObject);
+
+        }
 
     }
 

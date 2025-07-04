@@ -341,7 +341,7 @@ MonoBehaviour:
   blobShadowOffset: {x: 0, y: -0.1, z: 0}
   blobShadowScale: {x: 1, y: 1.3, z: 1}
   blobShadowRotation: {x: 0, y: 0, z: 0}
-  isPossesed: 1
+  isPosessed: 1
 --- !u!212 &4007250207366351328
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class TurretGridFiller : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class TurretGridFiller : MonoBehaviour
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.BuildManager = gameManager.buildManager;
+        //reset purchased turrets:
+        //SaveManager.SavePurchasedTurrets(new List<TurretType>());
         PopulateGridV3();
     }
 
@@ -41,7 +44,10 @@ public class TurretGridFiller : MonoBehaviour
             frame.transform.GetComponent<displayTurretCost>().texture = mapping.data.turretIconTexture;
             frame.transform.GetComponent<displayTurretCost>().ChangedDragObject = mapping.DragObject;
             frame.transform.GetComponent<displayTurretCost>().turretType = mapping.data.turretType;
-
+            if (!SaveManager.LoadPurchasedTurrets().Contains(mapping.prefab.GetComponent<TurretAI>().name))
+            {
+                frame.transform.GetComponent<displayTurretCost>().lockImage.SetActive(true);
+            }
 
 
 
@@ -51,6 +57,21 @@ public class TurretGridFiller : MonoBehaviour
             btn.onClick.AddListener(() =>
             {
                 turretInfoUIElem.DisplayFromData(mapping.data);
+                // if u have enough currency and dont have the turret, buy it
+                if (!SaveManager.LoadPurchasedTurrets().Contains(mapping.data.turretType) &&
+                    mapping.prefab.GetComponent<TurretAI>().uhraniumPrice < gameManager.player.savedUhranium)
+                {
+                    Debug.Log("turret bought (not yet implemented)");
+                    //reduce currency
+                    gameManager.player.savedUhranium -= mapping.prefab.GetComponent<TurretAI>().uhraniumPrice;
+                    //hide lock image
+                    frame.transform.GetComponent<displayTurretCost>().lockImage.SetActive(false);
+                   //change posession status of turret permanently
+                    List<TurretType> purchasedTurrets = SaveManager.LoadPurchasedTurrets();
+                    purchasedTurrets.Add(mapping.data.turretType);
+                    SaveManager.SavePurchasedTurrets(purchasedTurrets);
+
+                }
             });
             if(6 >  BuildManager.uiLoadoutList.Count) { 
             BuildManager.addToUiLoadoutList(frame);

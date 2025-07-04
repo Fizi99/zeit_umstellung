@@ -30,6 +30,8 @@ public static class SaveManager
         return (firstPlay == 1);
     }
 
+    
+
 
     /*
      * Because PlayerPrefs can only handle primitives, we serialize a list of enum values to a string
