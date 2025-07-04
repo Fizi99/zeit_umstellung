@@ -30,7 +30,13 @@ public class TurretAI : MonoBehaviour
 
     public GameObject bulletPrefab;
     //bullet spawn position
-    public Transform firePoint;
+    public Vector3 firePoint = new Vector3(0, 0, 0);
+    public Vector3 firePointRight = new Vector3(0, 0, 0);
+    public Vector3 firePointLeft = new Vector3(0, 0, 0);
+    public Vector3 firePointUp = new Vector3(0, 0, 0);
+    public Vector3 firePointDown = new Vector3(0, 0, 0);
+
+    private float currentLookAngle;
 
     [Tooltip("Sprite for East (0), North (1), West (2), South (3)")]
     [SerializeField] private Sprite[] towerSprites = new Sprite[4]; // 0=Rechts, 1=Oben, 2=Links, 3=Unten
@@ -147,9 +153,9 @@ public class TurretAI : MonoBehaviour
             //transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 
             // Choose one of 4 sprites (north, east, south, west) based on look direction
-            float angle = Mathf.Atan2(dir.normalized.y, dir.normalized.x) * Mathf.Rad2Deg;
-            if (angle < 0) angle += 360;
-            int spriteIndex = GetSpriteIndex(angle);
+            currentLookAngle = Mathf.Atan2(dir.normalized.y, dir.normalized.x) * Mathf.Rad2Deg;
+            if (currentLookAngle < 0) currentLookAngle += 360;
+            int spriteIndex = GetSpriteIndex(currentLookAngle);
             spriteRenderer.sprite = towerSprites[spriteIndex];
 
             if (isMoving)
@@ -189,7 +195,15 @@ public class TurretAI : MonoBehaviour
     {
         //define firepoint depending on turret before using this
         //Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        GameObject currentBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+        GameObject currentBullet;
+        if (bulletPrefab.tag == "Drone")
+        {
+            currentBullet = (GameObject)Instantiate(bulletPrefab, transform.position + firePoint, transform.rotation);
+        }
+        else
+        {
+            currentBullet = (GameObject)Instantiate(bulletPrefab, transform.position + firePoint, Quaternion.Euler(0f, 0f, currentLookAngle));
+        }
         currentBullet.transform.parent = this.gameManager.turretContainer.transform;
         bulletAI bullet = currentBullet.GetComponent<bulletAI>();
         if (bullet != null)
@@ -256,10 +270,10 @@ public class TurretAI : MonoBehaviour
 
     //IEnumerator ToggleLoop()
     //{
-        
+
     //    while (true)
     //    {
-            
+
     //        // Calculate interval
     //        float normalizedValue = 0f;
     //        if (isMoving)
@@ -296,10 +310,26 @@ public class TurretAI : MonoBehaviour
     private int GetSpriteIndex(float angle)
     {
         // 4 Richtungen: 0°=Rechts, 90°=Oben, 180°=Links, 270°=Unten
-        if (angle >= 315 || angle < 45) return 0;      // Rechts
-        else if (angle >= 45 && angle < 135) return 1;  // Oben
-        else if (angle >= 135 && angle < 225) return 2; // Links
-        else return 3;                                   // Unten
+        if (angle >= 315 || angle < 45)
+        {
+            firePoint = firePointRight;
+            return 0;      // Rechts
+        }
+        else if (angle >= 45 && angle < 135)
+        {
+            firePoint = firePointUp;
+            return 1;  // Oben
+        }
+        else if (angle >= 135 && angle < 225)
+        {
+            firePoint = firePointLeft;
+            return 2; // Links
+        }
+        else
+        {
+            firePoint = firePointDown;
+            return 3;// Unten
+        }
     }
 
     private void CreateBlobShadow()

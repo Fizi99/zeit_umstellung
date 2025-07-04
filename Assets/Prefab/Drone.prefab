@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 1142861882281451792}
   m_Layer: 0
   m_Name: Drone
-  m_TagString: Untagged
+  m_TagString: Drone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -172,7 +172,11 @@ MonoBehaviour:
   stopAndShootRange: 2
   fireRate: 1
   bulletPrefab: {fileID: 9084643237093435201, guid: bb2046b85b19ed24686cdb1425d7c3b5, type: 3}
-  firePoint: {fileID: 0}
+  firePoint: {x: 0, y: 0, z: 0}
+  firePointRight: {x: 0, y: 0, z: 0}
+  firePointLeft: {x: 0, y: 0, z: 0}
+  firePointUp: {x: 0, y: 0, z: 0}
+  firePointDown: {x: 0, y: 0, z: 0}
   towerSprites:
   - {fileID: 21300000, guid: 52836230cad04224ebcd0e02a70f7078, type: 3}
   - {fileID: 21300000, guid: d49450cfd102cd6479be9b7b12f9cff3, type: 3}
