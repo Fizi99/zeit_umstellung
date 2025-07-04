@@ -244,7 +244,7 @@ public class EnemyAI : MonoBehaviour
             droppedItem.GetComponent<DropProperties>().dropAmount = this.dropAmount;
             droppedItem.GetComponent<DropProperties>().survivalDuration = dropDuration;
             droppedItem.GetComponent<DropProperties>().remainingDuration = dropDuration;
-            Destroy(droppedItem, dropDuration);
+            //Destroy(droppedItem, dropDuration);
         }
         Destroy(gameObject);
     }

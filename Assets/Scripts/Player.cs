@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
 
     private GameManager gameManager;
 
+    public bool firstTimePLaying = true;
+
     public List<TurretType> chosenLoadout = new List<TurretType>();
 
     //public List<TurretType> changedLoadoutSth = new List<TurretType>()
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        this.firstTimePLaying = SaveManager.LoadFirstTimePlaying();
         chosenLoadout = SaveManager.LoadLoadout(1);
         //SaveManager.SaveLoadout(1, changedLoadoutSth);
         //SaveManager.SaveLoadout(2, changedLoadoutSth);
