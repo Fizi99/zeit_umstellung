@@ -9,17 +9,17 @@ public class Player : MonoBehaviour
     public int startLives = 20;
 
     // Related to zeitsand
-    public float zeitsand = 0;
+    [HideInInspector] public float zeitsand = 0;
     public float maxZeitsand = 100;
     public float zeitsandStartValue = 00;
     public float zeitsandRatePerSec = 1;
     
     // related to uhranium
-    public float uhranium = 0;
-    public float savedUhranium = 0;
+    [HideInInspector] public float uhranium = 0;
+    [HideInInspector] public float savedUhranium = 0;
     public float uhrraniumRatePerSec = 1;
     public int savableThreshhold = 10;
-    public float uhraniumGain = 0; // to display uhranium gain, after it has been reset
+    [HideInInspector] public float uhraniumGain = 0; // to display uhranium gain, after it has been reset
 
     private GameManager gameManager;
 

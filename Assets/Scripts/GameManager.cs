@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject floatingTextPrefab;
     [SerializeField] public GameObject mainCamera;
     [SerializeField] public GameObject highscoreTracker;
+    public EpochChooser epochChooser = new EpochChooser();
 
     [Header("Container")]
     [Space(10)]
@@ -110,6 +111,8 @@ public class GameManager : MonoBehaviour
 
         if (gameState == GameState.LEVELPLAYING)
         {
+            this.epochChooser.GetNextEpoch();
+           // this.gameManager.ApplySpritesForEpoch(epoch);
             buildManager.SetBuyButtons();
         }
         if (gameState == GameState.LEVELEND)
