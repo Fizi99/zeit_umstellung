@@ -412,7 +412,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             var result = turretMappings.FirstOrDefault(x => x.data.turretType == this.gameManager.player.chosenLoadout[buttonIndex]);
 
 
-            buttonList[buttonIndex].transform.Find("TurretImage").GetComponent<RawImage>().texture = result.data.turretIconTexture;
+            buttonList[buttonIndex].transform.Find("TurretImage").GetComponent<RawImage>().texture = result.data.turretIconFramed;
             buttonList[buttonIndex].GetComponent<displayTurretCost>().turret = result.prefab;
             buttonList[buttonIndex].GetComponent<displayTurretCost>().DragObject = result.DragObject;
             buttonList[buttonIndex].GetComponent<displayTurretCost>().updateTurretCostText();
