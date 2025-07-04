@@ -7,8 +7,8 @@ public class DropProperties : MonoBehaviour
     public float survivalDuration = 10;
     public float remainingDuration = 10;
     public float minFrequency = 0.5f; //max and min visibility toggling frequency
-    public float maxFrequency = 0.1f;
-    private float threshold = 3;
+    public float maxFrequency = 0.2f;
+    private float threshold = 5;
     private float currFlickerTime = 0;
     private bool on = false;
 
@@ -22,7 +22,7 @@ public class DropProperties : MonoBehaviour
     void Update()
     {
         this.remainingDuration -= Time.deltaTime;
-        if(this.remainingDuration <= 3)
+        if(this.remainingDuration <= this.threshold)
         {
             UpdateVisibility();
         }

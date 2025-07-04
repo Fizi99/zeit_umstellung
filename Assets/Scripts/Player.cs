@@ -23,7 +23,8 @@ public class Player : MonoBehaviour
 
     private GameManager gameManager;
 
-    public bool firstTimePLaying = true;
+    public bool firstTimePlaying;
+    public bool playTutorial = true;
 
     public List<TurretType> chosenLoadout = new List<TurretType>();
 
@@ -38,13 +39,16 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        this.firstTimePLaying = SaveManager.LoadFirstTimePlaying();
+        this.firstTimePlaying = SaveManager.LoadFirstTimePlaying();
+        this.playTutorial = firstTimePlaying;
+        
         chosenLoadout = SaveManager.LoadLoadout(1);
         //SaveManager.SaveLoadout(1, changedLoadoutSth);
         //SaveManager.SaveLoadout(2, changedLoadoutSth);
         //SaveManager.SaveLoadout(3, changedLoadoutSth);
         //SaveManager.SaveLoadout(4, changedLoadoutSth);
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         lives = startLives;
         this.zeitsand = this.zeitsandStartValue;
     }
