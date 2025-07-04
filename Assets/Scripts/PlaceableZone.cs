@@ -48,9 +48,11 @@ public class PlaceableZone : MonoBehaviour
         {
             if (turret.CompareTag("Turret"))
             {
-                GameObject maskObj = new GameObject("TurretMask");
+                // ALTER ANSATZ:
+                /*GameObject maskObj = new GameObject("TurretMask");
                 var mask = maskObj.AddComponent<SpriteMask>();
                 mask.sprite = maskSprite;
+                //mask.sprite = turret.GetComponent<Sprite>();
                 maskObj.transform.position = turret.position;
 
                 Collider col = turret.GetComponent<Collider>();
@@ -60,6 +62,24 @@ public class PlaceableZone : MonoBehaviour
                     scale = Mathf.Max(col.bounds.size.x, col.bounds.size.y);
                 }
                 maskObj.transform.localScale = Vector3.one * scale;
+                maskObj.transform.parent = overlayObj.transform;*/
+
+
+                SpriteRenderer turretRenderer = turret.GetComponent<SpriteRenderer>();
+                if (turretRenderer == null || turretRenderer.sprite == null)
+                {
+                    Debug.LogWarning("Turret ohne SpriteRenderer oder Sprite gefunden.");
+                    continue;
+                }
+
+                GameObject maskObj = new GameObject("TurretMask");
+                var mask = maskObj.AddComponent<SpriteMask>();
+                mask.sprite = turretRenderer.sprite;
+
+                maskObj.transform.position = turret.position;
+                maskObj.transform.rotation = turret.rotation;
+                maskObj.transform.localScale = turret.localScale * new Vector2(1.3f,1.3f);
+
                 maskObj.transform.parent = overlayObj.transform;
             }
         }
