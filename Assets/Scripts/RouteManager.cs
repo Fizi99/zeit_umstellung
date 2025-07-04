@@ -142,7 +142,7 @@ public class RouteManager : MonoBehaviour
 
         // rescale, if not enough nodes in game but max {maxscaletries} times
         int scaleTries = 0;
-        while(graph.Count < minNodes && scaleTries < this.maxScaleTries)
+        while (graph.Count < minNodes && scaleTries < this.maxScaleTries)
         {
             scaleTries++;
             this.gameManager.ScaleStreetGrid(0.8f);
@@ -178,21 +178,38 @@ public class RouteManager : MonoBehaviour
             GameObject route = new GameObject("Route");
             LineRenderer lr = route.AddComponent<LineRenderer>();
             lr.material = this.streetMat;
-            lr.widthMultiplier = 0.2f;
+            //lr.widthMultiplier = 0.2f;
+            lr.widthMultiplier = 0.35f; // *
             lr.positionCount = enemyroute.Value.Count;
+
             lr.textureMode = LineTextureMode.Tile;
+            //lr.textureMode = LineTextureMode.DistributePerSegment; // * 
+
             lr.sortingOrder = -1;
             //lr.startColor = Color.red;
             //lr.endColor = Color.blue;
+
+            float totalLength = 0f; // *
             for (int i = 0; i < enemyroute.Value.Count; i++)
             {
-                lr.SetPosition(i, this.gameManager.nodeLocationDictionary[enemyroute.Value[i]]);
+                Vector3 pos = this.gameManager.nodeLocationDictionary[enemyroute.Value[i]];
+                lr.SetPosition(i, pos);
+
+                if (i > 0) // *
+                {
+                    Vector3 prev = this.gameManager.nodeLocationDictionary[enemyroute.Value[i - 1]]; // *
+                    totalLength += Vector3.Distance(prev, pos); // *
+                }
             }
+
+            float desiredTileSizeInUnits = 4.0f; // * 
+            lr.material.mainTextureScale = new Vector2(totalLength / desiredTileSizeInUnits, 1);
+
+            lr.alignment = LineAlignment.TransformZ; // *
+
             route.transform.parent = this.routeVisualizerContainer.transform;
             this.enemyRouteVisualizer.Add(route);
-
         }
-
     }
 
     // fill the dictionary for all nodes with neighbour nodes of that node
