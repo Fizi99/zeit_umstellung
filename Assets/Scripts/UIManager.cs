@@ -272,7 +272,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateUhraniumText()
     {
-        this.uhraniumText.text = "Gesammelt: " + (int)this.gameManager.player.uhranium + " Gesichert: (" + (int)this.gameManager.player.uhraniumGain + ")";
+        this.uhraniumText.text = "Gesichert: "+((int)this.gameManager.player.uhraniumGain).ToString();
     }
 
     private void UpdateZeitsandText()
