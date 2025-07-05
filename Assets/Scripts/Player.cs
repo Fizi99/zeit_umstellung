@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
     public float zeitsandRatePerSec = 1;
     
     // related to uhranium
-    [HideInInspector] public float uhranium = 0;
-    [HideInInspector] public float savedUhranium = 0;
+    [HideInInspector] public float uhranium = 0f;
+
     public float uhrraniumRatePerSec = 1;
     public int savableThreshhold = 10;
     [HideInInspector] public float uhraniumGain = 0; // to display uhranium gain, after it has been reset
@@ -35,7 +35,6 @@ public class Player : MonoBehaviour
     //    TurretType.MISSILE,
     //    TurretType.MISSILE
     //};
-    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -93,12 +92,14 @@ public class Player : MonoBehaviour
 
     public void SaveUhranium()
     {
-        this.savedUhranium += (int) this.uhranium;
+
+        SaveManager.SaveUhranium(SaveManager.LoadUhranium()+this.uhranium);
+        Debug.Log("current saved uhranium: " + Mathf.FloorToInt(SaveManager.LoadUhranium()).ToString());
         this.uhraniumGain += (int) this.uhranium;
         this.uhranium = 0;
 
         // Check if updating the uhranium highscore is needed (while being in-game)
-        float lastUhraniumLevelSaved = this.savedUhranium;
+        float lastUhraniumLevelSaved = SaveManager.LoadUhranium();
         if (SaveManager.LoadUhraniumHighscore() < lastUhraniumLevelSaved)
         {
             SaveManager.SaveUhraniumHighscore(lastUhraniumLevelSaved);

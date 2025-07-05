@@ -24,7 +24,7 @@ public class HighscoreTracker : MonoBehaviour
 
         if (gameManager.gameState == GameState.LEVELPLAYING)
         {
-            current = gameManager.player.savedUhranium;
+            current = SaveManager.LoadUhranium();
             sessionMax = Mathf.Max(current, sessionMax);
 
             // Prüfen, ob neuer Allzeit-Highscore erreicht wurde

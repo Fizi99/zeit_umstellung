@@ -18,6 +18,28 @@ public static class SaveManager
         return PlayerPrefs.GetFloat("Read of Highscore Value gives: ", 0f);
     }
 
+    public static void SaveUhranium(float uhraniumCount)
+    {
+        PlayerPrefs.SetFloat("Uhranium", uhraniumCount);
+        PlayerPrefs.Save();
+        //Debug.Log("Current All-Time Highscore: " + PlayerPrefs.GetFloat("Highscore", 0f));
+    }
+
+    public static float LoadUhranium()
+    {
+        //Debug.Log("Loaded Highscore: " + PlayerPrefs.GetFloat("Highscore", 0f));
+        float uhranium = PlayerPrefs.GetFloat("Uhranium", 0f);
+        if (uhranium != null)
+        {
+            return uhranium;
+        }
+        else
+        {
+            return 0f;
+        }
+    }
+
+
     public static void SaveFirstTimePlaying(bool firstTime)
     {
         PlayerPrefs.SetInt("FirstPlay", firstTime ? 1 : 0);

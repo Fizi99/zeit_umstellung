@@ -24,11 +24,13 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public TurretType turretType;
     public GameObject lockImage;
     public RawImage turretImage;
-    public GameObject UhraniumSymbol;
+    public GameObject UhraniumImage;
     public GameObject UhraniumAmount;
 
     private Texture2D originalTex;
     private Texture2D blackTex;
+    public Image zeitsymbolImage;
+    public GameObject ZeitsandAmount;
 
     void Start()
     {
@@ -119,6 +121,10 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if (isPosessed)
         {
             turretImage.texture = originalTex;
+            this.UhraniumAmount.GetComponent<TMPro.TextMeshProUGUI>().color = this.ZeitsandAmount.GetComponent<TMPro.TextMeshProUGUI>().color;
+            this.UhraniumImage.GetComponent<Image>().sprite = this.zeitsymbolImage.GetComponent<Image>().sprite;
+            this.UhraniumAmount.GetComponent<TMPro.TextMeshProUGUI>().text = turret.GetComponent<TurretAI>().buildingCost.ToString();
+
         }
         else
         {
@@ -133,7 +139,5 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
 
         lockImage.SetActive(!isPosessed);
-        UhraniumSymbol.SetActive(!isPosessed);
-        UhraniumAmount.SetActive(!isPosessed);
     }
 }

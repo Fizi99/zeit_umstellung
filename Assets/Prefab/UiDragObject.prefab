@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Turret: {fileID: 0}
+  costText: {fileID: 213749937737633788}
 --- !u!1 &4910575912539231182
 GameObject:
   m_ObjectHideFlags: 0

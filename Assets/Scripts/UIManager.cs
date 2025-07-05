@@ -242,7 +242,7 @@ public class UIManager : MonoBehaviour
                 text = "Bus departed! Level finished!";
 
                 // Check if updating the uhranium highscore is needed
-                float finalUhraniumAcquired = this.gameManager.player.savedUhranium;
+                float finalUhraniumAcquired = SaveManager.LoadUhranium();
                 if (SaveManager.LoadUhraniumHighscore() < finalUhraniumAcquired)
                 {
                     SaveManager.SaveUhraniumHighscore(finalUhraniumAcquired);
@@ -282,7 +282,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateLvlFinishedText()
     {
-        this.lvlFinishedText.text = "Congratulations!\nLevel finished, your bus is arriving!\n+" + this.gameManager.player.uhraniumGain + " Uhranium!\ntotal: " + this.gameManager.player.savedUhranium;
+        this.lvlFinishedText.text = "Congratulations!\nLevel finished, your bus is arriving!\n+" + this.gameManager.player.uhraniumGain + " Uhranium!\ntotal: " + Mathf.FloorToInt(SaveManager.LoadUhranium()).ToString();
     }
 
     // update navigation depending on gamestate
@@ -656,6 +656,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdateUhraniumLoadoutDisplay()
     {
-        this.uhraniumTextLoadout.text =  this.gameManager.player.savedUhranium.ToString();
+        this.uhraniumTextLoadout.text = Mathf.FloorToInt(SaveManager.LoadUhranium()).ToString();
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using TMPro;
 
 
 public class TurretGridFiller : MonoBehaviour
@@ -19,20 +20,24 @@ public class TurretGridFiller : MonoBehaviour
     private buildManager BuildManager;
 
     public GameObject DragObject;
+    public Button BuyButton;
+    public int ButtonIndex = -1;
 
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.BuildManager = gameManager.buildManager;
         //reset purchased turrets: UHRANIUM PERMANENT SPEICHERN
-        SaveManager.SavePurchasedTurrets(new List<TurretType>());
+        //SaveManager.SavePurchasedTurrets(new List<TurretType>());
         PopulateGridV3();
     }
 
     void PopulateGridV3()
     {
+        int i = 0;
         foreach (var mapping in turretMappings)
         {
+
             GameObject frame = Instantiate(turretFramePrefab, gridParent);
 
             RawImage iconImage = frame.transform.Find("TurretImage").GetComponent<RawImage>();
@@ -45,9 +50,10 @@ public class TurretGridFiller : MonoBehaviour
             displayScript.AssignOriginalTexture(mapping.data.turretIconTexture);
 
             displayScript.turret = mapping.prefab;
-
-            displayScript.ButtonSprite = mapping.buttonSprite;
             displayScript.DragObject = DragObject;
+
+            
+            displayScript.ButtonSprite = mapping.buttonSprite;
             displayScript.ChangedDragObject = mapping.DragObject;
             displayScript.turretType = mapping.data.turretType;
             displayScript.texture = mapping.data.turretIconTexture;
@@ -59,12 +65,26 @@ public class TurretGridFiller : MonoBehaviour
             Button btn = frame.GetComponent<Button>();
             btn.onClick.AddListener(() =>
             {
+                this.ButtonIndex = i;
                 turretInfoUIElem.DisplayFromData(mapping.data);
 
-                if (!SaveManager.LoadPurchasedTurrets().Contains(mapping.data.turretType) &&
-                    mapping.prefab.GetComponent<TurretAI>().uhraniumPrice < gameManager.player.savedUhranium)
+                if (!SaveManager.LoadPurchasedTurrets().Contains(mapping.data.turretType)) 
                 {
-                    gameManager.player.savedUhranium -= mapping.prefab.GetComponent<TurretAI>().uhraniumPrice;
+                    BuyButton.gameObject.SetActive(true);
+                }
+                else
+                {
+                    BuyButton.gameObject.SetActive(false);
+                }
+            });
+
+            BuyButton.onClick.AddListener(() =>
+            {
+                if (i == this.ButtonIndex) { 
+                if (!SaveManager.LoadPurchasedTurrets().Contains(mapping.data.turretType) &&
+                    mapping.prefab.GetComponent<TurretAI>().uhraniumPrice < SaveManager.LoadUhranium())
+                {
+                    SaveManager.SaveUhranium(SaveManager.LoadUhranium() - mapping.prefab.GetComponent<TurretAI>().uhraniumPrice);
 
                     List<TurretType> purchasedTurrets = SaveManager.LoadPurchasedTurrets();
                     purchasedTurrets.Add(mapping.data.turretType);
@@ -72,12 +92,14 @@ public class TurretGridFiller : MonoBehaviour
                     this.gameManager.uiManager.UpdateUhraniumLoadoutDisplay();
                     displayScript.showPosession(true);
                 }
+                }
             });
 
             if (6 > BuildManager.uiLoadoutList.Count)
             {
                 BuildManager.addToUiLoadoutList(frame);
             }
+            i++;
         }
     }
 }

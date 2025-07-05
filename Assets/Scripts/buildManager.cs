@@ -195,8 +195,15 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                     currentButtonSprite = uiLoadoutList[i].GetComponent<displayTurretCost>().ButtonSprite;
                     
                     CurrentDragObject = Instantiate(uiLoadoutList[i].GetComponent<displayTurretCost>().DragObject, Input.mousePosition, Quaternion.identity);
+
+
+
                     CurrentDragObject.transform.Find("TurretImage").GetComponent<RawImage>().texture = uiLoadoutList[i].GetComponent<displayTurretCost>().texture;
                     CurrentTurret = uiLoadoutList[i].GetComponent<displayTurretCost>().turret;
+                    CurrentDragObject.GetComponent<CarryTurretInfo>().costText.GetComponent<TMPro.TextMeshProUGUI>().text
+                        = CurrentTurret.GetComponent<TurretAI>().buildingCost.ToString();
+
+
                     changedDragObject = uiLoadoutList[i].transform.GetComponent<displayTurretCost>().ChangedDragObject;
                     currentTurretType = uiLoadoutList[i].transform.GetComponent<displayTurretCost>().turretType;
                     //CurrentDragObject = Instantiate(frameObject, Input.mousePosition, Quaternion.identity);
@@ -237,7 +244,6 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             buttonScript = Button4.GetComponent<displayTurretCost>();
         }
 
-        //isbuildpossible muss andere if bedingung sein
         if (isHovering)
         {
             SetTurretToBuild(buttonScript.turret);
@@ -274,6 +280,31 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 Vector3 spawnPosition = hit.point;
                 spawnPosition.z = 0; // Make the tower be in the base depth
                 CurrentDragObject.transform.position = spawnPosition;
+                Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.1f);
+                bool turretOverlap = false;
+                foreach (Collider collider in collidersHit)
+                {
+                    //make current dragobject red if in unplacable zone
+                    //if (collider.tag == "Turret" || collider.tag == "Busstop" || Input.mousePosition.x < Screen.width
+                    //    || 400f < Input.mousePosition.x || Input.mousePosition.y < Screen.height || 0 < Input.mousePosition.y)
+                    //if (collider.tag == "Turret" || collider.tag == "Busstop")
+
+                    if (collider.tag == "Turret" || collider.tag == "Busstop")
+                    {
+                        turretOverlap = true;
+                    }
+                }
+                Color newColor;
+                if (turretOverlap)
+                {
+                    newColor = Color.red;
+                }
+                else
+                {
+                    newColor = Color.white;
+                    newColor.a = 0.5f;
+                }
+                CurrentDragObject.GetComponent<SpriteRenderer>().color = newColor;
             }
         }
         else if (CurrentDragObject != null && gameManager.gameState == GameState.LOADOUTCREATION)
