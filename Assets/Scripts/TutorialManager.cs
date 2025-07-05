@@ -26,6 +26,7 @@ public class TutorialManager : MonoBehaviour
 
     private float defaultZeitsandRate;
     private float defaultUhraniumRate;
+    private float defaultzeitsandStartValue;
 
 
     private GameManager gameManager;
@@ -60,6 +61,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (this.gameManager.gameState == GameState.LEVELPLAYING)
             {
+                ControlVariablesForTutorial();
                 this.tutorialPanel.SetActive(true);
                 this.isActive = true;
                 this.currentPart = 0;
@@ -119,6 +121,7 @@ public class TutorialManager : MonoBehaviour
         this.currentPart = 0;
         this.isActive = false;
         SaveManager.SaveFirstTimePlaying(false);
+        ResetControlledVariables();
 
     }
 
@@ -127,6 +130,10 @@ public class TutorialManager : MonoBehaviour
         // contorl zeitsand
         this.defaultZeitsandRate = this.gameManager.player.zeitsandRatePerSec;
         this.gameManager.player.zeitsandRatePerSec = 0;
+        this.defaultzeitsandStartValue = this.gameManager.player.zeitsandStartValue;
+
+        // stop enemy spawning
+        this.gameManager.waveSpawner.SetStopWaveSpawning(true);
 
         // control uhranium
         this.defaultUhraniumRate = this.gameManager.player.uhrraniumRatePerSec;
@@ -135,7 +142,9 @@ public class TutorialManager : MonoBehaviour
 
     private void ResetControlledVariables()
     {
+        this.gameManager.player.zeitsand = this.defaultzeitsandStartValue;
         this.gameManager.player.zeitsandRatePerSec = this.defaultZeitsandRate;
         this.gameManager.player.uhrraniumRatePerSec = this.defaultUhraniumRate;
+        this.gameManager.waveSpawner.SetStopWaveSpawning(false);
     }
 }

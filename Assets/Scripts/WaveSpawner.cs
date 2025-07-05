@@ -37,6 +37,8 @@ public class WaveSpawner : MonoBehaviour
     private float waveHealth = 0;
     private int waveCount = 1;
 
+    public bool stopWaveSpawn = false;
+
     [Header("1=minimum zeitSandBuff needed to win wave")]
     public float zeitSandBuff = 2f;
 
@@ -56,7 +58,7 @@ public class WaveSpawner : MonoBehaviour
     void Update()
     {
         // countdown between waves
-        if (this.wave.Count <= 0 && this.gameManager.gameState == GameState.LEVELPLAYING)
+        if (this.wave.Count <= 0 && this.gameManager.gameState == GameState.LEVELPLAYING && !this.stopWaveSpawn)
         {
             if (this.countdownWaves <= 0)
             {
@@ -72,7 +74,7 @@ public class WaveSpawner : MonoBehaviour
         }
 
         // countdown between single enemies
-        if (this.gameManager.gameState == GameState.LEVELPLAYING)
+        if (this.gameManager.gameState == GameState.LEVELPLAYING && !this.stopWaveSpawn)
         {
             if (countdownEnemies <= 0)
             {
@@ -85,6 +87,12 @@ public class WaveSpawner : MonoBehaviour
                 this.countdownEnemies -= Time.deltaTime;
             }
         }
+    }
+
+    public void SetStopWaveSpawning(bool stopWaveSpawning)
+    {
+        this.stopWaveSpawn = stopWaveSpawning;
+
     }
 
     // create a weighted list for enemy type. this list is later used to init waves
