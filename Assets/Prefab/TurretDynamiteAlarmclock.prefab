@@ -83,7 +83,11 @@ MonoBehaviour:
   stopAndShootRange: 5
   fireRate: 1
   bulletPrefab: {fileID: 9084643237093435201, guid: 5d05f72b0cfd72c429442f2a6cedb13b, type: 3}
-  firePoint: {fileID: 0}
+  firePoint: {x: 0, y: 0, z: 0}
+  firePointRight: {x: 0, y: 0, z: 0}
+  firePointLeft: {x: 0, y: 0, z: 0}
+  firePointUp: {x: 0, y: 0, z: 0}
+  firePointDown: {x: 0, y: 0, z: 0}
   towerSprites:
   - {fileID: 21300000, guid: 4f9fa728ca143e541aa15665bae37a24, type: 3}
   - {fileID: 21300000, guid: 4f9fa728ca143e541aa15665bae37a24, type: 3}
@@ -93,7 +97,7 @@ MonoBehaviour:
   blobShadowOffset: {x: 0, y: -0.1, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}
   blobShadowRotation: {x: 0, y: 0, z: 0}
-  isPossesed: 0
+  uhraniumPrice: 5000
 --- !u!212 &-8325835882095180303
 SpriteRenderer:
   m_ObjectHideFlags: 0

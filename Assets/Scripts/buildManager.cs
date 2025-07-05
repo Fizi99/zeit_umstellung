@@ -81,7 +81,6 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.UiManager = gameManager.uiManager;
 
-        Debug.Log("getting empty slots");
         emptySlots = gameManager.uiManager.loadoutPanel
             .GetComponentsInChildren<Transform>()
             .Where(t => t.name.StartsWith("emptySlot"))
@@ -102,7 +101,6 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     public void addToUiLoadoutList(GameObject gameObject)
     {
         uiLoadoutList.Add(gameObject);
-        Debug.Log("added to UILoadoutList "+ uiLoadoutList.Count);
     }
 
     void Update()
@@ -153,7 +151,6 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     public void SetTurretToBuild(GameObject turret)
     {
-        Debug.Log("button press");
         turretToBuild = turret;
         setIsBuild(true);
         placeableZone.ShowPlaceableZone();
@@ -191,14 +188,10 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         isDragging = true;
         if (gameManager.gameState == GameState.LOADOUTCREATION)
         {
-            Debug.Log("in loadoutCreation");
-            Debug.Log("can we check loadoutList?: " + uiLoadoutList.Count);
             for (int i = 0; i < uiLoadoutList.Count; i++)
             {
-                Debug.Log("checking turret " + i + " of " + uiLoadoutList.Count);
-                if (uiLoadoutList[i].GetComponent<displayTurretCost>().isHovering)
+                if (uiLoadoutList[i].GetComponent<displayTurretCost>().isHovering && SaveManager.LoadPurchasedTurrets().Contains(uiLoadoutList[i].GetComponent<displayTurretCost>().turretType))
                 {
-                    Debug.Log("is hovering over turret "+i);
                     currentButtonSprite = uiLoadoutList[i].GetComponent<displayTurretCost>().ButtonSprite;
                     
                     CurrentDragObject = Instantiate(uiLoadoutList[i].GetComponent<displayTurretCost>().DragObject, Input.mousePosition, Quaternion.identity);
@@ -273,7 +266,6 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     {
         if (CurrentDragObject != null && gameManager.gameState == GameState.LEVELPLAYING)
         {
-            //Debug.Log("Dragging");
             Vector3 mousePosition = Input.mousePosition;
             Ray ray = mainCamera.ScreenPointToRay(mousePosition);
             RaycastHit hit;
@@ -294,10 +286,8 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     {
         if (gameManager.gameState == GameState.LOADOUTCREATION && CurrentDragObject != null)
         {
-            Debug.Log("changing empty slot");
             for (int i = 0; i < emptySlots.Count; i++)
             {
-                Debug.Log("empty slot " + i + " is changing");
                 if (emptySlots[i].GetComponent<EmptySlotHover>().isHovering)
                 {
                     if (SaveManager.LoadPurchasedTurrets().Contains(CurrentTurret.GetComponent<TurretAI>().name) )
@@ -309,7 +299,6 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                     emptySlots[i].GetComponent<EmptySlotHover>().changedDragObject = changedDragObject;
                         emptySlots[i].GetComponent<EmptySlotHover>().turretType = currentTurretType;
                         this.gameManager.uiManager.shownLoadout[i] = currentTurretType;
-                        Debug.Log("empty slot changed success "+i);
                     }
                     else
                     {
@@ -332,8 +321,6 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     {
         if (isBuildPossible)
         {
-            Debug.Log("stop drag");
-            Debug.Log("Pointer position: " + Input.mousePosition);
             Destroy(CurrentDragObject);
 
             if (Input.mousePosition.x < Screen.width && 400f < Input.mousePosition.x && Input.mousePosition.y < Screen.height && 0 < Input.mousePosition.y)
@@ -368,7 +355,6 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                         else
                         {
                             gameManager.SpawnFloatingText(spawnPosition, "Turm bereits hier!", Color.red);
-                            //Debug.Log("Turret already at this location!");
                         }
                     }
                     else
@@ -379,13 +365,11 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 else
                 {
                     gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "kein Zeitsand!", Color.red);
-                    //Debug.Log("Not enough Zeitsand!");
                 }
             }
             else
             {
                 gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "Hier nicht!", Color.red);
-                //Debug.Log("Turret outside of placeable Zone!");
             }
 
         }
