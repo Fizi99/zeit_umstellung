@@ -13,4 +13,20 @@ MonoBehaviour:
   m_Name: SoundLibrary_1
   m_EditorClassIdentifier: 
   musicMainScore: {fileID: 8300000, guid: 69b1f4e172ed60342b0b20db68fd03a1, type: 3}
-  sfxTurretWristwatchArtilleryFire: {fileID: 8300000, guid: d6ae6ff65ff943c4fb879ea5703d8521, type: 3}
+  sfxTurretWristwatchArtilleryFire: {fileID: 8300000, guid: 537f76a40e61c1c4da0701a9a051911f, type: 3}
+  sfxTurretWristwatchArtilleryHit: {fileID: 0}
+  sfxTurretSundailLaserFire: {fileID: 0}
+  sfxTurretSundailLaserHit: {fileID: 0}
+  sfxTurretDigitalRocketlauncherFire: {fileID: 8300000, guid: e21447c47b8f02e419e266e59516ec65, type: 3}
+  sfxTurretDigitalRocketlauncherHit: {fileID: 8300000, guid: 6547c4550746f7647861076b4c933ce9, type: 3}
+  sfxTurretDroneFire: {fileID: 8300000, guid: 5e39586f808259a4f9bf3d99595ddf1a, type: 3}
+  sfxTurretDroneHit: {fileID: 0}
+  sfxTurretDroneStandFire: {fileID: 8300000, guid: b53357ace1cf30341b7004ef22e47632, type: 3}
+  sfxTurretDynamiteFire: {fileID: 8300000, guid: 3b1aba94401d1464ab0b296f2c09f3d5, type: 3}
+  sfxTurretFreezeFire: {fileID: 0}
+  sfxBusstopHit: {fileID: 8300000, guid: 57a49eabad775f24ebccfff9748da8e1, type: 3}
+  sfxUhraniumSaved: {fileID: 8300000, guid: eaa4fa5e57dd5964c90008ec577d1a23, type: 3}
+  sfxUhraniumSavable: {fileID: 0}
+  sfxZeitsandDropped: {fileID: 8300000, guid: 4edbc284c24fcf346a33ab369876ca4f, type: 3}
+  sfxZeitsandCollected: {fileID: 8300000, guid: b095cf48e530a344ab0d1c3413be3584, type: 3}
+  sfxTurretPlaced: {fileID: 8300000, guid: fc72b55d47ccc26438e79d8c78451311, type: 3}

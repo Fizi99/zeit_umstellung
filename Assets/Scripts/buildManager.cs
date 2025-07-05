@@ -38,6 +38,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     private bool isDragging = false;
 
     private GameManager gameManager;
+    private AudioManager audioManager;
 
     private GameObject CurrentDragObject;
     private bool isHovering = false;
@@ -79,6 +80,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             turretRocket.GetComponent<TurretAI>().getTurretEfficiency()+
             turretDrone.GetComponent<TurretAI>().getTurretEfficiency() )/ loadOutSize)/4;*/
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         this.UiManager = gameManager.uiManager;
 
         emptySlots = gameManager.uiManager.loadoutPanel
@@ -134,6 +136,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                             float dropAmount = collider.gameObject.GetComponent<DropProperties>().dropAmount;
                             this.gameManager.player.addZeitsand(dropAmount);
                             gameManager.SpawnFloatingText(collider.transform.position, "+"+ dropAmount+" Zeitsand!", Color.yellow);
+                            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxZeitsandCollected);
                             Destroy(collider.gameObject);
                         }
                     }
@@ -351,6 +354,8 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                             gameManager.player.SetZeitsand(gameManager.player.zeitsand - turret.GetComponent<TurretAI>().buildingCost);
                             GameObject newTurret = Instantiate(turret, spawnPosition, Quaternion.identity);
                             newTurret.transform.parent = turretContainer.transform;
+
+                            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxTurretPlaced);
                         }
                         else
                         {

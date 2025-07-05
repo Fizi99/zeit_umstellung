@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SaveUhranium : MonoBehaviour
 {
     private GameManager gameManager;
+    private AudioManager audioManager;
 
     public GameObject popupText;
     public GameObject particleEffect;
@@ -15,6 +16,7 @@ public class SaveUhranium : MonoBehaviour
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -56,6 +58,7 @@ public class SaveUhranium : MonoBehaviour
         {
             this.gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "+" + (int)this.gameManager.player.uhranium, new Color(0.5800107f, 0.9245283f, 0.8310998f));
             this.gameManager.player.SaveUhranium();
+            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxUhraniumSaved);
         }
     }
 
