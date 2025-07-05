@@ -8,6 +8,10 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] public List<TutorialDataSObj> tutorialParts;
     [SerializeField] public TMP_Text tutorialText;
 
+    [SerializeField] public GameObject highlightShop;
+    [SerializeField] public GameObject highlightUhranium;
+    [SerializeField] public GameObject highlightBusstop;
+
 
     [HideInInspector] public bool playTutorial = true;
     private bool isActive = false;
@@ -60,6 +64,7 @@ public class TutorialManager : MonoBehaviour
                 this.isActive = true;
                 this.currentPart = 0;
                 this.tutorialText.text = this.tutorialParts[this.currentPart].text;
+                Highlight();
             }
         }
         
@@ -72,12 +77,39 @@ public class TutorialManager : MonoBehaviour
         if(this.currentPart < this.tutorialParts.Count)
         {
             this.tutorialText.text = this.tutorialParts[this.currentPart].text;
+            Highlight();
         }
         else
         {
             FinishTutorial();
         }
         
+    }
+
+    // choose which ui part to highlight
+    private void Highlight()
+    {
+        DeactivateHighlights();
+        switch (this.tutorialParts[this.currentPart].part)
+        {
+            case TutorialPart.BUSSTOP:
+                this.highlightBusstop.SetActive(true);
+                break;
+            case TutorialPart.TURRETS:
+                this.highlightShop.SetActive(true);
+                break;
+            case TutorialPart.UHRANIUM:
+                this.highlightUhranium.SetActive(true);
+                break;
+            default:
+                break;
+        }
+    }
+    private void DeactivateHighlights()
+    {
+        this.highlightShop.SetActive(false);
+        this.highlightUhranium.SetActive(false);
+        this.highlightBusstop.SetActive(false);
     }
 
     // finish the tutorial and save, that player played the game before
