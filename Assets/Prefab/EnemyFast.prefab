@@ -4966,6 +4966,7 @@ MonoBehaviour:
   auraRadius: 0
   auraEffectStrength: 2
   auraDuration: 2
+  dieParticles: {fileID: 528074345881145464, guid: 916a6c8bfa4026d43af78b7b32dfadda, type: 3}
   targets: []
   currentTarget: {fileID: 0}
   waypointIndex: 0

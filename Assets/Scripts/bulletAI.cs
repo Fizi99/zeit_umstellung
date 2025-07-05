@@ -12,32 +12,53 @@ public class bulletAI : MonoBehaviour
     public float freezeDuration = 5f;
     public TurretType turretType = TurretType.STANDARD;
 
+    public GameObject hitParticle;
+
     private AudioManager audioManager;
 
     private void Start()
     {
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
-        PlayShootAudio();
     }
 
-    private void PlayShootAudio()
+
+    private void PlayHitAudio()
     {
         AudioClip clip = null;
         switch (turretType)
         {
             case TurretType.STANDARD:
-                clip = this.audioManager.soundLibrary.sfxTurretWristwatchArtilleryFire;
+                clip = this.audioManager.soundLibrary.sfxTurretWristwatchArtilleryHit;
+                break;
+            case TurretType.DRONE:
+                clip = this.audioManager.soundLibrary.sfxTurretDroneHit;
+                break;
+            case TurretType.DRONEBASE:
+                // clip = this.audioManager.soundLibrary.sfxTurretWristwatchArtilleryFire;
+                break;
+            case TurretType.DYNAMITE:
+                // clip = this.audioManager.soundLibrary.sfxTurretWristwatchArtilleryFire;
+                break;
+            case TurretType.FREEZE:
+                // clip = this.audioManager.soundLibrary.sfxTurretWristwatchArtilleryFire;
+                break;
+            case TurretType.LASER:
+                clip = this.audioManager.soundLibrary.sfxTurretSundailLaserHit;
+                break;
+            case TurretType.MISSILE:
+                clip = this.audioManager.soundLibrary.sfxTurretDigitalRocketlauncherHit;
                 break;
 
             default:
                 break;
         }
 
-        if(clip != null) {
+        if (clip != null)
+        {
             this.audioManager.PlaySfx(clip);
         }
-        
+
     }
 
     public void SetBulletTarget(Transform targetSetter)
@@ -102,6 +123,13 @@ public class bulletAI : MonoBehaviour
         {
             DealDamage(target);
         }
+
+        if(this.hitParticle!= null)
+        {
+            GameObject particles = Instantiate(this.hitParticle, target.position, this.hitParticle.transform.rotation);
+            Destroy(particles, 2f);
+        }
+        PlayHitAudio();
         Destroy(gameObject);
         //do bullet effect here
     }

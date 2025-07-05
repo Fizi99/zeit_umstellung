@@ -57,7 +57,5 @@ public class DropProperties : MonoBehaviour
                 on = !on;
                 this.currFlickerTime = 0;
             }
-        
     }
-
 }

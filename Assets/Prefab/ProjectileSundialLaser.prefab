@@ -141,6 +141,7 @@ MonoBehaviour:
   SlowMultiplier: 0
   freezeDuration: 5
   turretType: 4
+  hitParticle: {fileID: 528074345881145464, guid: fb9d4341e75c80e4e99030e70ed09b02, type: 3}
 --- !u!212 &-3945506960444388442
 SpriteRenderer:
   m_ObjectHideFlags: 0
