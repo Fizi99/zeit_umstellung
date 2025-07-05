@@ -275,55 +275,66 @@ public class GameManager : MonoBehaviour
         Debug.Log("Highscore is now (after reset): " + PlayerPrefs.GetFloat("Highscore", 0f));
     }
 
-    
+    public void QuitGame()
+    {
+        // Funktioniert auf mobilen Geräten
+        Application.Quit();
 
-    //public void ApplySpritesForEpoch(int choice)
-    //{
-    //    if (choice < 0 || choice >= epochs.Length)
-    //        return;
+        // Optional für Editor-Tests
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
 
-    //    string epoch = epochs[choice];
 
-    //    foreach (GameObject enemyPrefab in enemyPrefabs)
-    //    {
-    //        string prefabName = enemyPrefab.name; // z. B. "EnemyFast"
 
-    //        // Mapping von Klassennamen zu Sprite-Stilnamen
-    //        string type = prefabName switch
-    //        {
-    //            "EnemyStd" => "std",
-    //            "EnemyFast" => "fast",
-    //            "EnemyTank" => "tank",
-    //            "EnemySupport" => "support",
-    //            "EnemySplitter" => "splitter",
-    //            _ => null
-    //        };
+        //public void ApplySpritesForEpoch(int choice)
+        //{
+        //    if (choice < 0 || choice >= epochs.Length)
+        //        return;
 
-    //        if (type == null)
-    //        {
-    //            Debug.LogWarning($"Unbekannter Gegnertyp: {prefabName}");
-    //            continue;
-    //        }
+        //    string epoch = epochs[choice];
 
-    //        string expectedSpriteName = $"enemy-{type}-{epoch}";
+        //    foreach (GameObject enemyPrefab in enemyPrefabs)
+        //    {
+        //        string prefabName = enemyPrefab.name; // z. B. "EnemyFast"
 
-    //        Sprite newSprite = allEpochSpecificSprites.FirstOrDefault(s => s.name.ToLower() == expectedSpriteName);
-    //        if (newSprite == null)
-    //        {
-    //            Debug.LogWarning($"Kein Sprite gefunden: {expectedSpriteName}");
-    //            continue;
-    //        }
+        //        // Mapping von Klassennamen zu Sprite-Stilnamen
+        //        string type = prefabName switch
+        //        {
+        //            "EnemyStd" => "std",
+        //            "EnemyFast" => "fast",
+        //            "EnemyTank" => "tank",
+        //            "EnemySupport" => "support",
+        //            "EnemySplitter" => "splitter",
+        //            _ => null
+        //        };
 
-    //        SpriteRenderer sr = enemyPrefab.GetComponent<SpriteRenderer>();
-    //        if (sr == null)
-    //        {
-    //            Debug.LogWarning($"Kein SpriteRenderer an: {prefabName}");
-    //            continue;
-    //        }
+        //        if (type == null)
+        //        {
+        //            Debug.LogWarning($"Unbekannter Gegnertyp: {prefabName}");
+        //            continue;
+        //        }
 
-    //        sr.sprite = newSprite;
-    //    }
+        //        string expectedSpriteName = $"enemy-{type}-{epoch}";
 
-    //    Debug.Log("Epoch-Sprites angewendet: " + epoch);
-    //}
-}
+        //        Sprite newSprite = allEpochSpecificSprites.FirstOrDefault(s => s.name.ToLower() == expectedSpriteName);
+        //        if (newSprite == null)
+        //        {
+        //            Debug.LogWarning($"Kein Sprite gefunden: {expectedSpriteName}");
+        //            continue;
+        //        }
+
+        //        SpriteRenderer sr = enemyPrefab.GetComponent<SpriteRenderer>();
+        //        if (sr == null)
+        //        {
+        //            Debug.LogWarning($"Kein SpriteRenderer an: {prefabName}");
+        //            continue;
+        //        }
+
+        //        sr.sprite = newSprite;
+        //    }
+
+        //    Debug.Log("Epoch-Sprites angewendet: " + epoch);
+        //}
+    }

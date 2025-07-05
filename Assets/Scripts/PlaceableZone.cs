@@ -63,16 +63,17 @@ public class PlaceableZone : MonoBehaviour
             var mask = maskObj.AddComponent<SpriteMask>();
             mask.sprite = turretRenderer.sprite;
 
-            maskObj.transform.position = turret.position;
-            maskObj.transform.rotation = turret.rotation;
             maskObj.transform.localScale = turret.localScale * 1.3f;
+            Vector3 slightYOffset = new Vector3(0f, -0.1f, 0f);
+            maskObj.transform.position = turret.position + slightYOffset;
+            maskObj.transform.rotation = turret.rotation;
             maskObj.transform.parent = overlayObj.transform;
         }
 
-        busStopMask(new Vector2(1.1f, 1.1f));
+        busStopMask(1.25f);
     }
 
-    public void busStopMask(Vector2 scaleVector)
+    public void busStopMask(float scaleFactor)
     {
         GameObject busStopGO = this.gameManager.busStopGO;
         if (busStopGO != null)
@@ -84,9 +85,9 @@ public class PlaceableZone : MonoBehaviour
                 var mask = busStopMaskObj.AddComponent<SpriteMask>();
                 mask.sprite = busStopRenderer.sprite;
 
+                busStopMaskObj.transform.localScale = busStopGO.transform.localScale * scaleFactor;
                 busStopMaskObj.transform.position = busStopGO.transform.position;
                 busStopMaskObj.transform.rotation = busStopGO.transform.rotation;
-                busStopMaskObj.transform.localScale = busStopGO.transform.localScale * scaleVector;
 
                 busStopMaskObj.transform.parent = overlayObj.transform;
             }
@@ -173,16 +174,16 @@ public class PlaceableZone : MonoBehaviour
                 var mask = maskObj.AddComponent<SpriteMask>();
                 mask.sprite = turretRenderer.sprite;
 
+                maskObj.transform.localScale = turret.localScale * 5f;
                 maskObj.transform.position = turret.position;
                 maskObj.transform.rotation = turret.rotation;
-                maskObj.transform.localScale = turret.localScale * new Vector2(5f,5f);
 
                 maskObj.transform.parent = overlayObj.transform;
             }
         }
 
         // Zusätzliche Maske für BusStopGO erzeugen
-        busStopMask(new Vector2(1.1f, 1.1f));
+        busStopMask(1.25f);
 
         isZoneVisible = true;
     }

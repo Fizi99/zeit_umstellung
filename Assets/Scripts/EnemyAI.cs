@@ -15,6 +15,8 @@ public class EnemyAI : MonoBehaviour
     public int splitAmount = 0;
     public Transform splitUnit;
     private GameManager gameManager;
+    private AudioManager audioManager;
+
     public int auraRadius =0;
     public float auraEffectStrength = 2f;
     public float auraDuration = 2f;
@@ -68,6 +70,7 @@ public class EnemyAI : MonoBehaviour
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         CreateBlobShadow();
         ChooseSprite();
@@ -192,6 +195,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Busstop"))
         {
+            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxBusstopHit);
             CollideWithBusStop();
         }
     }
@@ -253,6 +257,7 @@ public class EnemyAI : MonoBehaviour
             droppedItem.GetComponent<DropProperties>().dropAmount = this.dropAmount;
             droppedItem.GetComponent<DropProperties>().survivalDuration = dropDuration;
             droppedItem.GetComponent<DropProperties>().remainingDuration = dropDuration;
+            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxZeitsandDropped);
             //Destroy(droppedItem, dropDuration);
         }
 
