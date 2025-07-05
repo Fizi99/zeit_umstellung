@@ -133,7 +133,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                         {
                             float dropAmount = collider.gameObject.GetComponent<DropProperties>().dropAmount;
                             this.gameManager.player.addZeitsand(dropAmount);
-                            gameManager.SpawnFloatingText(collider.transform.position, "+"+ dropAmount+" Zeitsand!", Color.yellow);
+                            gameManager.SpawnFloatingText(collider.transform.position, "+"+ dropAmount, new Color(1f, 0.972f, 0.384f));
                             Destroy(collider.gameObject);
                         }
                     }
