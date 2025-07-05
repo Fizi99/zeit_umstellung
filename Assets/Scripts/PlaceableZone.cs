@@ -57,6 +57,29 @@ public class PlaceableZone : MonoBehaviour
             maskObj.transform.localScale = turret.localScale * 1.3f;
             maskObj.transform.parent = overlayObj.transform;
         }
+
+        busStopMask(new Vector2(1.1f, 1.1f));
+    }
+
+    public void busStopMask(Vector2 scaleVector)
+    {
+        GameObject busStopGO = this.gameManager.busStopGO;
+        if (busStopGO != null)
+        {
+            SpriteRenderer busStopRenderer = busStopGO.GetComponent<SpriteRenderer>();
+            if (busStopRenderer != null && busStopRenderer.sprite != null)
+            {
+                GameObject busStopMaskObj = new GameObject("BusStopMask");
+                var mask = busStopMaskObj.AddComponent<SpriteMask>();
+                mask.sprite = busStopRenderer.sprite;
+
+                busStopMaskObj.transform.position = busStopGO.transform.position;
+                busStopMaskObj.transform.rotation = busStopGO.transform.rotation;
+                busStopMaskObj.transform.localScale = busStopGO.transform.localScale * scaleVector;
+
+                busStopMaskObj.transform.parent = overlayObj.transform;
+            }
+        }
     }
 
     public void ShowPlaceableZone()
@@ -135,23 +158,7 @@ public class PlaceableZone : MonoBehaviour
         }
 
         // Zusätzliche Maske für BusStopGO erzeugen
-        GameObject busStopGO = GameObject.FindWithTag("Busstop");
-        if (busStopGO != null)
-        {
-            SpriteRenderer busStopRenderer = busStopGO.GetComponent<SpriteRenderer>();
-            if (busStopRenderer != null && busStopRenderer.sprite != null)
-            {
-                GameObject busStopMaskObj = new GameObject("BusStopMask");
-                var mask = busStopMaskObj.AddComponent<SpriteMask>();
-                mask.sprite = busStopRenderer.sprite;
-
-                busStopMaskObj.transform.position = busStopGO.transform.position;
-                busStopMaskObj.transform.rotation = busStopGO.transform.rotation;
-                busStopMaskObj.transform.localScale = busStopGO.transform.localScale * new Vector2(5f, 5f);
-
-                busStopMaskObj.transform.parent = overlayObj.transform;
-            }
-        }
+        busStopMask(new Vector2(1.1f, 1.1f));
 
         isZoneVisible = true;
     }
