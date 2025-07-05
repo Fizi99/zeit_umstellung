@@ -282,7 +282,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateLvlFinishedText()
     {
-        this.lvlFinishedText.text = "Congratulations!\nLevel finished, your bus is arriving!\n+" + this.gameManager.player.uhraniumGain + " Uhranium!\ntotal: " + Mathf.FloorToInt(SaveManager.LoadUhranium()).ToString();
+        this.lvlFinishedText.text = "— Spiel erfolgreich beendet —\nDein Bus ist angekommen!\n\n+" + this.gameManager.player.uhraniumGain + " Uhranium!\nInsgesamt: " + Mathf.FloorToInt(SaveManager.LoadUhranium()).ToString() + " Uhranium";
     }
 
     // update navigation depending on gamestate
