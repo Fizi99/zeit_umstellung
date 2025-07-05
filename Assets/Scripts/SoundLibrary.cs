@@ -33,6 +33,14 @@ public class SoundLibrary : ScriptableObject
 
     [Header("Soundeffects Busstop")]
     [SerializeField] public AudioClip sfxBusstopHit;
+    [SerializeField] public AudioClip sfxUhraniumSaved;
+    [SerializeField] public AudioClip sfxUhraniumSavable;
+
+    [Space(10)]
+
+    [Header("Soundeffects EnemieDrops")]
+    [SerializeField] public AudioClip sfxZeitsandDropped;
+    [SerializeField] public AudioClip sfxZeitsandCollected;
 
     [Space(10)]
     [Header("Soundeffects UI")]
