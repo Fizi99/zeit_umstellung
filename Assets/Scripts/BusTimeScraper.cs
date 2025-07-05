@@ -226,7 +226,7 @@ public class BusTimeScraper : MonoBehaviour
         {
             List<Bus> fetchedBusses = new List<Bus>();
 
-            if (request.result != UnityWebRequest.Result.Success)
+            if (request != null && request.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Fehler beim Laden: " + request.error);
 

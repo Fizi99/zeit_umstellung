@@ -60,8 +60,7 @@ public class TurretAI : MonoBehaviour
     private bool on = true;
     private float currFlickerTime = 0f;
 
-    public bool isPosessed = false;
-    public float uhraniumPrice = 1f;
+    public float uhraniumPrice = 5000f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -170,7 +169,6 @@ public class TurretAI : MonoBehaviour
 
             if (isMoving)
             {
-                Debug.Log("useamount: " + useAmount);
                 float distanceThisFrame = speed * Time.deltaTime;
 
 

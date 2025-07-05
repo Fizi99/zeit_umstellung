@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject busSelectorBtnPrefab;
     [SerializeField] private TMP_Text zeitsandText;
     [SerializeField] private TMP_Text uhraniumText;
+    [SerializeField] private TMP_Text uhraniumTextLoadout;
     [SerializeField] private TMP_Text lvlFinishedText;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private Toggle screenShakeToggle;
@@ -646,13 +647,15 @@ public class UIManager : MonoBehaviour
             for (int i = 0; i < 4; i++)
             {
                 temporaryLoadouts.Add(SaveManager.LoadLoadout(i + 1));
-                Debug.Log("temporaryLoadouts["+i +"].Count: " + temporaryLoadouts[i].Count);
             }
-            Debug.Log("temporaryLoadouts.Count: " + temporaryLoadouts.Count);
         }
         //button hervorheben 1
         shownLoadout = temporaryLoadouts[currentLoadoutIndex-1];
-        Debug.Log("shownLoadout.Count: " + shownLoadout.Count);
         fillEmptySlots(shownLoadout);
+    }
+
+    public void UpdateUhraniumLoadoutDisplay()
+    {
+        this.uhraniumTextLoadout.text =  this.gameManager.player.savedUhranium.ToString();
     }
 }

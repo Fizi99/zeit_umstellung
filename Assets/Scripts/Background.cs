@@ -3,15 +3,25 @@ using UnityEngine;
 
 public class Background : MonoBehaviour
 {
-    [SerializeField] private List<Sprite> sprites;
+    [Header("Base Sprites")]
+    [SerializeField] private Sprite prehistoricBaseSprite;
+    [SerializeField] private Sprite pharaohBaseSprite;
+    [SerializeField] private Sprite medievalBaseSprite;
+
+    [Header("Variation Sprites")]
+    [SerializeField] private List<Sprite> prehistoricVariations;
+    [SerializeField] private List<Sprite> pharaohVariations;
+    [SerializeField] private List<Sprite> medievalVariations;
+
+    [SerializeField] private int variationChance = 10;
+
     private GameManager gameManager;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -19,23 +29,37 @@ public class Background : MonoBehaviour
 
     public void UpdateBackGroundSprite()
     {
-        Sprite sprite;
-        switch (this.gameManager.epochChooser.currentEpoch)
+        Epoch current = gameManager.epochChooser.currentEpoch;
+        Sprite baseSprite = null;
+        List<Sprite> variations = null;
+
+        switch (current)
         {
             case Epoch.PREHISTORIC:
-                sprite = sprites[0];
+                baseSprite = prehistoricBaseSprite;
+                variations = prehistoricVariations;
                 break;
             case Epoch.PHARAOH:
-                sprite = sprites[1];
+                baseSprite = pharaohBaseSprite;
+                variations = pharaohVariations;
                 break;
             case Epoch.MEDIEVAL:
-                sprite = sprites[2];
-                break;
-            default:
-                sprite = sprites[0];
+                baseSprite = medievalBaseSprite;
+                variations = medievalVariations;
                 break;
         }
 
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+        Sprite chosenSprite = baseSprite;
+
+        // Mit Chance 1/variationChance eine Variation auswählen
+        bool useVariation = Random.Range(0, variationChance) == 0;
+
+        if (variations != null && variations.Count > 0 && useVariation)
+        {
+            int randIndex = Random.Range(0, variations.Count);
+            chosenSprite = variations[randIndex];
+        }
+
+        this.GetComponent<SpriteRenderer>().sprite = chosenSprite;
     }
 }
