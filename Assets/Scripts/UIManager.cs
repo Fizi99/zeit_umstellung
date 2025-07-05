@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private Toggle screenShakeToggle;
     [SerializeField] private Toggle vignetteToggle;
+    [SerializeField] private Toggle pulseOnPlacableZoneToggle;
     [SerializeField] private Toggle audioToggle;
     [SerializeField] private Toggle sfxToggle;
     [SerializeField] private Toggle musicToggle;
@@ -143,6 +144,11 @@ public class UIManager : MonoBehaviour
     public void ToggleVignette()
     {
         this.mainCamera.GetComponent<PlayerHitEffect>().SetToggleVignette(this.vignetteToggle.isOn);
+    }
+
+    public void TogglePlaceableZonePulse()
+    {
+        this.gameManager.placeableZoneManager.GetComponent<PlaceableZone>().pulseOn = this.pulseOnPlacableZoneToggle.isOn;
     }
 
     // audio toggle for music sfx and overall

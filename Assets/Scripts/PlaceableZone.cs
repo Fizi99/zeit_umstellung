@@ -9,6 +9,10 @@ public class PlaceableZone : MonoBehaviour
     public Vector2 zoneSize = new Vector2(50, 30); // Größe der Map
     public Vector2 zoneCenter = new Vector2(0, 0); // Mittelpunkt der Map
     public GameObject bgContainer;
+    public float pulseFrequency = 0.5f;
+    private float currentPulseTime = 0f;
+    private bool pulseDirection = false;
+    public bool pulseOn = true;
 
     private GameObject overlayObj;
 
@@ -27,6 +31,11 @@ public class PlaceableZone : MonoBehaviour
         if (!isZoneVisible || overlayObj == null) return;
 
         RebuildMasks();
+        if (pulseOn)
+        {
+            UpdatePulse();
+        }
+       
     }
 
     private void RebuildMasks()
@@ -176,5 +185,31 @@ public class PlaceableZone : MonoBehaviour
         currentMasks.Clear();
 
         isZoneVisible = false;
+    }
+
+    private void UpdatePulse()
+    {
+        if(this.overlayObj != null)
+        {
+            this.currentPulseTime += Time.deltaTime;
+            float interpolation = this.currentPulseTime / pulseFrequency;
+            float alpha;
+            if (pulseDirection)
+            {
+                alpha = Mathf.Lerp(0.6f, 1f, interpolation);
+            }
+            else
+            {
+                alpha = Mathf.Lerp(1f, 0.6f, interpolation);
+            }
+            SpriteRenderer renderer = this.overlayObj.GetComponent<SpriteRenderer>();
+            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, alpha);
+            if (this.currentPulseTime >= pulseFrequency)
+            {
+                pulseDirection = !pulseDirection;
+                this.currentPulseTime = 0;
+            }
+        }
+        
     }
 }

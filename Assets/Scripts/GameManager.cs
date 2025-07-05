@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject mainCamera;
     [SerializeField] public GameObject highscoreTracker;
     [SerializeField] public GameObject backGroundPlane;
+    [SerializeField] public GameObject placeableZoneManager;
     public EpochChooser epochChooser = new EpochChooser();
 
     [Header("Container")]
