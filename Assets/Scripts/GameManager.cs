@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public Player player;
     [SerializeField] public buildManager buildManager;
     [SerializeField] public GameObject floatingTextPrefab;
+    [SerializeField] public GameObject floatingEpochTitlePrefab;
     [SerializeField] public GameObject mainCamera;
     [SerializeField] public GameObject highscoreTracker;
     [SerializeField] public GameObject backGroundPlane;
@@ -55,6 +56,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public List<GameObject> enemyPrefabs;
     [SerializeField] public List<GameObject> turretPrefabs;
     [SerializeField] private Sprite[] allEpochSpecificSprites;
+
+    public Epoch currentEpoch;
 
     private bool firstStart = true;
 
@@ -115,7 +118,8 @@ public class GameManager : MonoBehaviour
         if (gameState == GameState.LEVELPLAYING)
         {
             ///this.backGroundPlane.GetComponent<Background>().UpdateBackGroundSprite();
-            this.backGroundPlane.GetComponent<BackgroundTilePainter>().GenerateBackground(this.epochChooser.GetNextEpoch());
+            this.currentEpoch = this.epochChooser.GetNextEpoch();
+            this.backGroundPlane.GetComponent<BackgroundTilePainter>().GenerateBackground(currentEpoch);
             this.routeManager.UpdateStreetMaterial();
             this.tutorialManager.PlayTutorial();
            // this.gameManager.ApplySpritesForEpoch(epoch);
@@ -175,6 +179,13 @@ public class GameManager : MonoBehaviour
         GameObject floatingText = Instantiate(this.floatingTextPrefab);
         floatingText.transform.position = pos;
         floatingText.GetComponent<FloatingText>().SetFloatingText(text, color);
+    }
+
+    public void SpawnEpochText(Vector3 pos, string text, Color color)
+    {
+        GameObject floatingText = Instantiate(this.floatingEpochTitlePrefab);
+        floatingText.transform.position = pos;
+        floatingText.GetComponent<FloatingEpochTitle>().SetFloatingText(text, color);
     }
 
     // generate new streets. Set them so other scripts can access them, get the closest street to the bus stop and add that point as last destination to every street

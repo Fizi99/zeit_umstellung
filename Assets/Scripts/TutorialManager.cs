@@ -14,7 +14,7 @@ public class TutorialManager : MonoBehaviour
 
 
     [HideInInspector] public bool playTutorial = true;
-    private bool isActive = false;
+    public bool isActive = false;
 
     private int currentPart;
 

@@ -371,8 +371,23 @@ public class UIManager : MonoBehaviour
             case GameState.LEVELPLAYING:
                 //this.gameManager.highscoreTracker.resetTracker();
 
-                // Within 5 runs, each era is guaranteed to appear at least once
-
+                if (!this.gameManager.tutorialManager.isActive)
+                {
+                    switch (this.gameManager.currentEpoch)
+                    {
+                        case Epoch.MEDIEVAL:
+                            this.gameManager.SpawnEpochText(new Vector3(0, 0, -1), "Mittelalterliches\nZeitalter", Color.white);
+                            break;
+                        case Epoch.PHARAOH:
+                            this.gameManager.SpawnEpochText(new Vector3(0, 0, -1), "Zeitalter der\nPharaohnen", Color.white);
+                            break;
+                        case Epoch.PREHISTORIC:
+                            this.gameManager.SpawnEpochText(new Vector3(0, 0, -1), "Prähistorisches\nZeitalter", Color.white);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 break;
             case GameState.UPGRADING:
                 break;
