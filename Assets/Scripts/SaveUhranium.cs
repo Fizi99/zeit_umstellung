@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class SaveUhranium : MonoBehaviour
     public GameObject popupText;
     public GameObject particleEffect;
     public GameObject fillableUhraniumBar;
+    public GameObject uhraniumCounterText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,9 +20,15 @@ public class SaveUhranium : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateUhraniumCounter();
         UpdateVisualEffect();
         if (Input.GetMouseButtonDown(0))
             CheckRaycastHit();
+    }
+
+    private void UpdateUhraniumCounter()
+    {
+        this.uhraniumCounterText.GetComponent<TMP_Text>().text = ((int)this.gameManager.player.uhranium).ToString();
     }
 
     // check if busstop got tapped
