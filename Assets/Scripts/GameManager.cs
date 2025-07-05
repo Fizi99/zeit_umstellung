@@ -113,8 +113,8 @@ public class GameManager : MonoBehaviour
 
         if (gameState == GameState.LEVELPLAYING)
         {
-            this.epochChooser.GetNextEpoch();
-            this.backGroundPlane.GetComponent<Background>().UpdateBackGroundSprite();
+            ///this.backGroundPlane.GetComponent<Background>().UpdateBackGroundSprite();
+            this.backGroundPlane.GetComponent<BackgroundTilePainter>().GenerateBackground(this.epochChooser.GetNextEpoch());
             this.routeManager.UpdateStreetMaterial();
             this.tutorialManager.PlayTutorial();
            // this.gameManager.ApplySpritesForEpoch(epoch);

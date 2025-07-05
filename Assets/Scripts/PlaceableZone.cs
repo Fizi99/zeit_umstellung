@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlaceableZone : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PlaceableZone : MonoBehaviour
     public Transform turretContainer;  // Parent-Objekt aller Türme
     public Vector2 zoneSize = new Vector2(50, 30); // Größe der Map
     public Vector2 zoneCenter = new Vector2(0, 0); // Mittelpunkt der Map
-    public GameObject bgContainer;
+    public Tilemap bgTilemap;
 
     private GameObject overlayObj;
 
@@ -88,7 +89,7 @@ public class PlaceableZone : MonoBehaviour
 
         if (overlayObj != null) Destroy(overlayObj);
 
-        // Hole Bounds von BGContainer
+        /*// Hole Bounds von BGContainer
         Renderer[] renderers = bgContainer.GetComponentsInChildren<Renderer>();
         if (renderers.Length == 0)
         {
@@ -103,7 +104,20 @@ public class PlaceableZone : MonoBehaviour
         }
 
         Vector2 zoneSize = new Vector2(bounds.size.x, bounds.size.y);
-        Vector2 zoneCenter = new Vector2(bounds.center.x, bounds.center.y);
+        Vector2 zoneCenter = new Vector2(bounds.center.x, bounds.center.y);*/
+
+        // Zellbereich der Tilemap
+        BoundsInt cellBounds = bgTilemap.cellBounds;
+
+        // Welt-Positionen der Tilemap-Ecken berechnen
+        Vector3 worldMin = bgTilemap.CellToWorld(cellBounds.min);
+        Vector3 worldMax = bgTilemap.CellToWorld(cellBounds.max);
+
+        // Größe und Mittelpunkt berechnen
+        Vector2 zoneSize = worldMax - worldMin;
+        Vector2 zoneCenter = (Vector2)worldMin + zoneSize / 2f;
+
+        // Ab hier wie gehabt
 
         // Overlay erzeugen
         overlayObj = new GameObject("PlaceableZoneOverlay");
