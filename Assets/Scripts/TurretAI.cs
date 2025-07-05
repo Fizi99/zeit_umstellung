@@ -5,6 +5,7 @@ using System.Collections;
 public class TurretAI : MonoBehaviour
 {
     private GameManager gameManager;
+    private AudioManager audioManager;
     private Transform target;
     public TurretType name;
     public float range = 3f;
@@ -59,14 +60,14 @@ public class TurretAI : MonoBehaviour
     private bool on = true;
     private float currFlickerTime = 0f;
 
-    public bool isPosessed = false;
-    public float uhraniumPrice = 1f;
+    public float uhraniumPrice = 5000f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         useAmount = initUseAmount;
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
         if (!isSingleUse)
@@ -168,7 +169,6 @@ public class TurretAI : MonoBehaviour
 
             if (isMoving)
             {
-                Debug.Log("useamount: " + useAmount);
                 float distanceThisFrame = speed * Time.deltaTime;
 
 
@@ -232,7 +232,47 @@ public class TurretAI : MonoBehaviour
         {
             UpdateUseAmount(1);
         }
+        PlayShootAudio();
     }
+
+    private void PlayShootAudio()
+    {
+        AudioClip clip = null;
+        switch (name)
+        {
+            case TurretType.STANDARD:
+                clip = this.audioManager.soundLibrary.sfxTurretWristwatchArtilleryFire;
+                break;
+            case TurretType.DRONE:
+                clip = this.audioManager.soundLibrary.sfxTurretDroneFire;
+                break;
+            case TurretType.DRONEBASE:
+                clip = this.audioManager.soundLibrary.sfxTurretDroneStandFire;
+                break;
+            case TurretType.DYNAMITE:
+                clip = this.audioManager.soundLibrary.sfxTurretDynamiteFire;
+                break;
+            case TurretType.FREEZE:
+                clip = this.audioManager.soundLibrary.sfxTurretFreezeFire;
+                break;
+            case TurretType.LASER:
+                clip = this.audioManager.soundLibrary.sfxTurretSundailLaserFire;
+                break;
+            case TurretType.MISSILE:
+                clip = this.audioManager.soundLibrary.sfxTurretDigitalRocketlauncherFire;
+                break;
+
+            default:
+                break;
+        }
+
+        if (clip != null)
+        {
+            this.audioManager.PlaySfx(clip);
+        }
+
+    }
+
 
     void UpdateUseAmount(float usageUsed)
     {

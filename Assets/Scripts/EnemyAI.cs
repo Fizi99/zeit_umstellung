@@ -19,6 +19,8 @@ public class EnemyAI : MonoBehaviour
     public float auraEffectStrength = 2f;
     public float auraDuration = 2f;
 
+    public GameObject dieParticles;
+
     public List<GameObject> targets = new List<GameObject>();
     public GameObject currentTarget;
     public int waypointIndex = 0;
@@ -90,6 +92,11 @@ public class EnemyAI : MonoBehaviour
                 break;
         }
         gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+
+    private void UpdateLayerPosition()
+    {
+
     }
 
     void setTargetList(List<GameObject> targetList)
@@ -185,7 +192,6 @@ public class EnemyAI : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Busstop"))
         {
-            Debug.Log("hit busstop");
             CollideWithBusStop();
         }
     }
@@ -249,6 +255,13 @@ public class EnemyAI : MonoBehaviour
             droppedItem.GetComponent<DropProperties>().remainingDuration = dropDuration;
             //Destroy(droppedItem, dropDuration);
         }
+
+        if (this.dieParticles != null)
+        {
+            GameObject particles = Instantiate(this.dieParticles, transform.position, this.dieParticles.transform.rotation);
+            Destroy(particles, 2f);
+        }
+
         Destroy(gameObject);
     }
 
