@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
             TurretType.MISSILE,
             TurretType.STANDARD,
             TurretType.LASER,
-            TurretType.DRONE,
+            TurretType.DRONEBASE,
         });
             SaveManager.SaveUhranium(1000f);
         }
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
 
         this.firstTimePlaying = SaveManager.LoadFirstTimePlaying();
         //Debug.Log("first time?" + this.firstTimePlaying);
-        this.playTutorial = firstTimePlaying;
+        this.playTutorial = SaveManager.LoadFirstTimePlaying();
 
         lives = startLives;
         this.zeitsand = this.zeitsandStartValue;
