@@ -71,12 +71,21 @@ public class bulletAI : MonoBehaviour
     {
         if (target == null)
         {
-            Destroy(gameObject);
+            if (turretType == TurretType.DYNAMITE)
+            {
+                this.damage = 0;
+                Destroy(gameObject, 0.5f);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
             return;
         }
 
         if (shootSelf)
         {
+            
             HitTarget();
             return;
         }
@@ -126,11 +135,28 @@ public class bulletAI : MonoBehaviour
 
         if(this.hitParticle!= null)
         {
-            GameObject particles = Instantiate(this.hitParticle, target.position, this.hitParticle.transform.rotation);
+            GameObject particles;
+            if (turretType == TurretType.DYNAMITE)
+            {
+                 particles = Instantiate(this.hitParticle, transform.position, this.hitParticle.transform.rotation);
+            }
+            else
+            {
+                 particles = Instantiate(this.hitParticle, target.position, this.hitParticle.transform.rotation);
+            }
             Destroy(particles, 2f);
         }
         PlayHitAudio();
-        Destroy(gameObject);
+        if(turretType == TurretType.DYNAMITE)
+        {
+
+            this.damage = 0;
+            Destroy(gameObject, 0.5f);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         //do bullet effect here
     }
 

@@ -65,9 +65,15 @@ public class TurretAI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         useAmount = initUseAmount;
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        if (name == TurretType.DYNAMITE)
+        {
+            this.fireCountdown = 1f;
+            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxTurretDynamiteFire);
+        }
         spriteRenderer = GetComponent<SpriteRenderer>();
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
         if (!isSingleUse)
@@ -119,6 +125,7 @@ public class TurretAI : MonoBehaviour
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
+        Transform previousTarget = target;
         target = null;
 
         foreach (GameObject enemy in enemies)
@@ -133,13 +140,19 @@ public class TurretAI : MonoBehaviour
 
         if (nearestEnemy != null && shortestDistance <= range)
         {
+            
             target = nearestEnemy.transform;
+            if (previousTarget != target && this.name==TurretType.LASER)
+            {
+                this.fireCountdown = 1f;
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+
         if (isSingleUse && useTimeInsteadOfAmmo)
         {
             UpdateUseAmount(Time.deltaTime);
@@ -250,7 +263,7 @@ public class TurretAI : MonoBehaviour
                 clip = this.audioManager.soundLibrary.sfxTurretDroneStandFire;
                 break;
             case TurretType.DYNAMITE:
-                clip = this.audioManager.soundLibrary.sfxTurretDynamiteFire;
+                //clip = this.audioManager.soundLibrary.sfxTurretDynamiteFire;
                 break;
             case TurretType.FREEZE:
                 clip = this.audioManager.soundLibrary.sfxTurretFreezeFire;

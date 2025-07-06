@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 0
-  range: 3
+  range: 4
   enemyTag: Enemy
   isSingleUse: 1
   useTimeInsteadOfAmmo: 1
