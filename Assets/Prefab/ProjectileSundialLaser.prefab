@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 100
-  damage: 0.15
+  damage: 0.3
   explosionRadius: 0
   useFreeze: 0
   shootSelf: 0
