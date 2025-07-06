@@ -34,6 +34,7 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     void Start()
     {
+        
         updateTurretCostText();
         if (button != null)
         {
@@ -41,7 +42,22 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
 
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (this.gameManager.gameState == GameState.LEVELPLAYING)
+        {
+            this.UhraniumAmount.SetActive(false);
+            this.UhraniumImage.SetActive(false);
+            this.zeitsymbolImage.gameObject.SetActive(true);
+            this.ZeitsandAmount.SetActive(true);
+        }
+        else
+        {
+            this.UhraniumAmount.SetActive(true);
+            this.UhraniumImage.SetActive(true);
+            this.zeitsymbolImage.gameObject.SetActive(false);
+            this.ZeitsandAmount.SetActive(false);
 
+        }
+            
         if (turretImage == null)
             turretImage = GetComponent<RawImage>();
     }
@@ -102,7 +118,9 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
             return;
         }
 
-        blackTex = new Texture2D(originalTex.width, originalTex.height, TextureFormat.RGBA32, false);
+
+        blackTex = new Texture2D(originalTex.width, originalTex.height, TextureFormat.RGBA32, false, true);
+        blackTex.filterMode = FilterMode.Point;
         Color[] pixels = originalTex.GetPixels();
         for (int i = 0; i < pixels.Length; i++)
         {

@@ -8,6 +8,7 @@ public class TurretInfoUI : MonoBehaviour
     public GameObject nameText;
     public GameObject costText;
     public GameObject statsTextObj;
+    public GameObject description;
 
     public void DisplayFromAI(TurretAI turretAI)
     {
@@ -20,9 +21,20 @@ public class TurretInfoUI : MonoBehaviour
 
     public void DisplayFromData(TurretData data)
     {
-        nameText.GetComponent<TMPro.TextMeshProUGUI>().text = data.turretName;
-        costText.GetComponent<TMPro.TextMeshProUGUI>().text = "Kosten: " + data.cost;
-        statsTextObj.GetComponent<TMPro.TextMeshProUGUI>().text = BuildStatText(data.stats);
+        if(data == null)
+        {
+            nameText.GetComponent<TMPro.TextMeshProUGUI>().text = "";
+            costText.GetComponent<TMPro.TextMeshProUGUI>().text = "";
+            statsTextObj.GetComponent<TMPro.TextMeshProUGUI>().text = "";
+            description.GetComponent<TMPro.TextMeshProUGUI>().text = "";
+        }
+        else
+        {
+            nameText.GetComponent<TMPro.TextMeshProUGUI>().text = data.turretName;
+            costText.GetComponent<TMPro.TextMeshProUGUI>().text = "Kosten: " + data.cost;
+            statsTextObj.GetComponent<TMPro.TextMeshProUGUI>().text = BuildStatText(data.stats);
+            description.GetComponent<TMPro.TextMeshProUGUI>().text = data.description;
+        }
     }
 
     string BuildStatText(List<StatEntry> stats)

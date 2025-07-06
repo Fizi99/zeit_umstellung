@@ -59,6 +59,9 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     public Canvas canvas;
 
     public GameObject frameObject;
+    public TurretGridFiller turretGridFiller;
+
+    public  bool loadoutButtonPressed = false;
 
 
 
@@ -108,6 +111,19 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     void Update()
     {
         // only place turrets, when lvl is in session
+        if(this.gameManager.gameState == GameState.LOADOUTCREATION)
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                if (!loadoutButtonPressed)
+                {
+                    turretGridFiller.turretInfoUIElem.DisplayFromData(null);
+                    turretGridFiller.BuyButton.gameObject.SetActive(false);
+                    
+                }
+                this.loadoutButtonPressed = false;
+            }
+        }
         if (this.gameManager.gameState == GameState.LEVELPLAYING)
         {
 

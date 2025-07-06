@@ -21,5 +21,9 @@ MonoBehaviour:
   turretIconTexture: {fileID: 2800000, guid: 006d29e0470882c408d23c3669d8a17d, type: 3}
   cost: 10
   stats:
+  - label: Lebenszeit
+    value: Hoch
+  - label: Schaden
+    value: Gering
   - label: Reichweite
-    value: Normal
+    value: Hoch
