@@ -46,6 +46,7 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
         {
             this.UhraniumAmount.SetActive(false);
             this.UhraniumImage.SetActive(false);
+            this.lockImage.SetActive(false);
             this.zeitsymbolImage.gameObject.SetActive(true);
             this.ZeitsandAmount.SetActive(true);
         }

@@ -16,7 +16,7 @@ public class TurretAI : MonoBehaviour
     public float useAmount = 1;
     public float buildingCost = 1f;
     public Image useBar;
-    public bool calculateBuildingCost = false;    
+    public bool calculateBuildingCost = false;
 
     public bool isMoving = false;
     public float speed = 30f;
@@ -62,10 +62,12 @@ public class TurretAI : MonoBehaviour
 
     public float uhraniumPrice = 5000f;
 
+    private GameObject currentEnemyTarget;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
         useAmount = initUseAmount;
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
@@ -122,29 +124,37 @@ public class TurretAI : MonoBehaviour
 
     void UpdateTarget()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-        float shortestDistance = Mathf.Infinity;
-        GameObject nearestEnemy = null;
-        Transform previousTarget = target;
-        target = null;
-
-        foreach (GameObject enemy in enemies)
-        {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (shortestDistance > distanceToEnemy)
-            {
-                shortestDistance = distanceToEnemy;
-                nearestEnemy = enemy;
-            }
-        }
-
-        if (nearestEnemy != null && shortestDistance <= range)
+        if (name == TurretType.LASER && this.target != null && this.currentEnemyTarget !=null && Vector3.Distance(transform.position, currentEnemyTarget.transform.position) <= range)
         {
             
-            target = nearestEnemy.transform;
-            if (previousTarget != target && this.name==TurretType.LASER)
+        }
+        else
+        {
+
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+            float shortestDistance = Mathf.Infinity;
+            GameObject nearestEnemy = null;
+            Transform previousTarget = target;
+            target = null;
+
+            foreach (GameObject enemy in enemies)
             {
-                this.fireCountdown = 1f;
+                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                if (shortestDistance > distanceToEnemy)
+                {
+                    shortestDistance = distanceToEnemy;
+                    nearestEnemy = enemy;
+                }
+            }
+
+            if (nearestEnemy != null && shortestDistance <= range)
+            {
+                currentEnemyTarget = nearestEnemy;
+                target = nearestEnemy.transform;
+                if (previousTarget != target && this.name == TurretType.LASER)
+                {
+                    this.fireCountdown = 1f;
+                }
             }
         }
     }
@@ -202,7 +212,7 @@ public class TurretAI : MonoBehaviour
                 Shoot();
                 fireCountdown = 1f / fireRate;
             }
-            
+
             fireCountdown -= Time.deltaTime;
         }
         else
@@ -227,12 +237,12 @@ public class TurretAI : MonoBehaviour
             currentBullet = (GameObject)Instantiate(bulletPrefab, transform.position + this.firePoint, Quaternion.Euler(0f, 0f, currentLookAngle));
         }
 
-        if(this.name == TurretType.LASER)
+        if (this.name == TurretType.LASER)
         {
             LineRenderer lr = gameObject.GetComponent<LineRenderer>();
             lr.widthMultiplier = 0.2f;
             lr.enabled = true;
-            lr.SetPosition(0,transform.position + this.firePoint);
+            lr.SetPosition(0, transform.position + this.firePoint);
             lr.SetPosition(1, target.position);
         }
         currentBullet.transform.parent = this.gameManager.turretContainer.transform;
@@ -290,7 +300,7 @@ public class TurretAI : MonoBehaviour
     void UpdateUseAmount(float usageUsed)
     {
         useAmount = useAmount - usageUsed;
-        useBar.fillAmount =  useAmount / initUseAmount;
+        useBar.fillAmount = useAmount / initUseAmount;
         //if(useAmount <= 3f && !invokedRepeating)
         //{
         //    //toggleCoroutine = StartCoroutine(ToggleLoop());
@@ -417,7 +427,7 @@ public class TurretAI : MonoBehaviour
         Renderer renderer = shadow.GetComponent<Renderer>();
         if (renderer != null)
         {
-            Material mat = renderer.material; 
+            Material mat = renderer.material;
             if (mat.HasProperty("_Color"))
             {
                 Color c = mat.color;

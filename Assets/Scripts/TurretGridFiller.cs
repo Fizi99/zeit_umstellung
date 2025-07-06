@@ -27,7 +27,6 @@ public class TurretGridFiller : MonoBehaviour
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.BuildManager = gameManager.buildManager;
-        //reset purchased turrets: UHRANIUM PERMANENT SPEICHERN
         if(SaveManager.LoadFirstTimePlaying())
         {
             SaveManager.SavePurchasedTurrets(new List<TurretType>()
@@ -38,7 +37,8 @@ public class TurretGridFiller : MonoBehaviour
             TurretType.DRONE,
         });
         }
-        SaveManager.SavePurchasedTurrets(new List<TurretType>());
+        //reset purchased turrets: 
+        //SaveManager.SavePurchasedTurrets(new List<TurretType>());
         PopulateGridV3();
     }
 
