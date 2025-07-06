@@ -80,7 +80,7 @@ public class TurretGridFiller : MonoBehaviour
             {
                 if (currentIndex == this.ButtonIndex) { 
                 if (!SaveManager.LoadPurchasedTurrets().Contains(mapping.data.turretType) &&
-                    mapping.prefab.GetComponent<TurretAI>().uhraniumPrice < SaveManager.LoadUhranium())
+                    mapping.prefab.GetComponent<TurretAI>().uhraniumPrice <= SaveManager.LoadUhranium())
                 {
                     SaveManager.SaveUhranium(SaveManager.LoadUhranium() - mapping.prefab.GetComponent<TurretAI>().uhraniumPrice);
 
