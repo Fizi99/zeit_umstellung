@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FloatingEpochTitle : MonoBehaviour
 {
-    public float liveTime = 3f;
+    public float liveTime = 2f;
     private float countdown = 0f;
 
     public float riseSpeed = 0.1f;

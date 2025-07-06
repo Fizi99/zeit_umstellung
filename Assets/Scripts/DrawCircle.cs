@@ -24,8 +24,8 @@ public class DrawCircle : MonoBehaviour
         CreatePoints();
 
         line.material = new Material(Shader.Find("Sprites/Default"));
-        line.startColor = new Color(0, 0, 1, 0.5f);  // Startfarbe
-        line.endColor = new Color(0, 0, 1, 0.5f);    // Endfarbe
+        line.startColor = new Color(0, 0, 1, 0.3f);  // Startfarbe
+        line.endColor = new Color(0, 0, 1, 0.3f);    // Endfarbe
     }
 
     void CreatePoints()

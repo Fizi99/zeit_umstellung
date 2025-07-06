@@ -375,13 +375,14 @@ public class UIManager : MonoBehaviour
                     switch (this.gameManager.currentEpoch)
                     {
                         case Epoch.MEDIEVAL:
-                            this.gameManager.SpawnEpochText(new Vector3(0, 0, -1), "Mittelalterliches\nZeitalter", Color.white);
+                            this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Mittelalter", Color.white);
                             break;
                         case Epoch.PHARAOH:
-                            this.gameManager.SpawnEpochText(new Vector3(0, 0, -1), "Zeitalter der\nPharaohnen", Color.white);
+                            this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Altes Ägypten", Color.white);
+
                             break;
                         case Epoch.PREHISTORIC:
-                            this.gameManager.SpawnEpochText(new Vector3(0, 0, -1), "Prähistorisches\nZeitalter", Color.white);
+                            this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Steinzeit", Color.white);
                             break;
                         default:
                             break;
