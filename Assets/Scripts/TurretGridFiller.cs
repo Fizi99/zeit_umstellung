@@ -27,16 +27,7 @@ public class TurretGridFiller : MonoBehaviour
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.BuildManager = gameManager.buildManager;
-        if(SaveManager.LoadFirstTimePlaying())
-        {
-            SaveManager.SavePurchasedTurrets(new List<TurretType>()
-        {
-            TurretType.MISSILE,
-            TurretType.STANDARD,
-            TurretType.LASER,
-            TurretType.DRONE,
-        });
-        }
+        
         //reset purchased turrets: 
         //SaveManager.SavePurchasedTurrets(new List<TurretType>());
         PopulateGridV3();

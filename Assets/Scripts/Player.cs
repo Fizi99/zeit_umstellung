@@ -38,15 +38,29 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        this.firstTimePlaying = SaveManager.LoadFirstTimePlaying();
-        this.playTutorial = firstTimePlaying;
-        
+        if (SaveManager.LoadFirstTimePlaying())
+        {
+            SaveManager.SavePurchasedTurrets(new List<TurretType>()
+        {
+            TurretType.MISSILE,
+            TurretType.STANDARD,
+            TurretType.LASER,
+            TurretType.DRONE,
+        });
+            SaveManager.SaveUhranium(1000f);
+        }
+
+
         chosenLoadout = SaveManager.LoadLoadout(1);
         //SaveManager.SaveLoadout(1, changedLoadoutSth);
         //SaveManager.SaveLoadout(2, changedLoadoutSth);
         //SaveManager.SaveLoadout(3, changedLoadoutSth);
         //SaveManager.SaveLoadout(4, changedLoadoutSth);
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        this.firstTimePlaying = SaveManager.LoadFirstTimePlaying();
+        //Debug.Log("first time?" + this.firstTimePlaying);
+        this.playTutorial = firstTimePlaying;
 
         lives = startLives;
         this.zeitsand = this.zeitsandStartValue;
