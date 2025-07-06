@@ -8,6 +8,8 @@ public class DropProperties : MonoBehaviour
     public float remainingDuration = 10;
     public float minFrequency = 0.5f; //max and min visibility toggling frequency
     public float maxFrequency = 0.2f;
+
+    public SpriteRenderer sprite;
     private float threshold = 5;
     private float currFlickerTime = 0;
     private bool on = false;
@@ -50,7 +52,7 @@ public class DropProperties : MonoBehaviour
             {
                 alpha = Mathf.Lerp(1f, 0.6f, interpolation);
             }
-            SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+            SpriteRenderer renderer = this.sprite;
             renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, alpha);
             if (this.currFlickerTime >= frequency)
             {

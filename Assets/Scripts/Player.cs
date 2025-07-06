@@ -38,8 +38,8 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        this.firstTimePlaying = SaveManager.LoadFirstTimePlaying();
-        this.playTutorial = firstTimePlaying;
+        
+        
         
         chosenLoadout = SaveManager.LoadLoadout(1);
         //SaveManager.SaveLoadout(1, changedLoadoutSth);
@@ -47,6 +47,10 @@ public class Player : MonoBehaviour
         //SaveManager.SaveLoadout(3, changedLoadoutSth);
         //SaveManager.SaveLoadout(4, changedLoadoutSth);
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        this.firstTimePlaying = SaveManager.LoadFirstTimePlaying();
+        //Debug.Log("first time?" + this.firstTimePlaying);
+        this.playTutorial = firstTimePlaying;
 
         lives = startLives;
         this.zeitsand = this.zeitsandStartValue;
