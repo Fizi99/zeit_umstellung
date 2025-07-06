@@ -274,7 +274,7 @@ MonoBehaviour:
   isMoving: 0
   speed: 30
   stopAndShootRange: 5
-  fireRate: 300
+  fireRate: 60
   bulletPrefab: {fileID: 9084643237093435201, guid: ce6fdc9bb2ce4824b9b753177a3fb701, type: 3}
   firePoint: {x: 0, y: 0, z: 0}
   firePointRight: {x: 0.5, y: 0.5, z: 0}
@@ -290,7 +290,7 @@ MonoBehaviour:
   blobShadowOffset: {x: 0, y: -0.1, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}
   blobShadowRotation: {x: 0, y: 0, z: 0}
-  uhraniumPrice: 1
+  uhraniumPrice: 0
 --- !u!212 &3678048461366433438
 SpriteRenderer:
   m_ObjectHideFlags: 0

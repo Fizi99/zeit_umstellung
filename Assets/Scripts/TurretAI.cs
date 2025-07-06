@@ -170,7 +170,7 @@ public class TurretAI : MonoBehaviour
         }
 
         // deactivate linerenderer for laser if it has no target
-        if (name == TurretType.LASER)
+        if (name == TurretType.LASER && target == null)
         {
             gameObject.GetComponent<LineRenderer>().enabled = false;
         }
