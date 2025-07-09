@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject locationTrackedIcon;
     [SerializeField] private GameObject loadingBusstopIcon;
     [SerializeField] private GameObject loadingStreetsIcon;
+    [SerializeField] private TMP_Text uhraniumTextPausePanel;
 
     [Space(10)]
 
@@ -87,8 +88,9 @@ public class UIManager : MonoBehaviour
 
     private bool toggleLoadingBusstopIcon = false;
 
+    public bool gameStartedFromPause = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -99,7 +101,6 @@ public class UIManager : MonoBehaviour
         initLoadout();
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateSelectedBus();
@@ -116,6 +117,19 @@ public class UIManager : MonoBehaviour
         {
             UpdateUhraniumText();
             UpdateZeitsandText();
+
+            // Nur Shake, wenn NICHT pausiert
+            if (Time.timeScale > 0)
+            {
+                if (this.gameManager.player.zeitsand >= this.gameManager.player.maxZeitsand)
+                {
+                    SetZeitsandShake(true);
+                }
+                else
+                {
+                    SetZeitsandShake(false);
+                }
+            }
         }
 
         if (this.gameManager.gameState == GameState.LEVELSELECTION)
@@ -279,7 +293,7 @@ public class UIManager : MonoBehaviour
             // if player is playing and bus departs, finish level, else dont allow levelstart
             if (this.gameManager.gameState == GameState.LEVELPLAYING)
             {
-                text = "Bus departed! Level finished!";
+                text = "Bus angekommen! Level beendet!";
 
                 // Check if updating the uhranium highscore is needed
                 float finalUhraniumAcquired = SaveManager.LoadUhranium();
@@ -325,7 +339,7 @@ public class UIManager : MonoBehaviour
         string uhraniumGain = "<b><size=130%>+" + this.gameManager.player.uhraniumGain + " Uhranium!</size></b>";
         string totalUhranium = "Insgesamt: " + Mathf.FloorToInt(SaveManager.LoadUhranium()) + " Uhranium";
 
-        this.lvlFinishedText.text = "— Spiel erfolgreich beendet —\nDein Bus ist angekommen!\n\n" + uhraniumGain + "\n" + totalUhranium + "\n";
+        this.lvlFinishedText.text = "ï¿½ Spiel erfolgreich beendet ï¿½\nDein Bus ist angekommen!\n\n" + uhraniumGain + "\n" + totalUhranium + "\n";
     }
 
     // update navigation depending on gamestate
@@ -430,7 +444,7 @@ public class UIManager : MonoBehaviour
             case GameState.LEVELPLAYING:
                 //this.gameManager.highscoreTracker.resetTracker();
 
-                if (!this.gameManager.tutorialManager.isActive)
+                if (!this.gameManager.tutorialManager.isActive && !gameStartedFromPause)
                 {
                     switch (this.gameManager.currentEpoch)
                     {
@@ -438,7 +452,7 @@ public class UIManager : MonoBehaviour
                             this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Mittelalter", Color.white);
                             break;
                         case Epoch.PHARAOH:
-                            this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Altes Ägypten", Color.white);
+                            this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Altes ï¿½gypten", Color.white);
 
                             break;
                         case Epoch.PREHISTORIC:
@@ -468,7 +482,8 @@ public class UIManager : MonoBehaviour
                 UpdateLvlFinishedText();
                 break;
             case GameState.PAUSING:
-                // TODO
+                    this.uhraniumTextPausePanel.text = "Gesichert: " + ((int)this.gameManager.player.uhraniumGain).ToString();     
+                FreezeTime();
                 break;
             default:
                 break;
@@ -499,6 +514,9 @@ public class UIManager : MonoBehaviour
         {
             Destroy(busSelectionBtn);
         }
+
+        // Flag the upcoming game as a new game start
+        gameStartedFromPause = false;
 
         // Update UI
         this.gameManager.ChangeGameState(GameState.LEVELPLAYING);
@@ -543,7 +561,8 @@ public class UIManager : MonoBehaviour
         if (this.gameManager.gameState == GameState.PAUSING)
         {
             // Safe uhranium (& highscore) if game stopped while in-game
-            Debug.Log("Ab ins Menü, davor aber Uhranium speichern");
+            Debug.Log("Ab ins Menï¿½, davor aber Uhranium speichern");
+            UnfreezeTime();
         }
 
         // Update UI
@@ -766,13 +785,13 @@ public class UIManager : MonoBehaviour
 
     public void ContinueGameAfterPause()
     {
-        Debug.Log("Weiter gehts");
-        // TODO
+        gameStartedFromPause = true;
+        this.gameManager.ChangeGameState(GameState.LEVELPLAYING);
+        UnfreezeTime();
     }
 
     public void NavigateToPause()
     {
-        Debug.Log("Pausiere Game... (Oder continue to pause)");
         this.gameManager.ChangeGameState(GameState.PAUSING);
     }
 
@@ -781,16 +800,26 @@ public class UIManager : MonoBehaviour
         switch (stateBeforeSettingsVisit)
         {
             case GameState.MAINMENU:
-                Debug.Log("Kam von Main Menu");
                 NavigateToMainMenu();
                 break;
             case GameState.PAUSING:
-                Debug.Log("Kam von in-game (pausing)");
                 NavigateToPause();
                 break;
             default:
-                Debug.Log("Weder noch (Sollte nicht auftreten)");
+                Debug.Log("Shouldn't happen");
                 break;
         }
+    }
+
+    public void FreezeTime()
+    {
+        Time.timeScale = 0;
+        mainCamera.GetComponent<PlayerHitEffect>().PauseShake();
+    }
+
+    public void UnfreezeTime()
+    {
+        Time.timeScale = 1;
+        mainCamera.GetComponent<PlayerHitEffect>().ResumeShake();
     }
 }

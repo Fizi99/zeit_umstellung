@@ -20,6 +20,8 @@ public class PlayerHitEffect : MonoBehaviour
     public float fadeOutTime = 0.3f;
     public float maxAlpha = 0.5f;
 
+    public bool isPaused = false;
+
     public void SetToggleScreenshake(bool b)
     {
         this.toggleScreenShake = b;
@@ -46,15 +48,23 @@ public class PlayerHitEffect : MonoBehaviour
         Vector3 startPos = transform.position;
         float elapsedTime = 0;
 
-        while(elapsedTime < duration)
+        while (elapsedTime < duration)
         {
+            // Warten, bis unpaused
+            while (isPaused)
+            {
+                yield return null;
+            }
+
             elapsedTime += Time.deltaTime;
             float strength = curve.Evaluate(elapsedTime / duration);
             transform.position = startPos + Random.insideUnitSphere * strength;
             yield return null;
         }
+
         transform.position = startPos;
     }
+
 
     private IEnumerator VignetteEffect()
     {
@@ -85,5 +95,15 @@ public class PlayerHitEffect : MonoBehaviour
         // Final cleanup
         color.a = 0;
         image.color = color;
+    }
+
+    public void PauseShake()
+    {
+        isPaused = true;
+    }
+
+    public void ResumeShake()
+    {
+        isPaused = false;
     }
 }
