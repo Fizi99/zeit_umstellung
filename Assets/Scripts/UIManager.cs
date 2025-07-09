@@ -28,11 +28,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private Toggle tutorialToggle;
-    [SerializeField] private Button startLevelButton;
+    [SerializeField] private GameObject startLevelButton;
     [SerializeField] private GameObject visualizeLoadoutParent;
     [SerializeField] private List<Sprite> turretSprites;
     [SerializeField] private GameObject zeitsandContainer;
     [SerializeField] private GameObject locationTrackedIcon;
+    [SerializeField] private GameObject loadingBusstopIcon;
+    [SerializeField] private GameObject loadingStreetsIcon;
     [SerializeField] private TMP_Text uhraniumTextPausePanel;
 
     [Space(10)]
@@ -84,7 +86,10 @@ public class UIManager : MonoBehaviour
 
     public GameState stateBeforeSettingsVisit;
 
+    private bool toggleLoadingBusstopIcon = false;
+
     public bool gameStartedFromPause = false;
+
 
     void Start()
     {
@@ -127,6 +132,12 @@ public class UIManager : MonoBehaviour
             }
         }
 
+        if (this.gameManager.gameState == GameState.LEVELSELECTION)
+        {
+            ShowLoadingBusstopIcon();
+            ShowLoadingStreetsIcon();
+        }
+
         if (this.gameManager.player.zeitsand >= this.gameManager.player.maxZeitsand)
         {
             SetZeitsandShake(true);
@@ -146,6 +157,34 @@ public class UIManager : MonoBehaviour
     private void HideDebug()
     {
         this.debugText.GetComponent<TMP_Text>().text = "";
+    }
+
+    private void ShowLoadingBusstopIcon()
+    {
+        if (this.toggleLoadingBusstopIcon)
+        {
+            this.loadingBusstopIcon.SetActive(true);
+            this.scrollerContent.SetActive(false);
+        }
+        else
+        {
+            this.loadingBusstopIcon.SetActive(false);
+            this.scrollerContent.SetActive(true);
+        }
+    }
+
+    private void ShowLoadingStreetsIcon()
+    {
+        if (this.gameManager.streetViewMapGetter.loading)
+        {
+            this.loadingStreetsIcon.SetActive(true);
+            this.startLevelButton.SetActive(false);
+        }
+        else
+        {
+            this.loadingStreetsIcon.SetActive(false);
+            this.startLevelButton.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -235,7 +274,7 @@ public class UIManager : MonoBehaviour
             this.selectedBus = this.gameManager.selectedBus;
 
             // Button aktivieren oder deaktivieren
-            startLevelButton.interactable = (this.selectedBus != null);
+            startLevelButton.GetComponent<Button>().interactable = (this.selectedBus != null);
         }
     }
 
@@ -300,7 +339,7 @@ public class UIManager : MonoBehaviour
         string uhraniumGain = "<b><size=130%>+" + this.gameManager.player.uhraniumGain + " Uhranium!</size></b>";
         string totalUhranium = "Insgesamt: " + Mathf.FloorToInt(SaveManager.LoadUhranium()) + " Uhranium";
 
-        this.lvlFinishedText.text = "— Spiel erfolgreich beendet —\nDein Bus ist angekommen!\n\n" + uhraniumGain + "\n" + totalUhranium + "\n";
+        this.lvlFinishedText.text = "ï¿½ Spiel erfolgreich beendet ï¿½\nDein Bus ist angekommen!\n\n" + uhraniumGain + "\n" + totalUhranium + "\n";
     }
 
     // update navigation depending on gamestate
@@ -413,7 +452,7 @@ public class UIManager : MonoBehaviour
                             this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Mittelalter", Color.white);
                             break;
                         case Epoch.PHARAOH:
-                            this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Altes Ägypten", Color.white);
+                            this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Altes ï¿½gypten", Color.white);
 
                             break;
                         case Epoch.PREHISTORIC:
@@ -429,7 +468,7 @@ public class UIManager : MonoBehaviour
             case GameState.MAINMENU:
                 this.selectedBus = null;
                 this.gameManager.selectedBus = null;
-                this.startLevelButton.interactable = false; // Standard state for the START btn
+                this.startLevelButton.GetComponent<Button>().interactable = false; // Standard state for the START btn
                 break;
             case GameState.SETTINGS:
                 // set toggle for tutorial the first time settingsmenu is opened
@@ -522,7 +561,7 @@ public class UIManager : MonoBehaviour
         if (this.gameManager.gameState == GameState.PAUSING)
         {
             // Safe uhranium (& highscore) if game stopped while in-game
-            Debug.Log("Ab ins Menü, davor aber Uhranium speichern");
+            Debug.Log("Ab ins Menï¿½, davor aber Uhranium speichern");
             UnfreezeTime();
             this.gameManager.ClearScene();
             this.gameManager.player.ResetUhranium();
@@ -554,6 +593,7 @@ public class UIManager : MonoBehaviour
     {
         this.locationTrackedIcon.SetActive(false);
         this.gameManager.SearchBusStop(this.busSearchInputField.text);
+        this.toggleLoadingBusstopIcon = true;
     }
 
     // call, when busstop is searched in searchfield
@@ -561,6 +601,7 @@ public class UIManager : MonoBehaviour
     {
         this.locationTrackedIcon.SetActive(true);
         this.gameManager.SearchClosestStopToPLayer();
+        this.toggleLoadingBusstopIcon = true;
     }
 
     // Update search text when busstopsearch is updated externally for example with closest search
@@ -572,6 +613,8 @@ public class UIManager : MonoBehaviour
     private void GenerateBusSelection()
     {
         UpdateDistanceToStopText();
+
+        this.toggleLoadingBusstopIcon = false;
 
         // empty bus selection list
         foreach (GameObject busSelectionBtn in this.busSelectionBtns)
