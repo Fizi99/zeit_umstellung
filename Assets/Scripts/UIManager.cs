@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject loadingBusstopIcon;
     [SerializeField] private GameObject loadingStreetsIcon;
     [SerializeField] private TMP_Text uhraniumTextPausePanel;
+    [SerializeField] private TMP_Text highscoreTextMainMenu;
 
     [Space(10)]
 
@@ -99,6 +100,12 @@ public class UIManager : MonoBehaviour
         //epochChooser = new EpochChooser();
 
         initLoadout();
+
+        if (this.gameManager.gameState == GameState.MAINMENU)
+        {
+            float highscore = SaveManager.LoadUhraniumHighscore();
+            this.highscoreTextMainMenu.text = $"Highscore: {Mathf.FloorToInt(highscore)}";
+        }
     }
 
     void Update()
@@ -339,7 +346,7 @@ public class UIManager : MonoBehaviour
         string uhraniumGain = "<b><size=130%>+" + this.gameManager.player.uhraniumGain + " Uhranium!</size></b>";
         string totalUhranium = "Insgesamt: " + Mathf.FloorToInt(SaveManager.LoadUhranium()) + " Uhranium";
 
-        this.lvlFinishedText.text = "� Spiel erfolgreich beendet �\nDein Bus ist angekommen!\n\n" + uhraniumGain + "\n" + totalUhranium + "\n";
+        this.lvlFinishedText.text = "— Spiel erfolgreich beendet —\nDein Bus ist angekommen!\n\n" + uhraniumGain + "\n" + totalUhranium + "\n";
     }
 
     // update navigation depending on gamestate
@@ -469,6 +476,9 @@ public class UIManager : MonoBehaviour
                 this.selectedBus = null;
                 this.gameManager.selectedBus = null;
                 this.startLevelButton.GetComponent<Button>().interactable = false; // Standard state for the START btn
+
+                float highscore = SaveManager.LoadUhraniumHighscore();
+                this.highscoreTextMainMenu.text = $"Highscore: {Mathf.FloorToInt(highscore)}";
                 break;
             case GameState.SETTINGS:
                 // set toggle for tutorial the first time settingsmenu is opened

@@ -106,6 +106,12 @@ public class GameManager : MonoBehaviour
     public void ChangeGameState(GameState gameState)
     {
         this.gameState = gameState;
+
+        if(gameState == GameState.MAINMENU)
+        {
+            //this.uiManager
+        }
+
         if(gameState == GameState.LEVELSELECTION)
         {
             if (this.firstStart)
