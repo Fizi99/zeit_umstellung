@@ -22,12 +22,10 @@ public static class SaveManager
     {
         PlayerPrefs.SetFloat("Uhranium", uhraniumCount);
         PlayerPrefs.Save();
-        //Debug.Log("Current All-Time Highscore: " + PlayerPrefs.GetFloat("Highscore", 0f));
     }
 
     public static float LoadUhranium()
     {
-        //Debug.Log("Loaded Highscore: " + PlayerPrefs.GetFloat("Highscore", 0f));
         float uhranium = PlayerPrefs.GetFloat("Uhranium", 0f);
         if (uhranium != null)
         {
