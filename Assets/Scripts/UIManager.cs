@@ -452,7 +452,7 @@ public class UIManager : MonoBehaviour
                             this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Mittelalter", Color.white);
                             break;
                         case Epoch.PHARAOH:
-                            this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Altes �gypten", Color.white);
+                            this.gameManager.SpawnEpochText(new Vector3(0, 2.25f, -1), "Altes Ägypten", Color.white);
 
                             break;
                         case Epoch.PREHISTORIC:
@@ -561,7 +561,7 @@ public class UIManager : MonoBehaviour
         if (this.gameManager.gameState == GameState.PAUSING)
         {
             // Safe uhranium (& highscore) if game stopped while in-game
-            Debug.Log("Ab ins Men�, davor aber Uhranium speichern");
+            Debug.Log("Ab ins Menü, davor aber Uhranium speichern");
             UnfreezeTime();
             this.gameManager.ClearScene();
             this.gameManager.player.ResetUhranium();
