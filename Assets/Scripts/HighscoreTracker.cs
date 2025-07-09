@@ -7,11 +7,6 @@ public class HighscoreTracker : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI highscoreText;
 
-    private float current;
-    private float sessionMax = 0f;     
-    private float allTimeHighscore;   
-    private bool newHighscoreReached = false;
-
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -20,43 +15,31 @@ public class HighscoreTracker : MonoBehaviour
 
     void Update()
     {
-        allTimeHighscore = SaveManager.LoadUhraniumHighscore();
-
-        if (gameManager.gameState == GameState.LEVELPLAYING)
+       /* if (gameManager.gameState == GameState.LEVELPLAYING)
         {
-            current = SaveManager.LoadUhranium();
-            sessionMax = Mathf.Max(current, sessionMax);
+            float savedUhranium = SaveManager.LoadUhranium();
+            float allTimeHighscore = SaveManager.LoadUhraniumHighscore();
 
-            // Prüfen, ob neuer Allzeit-Highscore erreicht wurde
-            if (sessionMax > allTimeHighscore)
+            if (savedUhranium > allTimeHighscore)
             {
-                // Highscore Text zeigen wenn nicht bereits geschehen
-                if (!newHighscoreReached)
-                {
-                    newHighscoreReached = true;
-                    highscoreText.gameObject.SetActive(true);
-                }
-
-                // Live Text aktualisieren
-                highscoreText.text = "Allzeit-Rekord: " + sessionMax.ToString("0.0");
-
-                // Neuen Highscore als Highscore deklarieren und speichern
-                allTimeHighscore = sessionMax;
-                SaveManager.SaveUhraniumHighscore(allTimeHighscore);
+                highscoreText.gameObject.SetActive(true);
+                SaveManager.SaveUhraniumHighscore(savedUhranium);
+                Debug.Log("[!!!] NEW HIGH SCORE (" + savedUhranium + ")");
             }
         }
         else
         {
             resetTracker();
-        }
+        }*/
+    }
+
+    public void SetHighscoreDisplayVisibility(bool isVisible)
+    {
+        highscoreText.gameObject.SetActive(isVisible);
     }
 
     public void resetTracker()
     {
-        newHighscoreReached = false;
-        current = 0f;
-        sessionMax = 0f;
-        allTimeHighscore = 0f;
         highscoreText.gameObject.SetActive(false);
     }
 }

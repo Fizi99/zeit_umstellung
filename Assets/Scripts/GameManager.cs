@@ -123,6 +123,7 @@ public class GameManager : MonoBehaviour
                 this.currentEpoch = this.epochChooser.GetNextEpoch();
                 this.backGroundPlane.GetComponent<BackgroundTilePainter>().GenerateBackground(currentEpoch);
                 this.routeManager.UpdateStreetMaterial();
+                highscoreTracker.GetComponent<HighscoreTracker>().SetHighscoreDisplayVisibility(false);
             }
             
             this.tutorialManager.PlayTutorial();
@@ -162,6 +163,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        // Clean up all the drops lying around
+        GameObject[] toDeleteDrops = GameObject.FindGameObjectsWithTag("Drop");
+        foreach (GameObject obj in toDeleteDrops)
+            Destroy(obj);
 
         // reset player zeitsand
         this.player.zeitsand = this.player.zeitsandStartValue;

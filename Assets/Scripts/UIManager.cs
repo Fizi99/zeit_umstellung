@@ -524,6 +524,8 @@ public class UIManager : MonoBehaviour
             // Safe uhranium (& highscore) if game stopped while in-game
             Debug.Log("Ab ins Menü, davor aber Uhranium speichern");
             UnfreezeTime();
+            this.gameManager.ClearScene();
+            this.gameManager.player.ResetUhranium();
         }
 
         // Update UI

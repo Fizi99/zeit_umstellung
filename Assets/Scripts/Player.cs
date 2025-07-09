@@ -112,11 +112,12 @@ public class Player : MonoBehaviour
         this.uhraniumGain += (int) this.uhranium;
         this.uhranium = 0;
 
-        // Check if updating the uhranium highscore is needed (while being in-game)
+        // Check if displaying highscore-reached-text (while being in-game)
         float lastUhraniumLevelSaved = SaveManager.LoadUhranium();
         if (SaveManager.LoadUhraniumHighscore() < lastUhraniumLevelSaved)
         {
             SaveManager.SaveUhraniumHighscore(lastUhraniumLevelSaved);
+            this.gameManager.highscoreTracker.GetComponent<HighscoreTracker>().SetHighscoreDisplayVisibility(true); // NEW
         }
     }
 
