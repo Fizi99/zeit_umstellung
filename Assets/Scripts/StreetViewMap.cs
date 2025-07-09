@@ -14,6 +14,8 @@ public class StreetViewMap : MonoBehaviour
     [SerializeField] private GameObject busStopPrefab;
     [SerializeField] private GameObject roadContainer;
 
+    public bool loading = false;
+
 
     private GameObject busStop;
     private List<GameObject> streets = new List<GameObject>();
@@ -36,6 +38,8 @@ public class StreetViewMap : MonoBehaviour
             Destroy(go);
         }
         this.streets = new List<GameObject>();
+
+        this.loading = true;
 
         StartCoroutine(DownloadOSMData());
     }
@@ -115,6 +119,7 @@ public class StreetViewMap : MonoBehaviour
         //ScaleStreetGrid(0.5f);
 
         this.gameManager.SetStreets(this.streets);
+        this.loading = false;
 
         DrawBusStop();
         //StartCoroutine(QueryBusStopLocation());

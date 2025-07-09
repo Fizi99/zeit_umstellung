@@ -28,11 +28,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private Toggle tutorialToggle;
-    [SerializeField] private Button startLevelButton;
+    [SerializeField] private GameObject startLevelButton;
     [SerializeField] private GameObject visualizeLoadoutParent;
     [SerializeField] private List<Sprite> turretSprites;
     [SerializeField] private GameObject zeitsandContainer;
     [SerializeField] private GameObject locationTrackedIcon;
+    [SerializeField] private GameObject loadingBusstopIcon;
+    [SerializeField] private GameObject loadingStreetsIcon;
 
     [Space(10)]
 
@@ -83,6 +85,8 @@ public class UIManager : MonoBehaviour
 
     public GameState stateBeforeSettingsVisit;
 
+    private bool toggleLoadingBusstopIcon = false;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -114,6 +118,12 @@ public class UIManager : MonoBehaviour
             UpdateZeitsandText();
         }
 
+        if (this.gameManager.gameState == GameState.LEVELSELECTION)
+        {
+            ShowLoadingBusstopIcon();
+            ShowLoadingStreetsIcon();
+        }
+
         if (this.gameManager.player.zeitsand >= this.gameManager.player.maxZeitsand)
         {
             SetZeitsandShake(true);
@@ -133,6 +143,34 @@ public class UIManager : MonoBehaviour
     private void HideDebug()
     {
         this.debugText.GetComponent<TMP_Text>().text = "";
+    }
+
+    private void ShowLoadingBusstopIcon()
+    {
+        if (this.toggleLoadingBusstopIcon)
+        {
+            this.loadingBusstopIcon.SetActive(true);
+            this.scrollerContent.SetActive(false);
+        }
+        else
+        {
+            this.loadingBusstopIcon.SetActive(false);
+            this.scrollerContent.SetActive(true);
+        }
+    }
+
+    private void ShowLoadingStreetsIcon()
+    {
+        if (this.gameManager.streetViewMapGetter.loading)
+        {
+            this.loadingStreetsIcon.SetActive(true);
+            this.startLevelButton.SetActive(false);
+        }
+        else
+        {
+            this.loadingStreetsIcon.SetActive(false);
+            this.startLevelButton.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -222,7 +260,7 @@ public class UIManager : MonoBehaviour
             this.selectedBus = this.gameManager.selectedBus;
 
             // Button aktivieren oder deaktivieren
-            startLevelButton.interactable = (this.selectedBus != null);
+            startLevelButton.GetComponent<Button>().interactable = (this.selectedBus != null);
         }
     }
 
@@ -416,7 +454,7 @@ public class UIManager : MonoBehaviour
             case GameState.MAINMENU:
                 this.selectedBus = null;
                 this.gameManager.selectedBus = null;
-                this.startLevelButton.interactable = false; // Standard state for the START btn
+                this.startLevelButton.GetComponent<Button>().interactable = false; // Standard state for the START btn
                 break;
             case GameState.SETTINGS:
                 // set toggle for tutorial the first time settingsmenu is opened
@@ -534,6 +572,7 @@ public class UIManager : MonoBehaviour
     {
         this.locationTrackedIcon.SetActive(false);
         this.gameManager.SearchBusStop(this.busSearchInputField.text);
+        this.toggleLoadingBusstopIcon = true;
     }
 
     // call, when busstop is searched in searchfield
@@ -541,6 +580,7 @@ public class UIManager : MonoBehaviour
     {
         this.locationTrackedIcon.SetActive(true);
         this.gameManager.SearchClosestStopToPLayer();
+        this.toggleLoadingBusstopIcon = true;
     }
 
     // Update search text when busstopsearch is updated externally for example with closest search
@@ -552,6 +592,8 @@ public class UIManager : MonoBehaviour
     private void GenerateBusSelection()
     {
         UpdateDistanceToStopText();
+
+        this.toggleLoadingBusstopIcon = false;
 
         // empty bus selection list
         foreach (GameObject busSelectionBtn in this.busSelectionBtns)
