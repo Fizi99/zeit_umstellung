@@ -112,6 +112,19 @@ public class UIManager : MonoBehaviour
         {
             UpdateUhraniumText();
             UpdateZeitsandText();
+
+            // Nur Shake, wenn NICHT pausiert
+            if (Time.timeScale > 0)
+            {
+                if (this.gameManager.player.zeitsand >= this.gameManager.player.maxZeitsand)
+                {
+                    SetZeitsandShake(true);
+                }
+                else
+                {
+                    SetZeitsandShake(false);
+                }
+            }
         }
 
         if (this.gameManager.player.zeitsand >= this.gameManager.player.maxZeitsand)
@@ -758,10 +771,12 @@ public class UIManager : MonoBehaviour
     public void FreezeTime()
     {
         Time.timeScale = 0;
+        mainCamera.GetComponent<PlayerHitEffect>().PauseShake();
     }
 
     public void UnfreezeTime()
     {
         Time.timeScale = 1;
+        mainCamera.GetComponent<PlayerHitEffect>().ResumeShake();
     }
 }
