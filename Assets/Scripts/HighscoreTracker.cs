@@ -15,22 +15,6 @@ public class HighscoreTracker : MonoBehaviour
 
     void Update()
     {
-       /* if (gameManager.gameState == GameState.LEVELPLAYING)
-        {
-            float savedUhranium = SaveManager.LoadUhranium();
-            float allTimeHighscore = SaveManager.LoadUhraniumHighscore();
-
-            if (savedUhranium > allTimeHighscore)
-            {
-                highscoreText.gameObject.SetActive(true);
-                SaveManager.SaveUhraniumHighscore(savedUhranium);
-                Debug.Log("[!!!] NEW HIGH SCORE (" + savedUhranium + ")");
-            }
-        }
-        else
-        {
-            resetTracker();
-        }*/
     }
 
     public void SetHighscoreDisplayVisibility(bool isVisible)
