@@ -9,4 +9,5 @@ public enum GameState
     LEVELEND,
     SETTINGS,
     LOADOUTCREATION,
+    PAUSING,
 }

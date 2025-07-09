@@ -44,6 +44,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject lvlEndPanel;
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] public GameObject loadoutPanel;
+    [SerializeField] public GameObject pausePanel;
 
     [SerializeField] public TMPro.TMP_Dropdown dropdown;
 
@@ -80,6 +81,7 @@ public class UIManager : MonoBehaviour
 
     private bool tutorialtoggleSet = false;
 
+    public GameState stateBeforeSettingsVisit;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -301,6 +303,7 @@ public class UIManager : MonoBehaviour
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
                 this.loadoutPanel.SetActive(false);
+                this.pausePanel.SetActive(false);
                 break;
             case GameState.LEVELPLAYING:
                 this.lvlSelectionPanel.SetActive(false);
@@ -310,6 +313,7 @@ public class UIManager : MonoBehaviour
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
                 this.loadoutPanel.SetActive(false);
+                this.pausePanel.SetActive(false);
                 break;
             case GameState.UPGRADING:
                 this.lvlSelectionPanel.SetActive(false);
@@ -319,6 +323,7 @@ public class UIManager : MonoBehaviour
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
                 this.loadoutPanel.SetActive(false);
+                this.pausePanel.SetActive(false);
                 break;
             case GameState.MAINMENU:
                 this.lvlSelectionPanel.SetActive(false);
@@ -328,6 +333,7 @@ public class UIManager : MonoBehaviour
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
                 this.loadoutPanel.SetActive(false);
+                this.pausePanel.SetActive(false);
                 break;
             case GameState.LEVELEND:
                 this.lvlSelectionPanel.SetActive(false);
@@ -337,6 +343,7 @@ public class UIManager : MonoBehaviour
                 this.lvlEndPanel.SetActive(true);
                 this.settingsPanel.SetActive(false);
                 this.loadoutPanel.SetActive(false);
+                this.pausePanel.SetActive(false);
                 break;
             case GameState.SETTINGS:
                 this.lvlSelectionPanel.SetActive(false);
@@ -346,6 +353,7 @@ public class UIManager : MonoBehaviour
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(true);
                 this.loadoutPanel.SetActive(false);
+                this.pausePanel.SetActive(false);
                 break;
             case GameState.LOADOUTCREATION:
                 this.lvlSelectionPanel.SetActive(false);
@@ -355,6 +363,17 @@ public class UIManager : MonoBehaviour
                 this.lvlEndPanel.SetActive(false);
                 this.settingsPanel.SetActive(false);
                 this.loadoutPanel.SetActive(true);
+                this.pausePanel.SetActive(false);
+                break;
+            case GameState.PAUSING:
+                this.lvlSelectionPanel.SetActive(false);
+                this.lvlPlayingPanel.SetActive(false);
+                this.startMenuPanel.SetActive(false);
+                this.upgradingMenuPanel.SetActive(false);
+                this.lvlEndPanel.SetActive(false);
+                this.settingsPanel.SetActive(false);
+                this.loadoutPanel.SetActive(false);
+                this.pausePanel.SetActive(true);
                 break;
             default:
                 break;
@@ -410,6 +429,9 @@ public class UIManager : MonoBehaviour
             case GameState.LEVELEND:
                 UpdateLvlFinishedText();
                 break;
+            case GameState.PAUSING:
+                // TODO
+                break;
             default:
                 break;
         }
@@ -459,11 +481,33 @@ public class UIManager : MonoBehaviour
     public void NavigateToSettings()
     {
         // Update UI
+        switch (this.gameManager.gameState)
+        {
+            case GameState.MAINMENU:
+                Debug.Log("Kam von Main Menu");
+                this.stateBeforeSettingsVisit = GameState.MAINMENU;
+                break;
+            case GameState.PAUSING:
+                Debug.Log("Kam von in-game");
+                this.stateBeforeSettingsVisit = GameState.PAUSING;
+                break;
+            default:
+                Debug.Log("Weder noch (Sollte nicht auftreten)");
+                this.stateBeforeSettingsVisit = GameState.MAINMENU;
+                break;
+        }
         this.gameManager.ChangeGameState(GameState.SETTINGS);
     }
 
     public void NavigateToMainMenu()
     {
+        // TODO
+        if (this.gameManager.gameState == GameState.PAUSING)
+        {
+            // Safe uhranium (& highscore) if game stopped while in-game
+            Debug.Log("Ab ins Menü, davor aber Uhranium speichern");
+        }
+
         // Update UI
         this.gameManager.ChangeGameState(GameState.MAINMENU);
     }
@@ -676,5 +720,35 @@ public class UIManager : MonoBehaviour
     public void UpdateUhraniumLoadoutDisplay()
     {
         this.uhraniumTextLoadout.text = Mathf.FloorToInt(SaveManager.LoadUhranium()).ToString();
+    }
+
+    public void ContinueGameAfterPause()
+    {
+        Debug.Log("Weiter gehts");
+        // TODO
+    }
+
+    public void NavigateToPause()
+    {
+        Debug.Log("Pausiere Game... (Oder continue to pause)");
+        this.gameManager.ChangeGameState(GameState.PAUSING);
+    }
+
+    public void NavigateBackFromSettings()
+    {
+        switch (stateBeforeSettingsVisit)
+        {
+            case GameState.MAINMENU:
+                Debug.Log("Kam von Main Menu");
+                NavigateToMainMenu();
+                break;
+            case GameState.PAUSING:
+                Debug.Log("Kam von in-game (pausing)");
+                NavigateToPause();
+                break;
+            default:
+                Debug.Log("Weder noch (Sollte nicht auftreten)");
+                break;
+        }
     }
 }
