@@ -14,12 +14,13 @@ public class bulletAI : MonoBehaviour
 
     public GameObject hitParticle;
 
+    private GameManager gameManager;
     private AudioManager audioManager;
 
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-
     }
 
 
@@ -181,6 +182,7 @@ public class bulletAI : MonoBehaviour
 
     void Explode()
     {
+        int kills = 0;
         Collider[] collidersHit = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider collider in collidersHit)
         {
@@ -191,7 +193,17 @@ public class bulletAI : MonoBehaviour
                     Slow(collider.transform);
                 }
                 DealDamage(collider.transform);
+                if (!collider.GetComponent<EnemyAI>().IsAlive())
+                {
+                    kills++;
+                }
             }
+        }
+
+        // Check for multikill
+        if (kills >= 5)
+        { 
+            this.gameManager.uiManager.TriggerMultikill(transform.position); 
         }
     }
 }

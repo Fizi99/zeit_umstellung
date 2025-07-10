@@ -56,6 +56,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject debugText;
 
+    [SerializeField] private GameObject zeitsandDrop;
+
     private GameManager gameManager;
     private AudioManager audioManager;
     private List<Bus> busses;
@@ -833,5 +835,55 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1;
         mainCamera.GetComponent<PlayerHitEffect>().ResumeShake();
+    }
+
+    public void HitFreeze(float seconds)
+    {
+        StartCoroutine(HitFreezeCoroutine(seconds));
+    }
+
+    private IEnumerator HitFreezeCoroutine(float seconds)
+    {
+        FreezeTime();
+        yield return new WaitForSecondsRealtime(seconds);
+        UnfreezeTime();
+    }
+
+    public void TriggerMultikill(Vector3 whereToDisplay)
+    {
+        // Show a message
+        this.gameManager.SpawnFloatingText(whereToDisplay, "MULTIKILL!", Color.yellow);
+        
+        // Hitfreeze the screen for more impact
+        HitFreeze(0.7f);
+
+        // Drop some extra zeitsand
+        float dropDuration = 10;
+        float dropAmount = 5;
+        if (zeitsandDrop != null)
+        {
+            // Drop 3 zeitsand
+
+            GameObject droppedItem = Instantiate(zeitsandDrop, whereToDisplay, transform.rotation);
+            droppedItem.GetComponent<DropProperties>().dropAmount = dropAmount;
+            droppedItem.GetComponent<DropProperties>().survivalDuration = dropDuration;
+            droppedItem.GetComponent<DropProperties>().remainingDuration = dropDuration;
+            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxZeitsandDropped);
+
+            GameObject droppedItem2 = Instantiate(zeitsandDrop, whereToDisplay + new Vector3(0.3f,0.3f,0), transform.rotation);
+            droppedItem2.GetComponent<DropProperties>().dropAmount = dropAmount;
+            droppedItem2.GetComponent<DropProperties>().survivalDuration = dropDuration;
+            droppedItem2.GetComponent<DropProperties>().remainingDuration = dropDuration;
+            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxZeitsandDropped);
+
+            GameObject droppedItem3 = Instantiate(zeitsandDrop, whereToDisplay + new Vector3(-0.2f, -0.1f, 0), transform.rotation);
+            droppedItem3.GetComponent<DropProperties>().dropAmount = dropAmount;
+            droppedItem3.GetComponent<DropProperties>().survivalDuration = dropDuration;
+            droppedItem3.GetComponent<DropProperties>().remainingDuration = dropDuration;
+            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxZeitsandDropped);
+        } else
+        {
+            Debug.Log("Drop Prefab not found");
+        }
     }
 }

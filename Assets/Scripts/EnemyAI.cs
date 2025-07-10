@@ -350,4 +350,9 @@ public class EnemyAI : MonoBehaviour
     {
         bar.sizeDelta = new Vector2(maxWidth * ratio, bar.sizeDelta.y);
     }
+
+    public bool IsAlive()
+    {
+        return health > 0f;
+    }
 }
