@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class HighscoreTracker : MonoBehaviour
 {
     private GameManager gameManager;
 
     [SerializeField] private TextMeshProUGUI highscoreText;
+
+    [SerializeField] private float pulseSpeed = 2f;
+    [SerializeField] private float pulseScaleMax = 1.1f;
+
+    private Coroutine pulseCoroutine;
 
     void Start()
     {
@@ -20,10 +26,41 @@ public class HighscoreTracker : MonoBehaviour
     public void SetHighscoreDisplayVisibility(bool isVisible)
     {
         highscoreText.gameObject.SetActive(isVisible);
+        if (isVisible)
+        {
+            // Starte Pulsieren nur, wenn sichtbar
+            if (pulseCoroutine == null)
+                pulseCoroutine = StartCoroutine(PulseAnimation());
+        }
+        else
+        {
+            // Stoppe Pulsieren und skaliere zurück
+            if (pulseCoroutine != null)
+            {
+                StopCoroutine(pulseCoroutine);
+                pulseCoroutine = null;
+                highscoreText.transform.localScale = Vector3.one;
+            }
+        }
     }
 
     public void resetTracker()
     {
         highscoreText.gameObject.SetActive(false);
+    }
+
+    private IEnumerator PulseAnimation()
+    {
+        while (true)
+        {
+            float t = 0f;
+            while (t < 1f)
+            {
+                float scale = Mathf.Lerp(1f, pulseScaleMax, Mathf.Sin(t * Mathf.PI));
+                highscoreText.transform.localScale = Vector3.one * scale;
+                t += Time.deltaTime * pulseSpeed;
+                yield return null;
+            }
+        }
     }
 }

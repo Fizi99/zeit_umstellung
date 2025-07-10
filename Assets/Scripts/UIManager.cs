@@ -569,10 +569,9 @@ public class UIManager : MonoBehaviour
 
     public void NavigateToMainMenu()
     {
-        // TODO
         if (this.gameManager.gameState == GameState.PAUSING)
         {
-            // Safe uhranium (& highscore) if game stopped while in-game
+            // TODO?: Safe uhranium (& highscore) if game stopped while in-game
             Debug.Log("Ab ins Menü, davor aber Uhranium speichern");
             UnfreezeTime();
             this.gameManager.ClearScene();

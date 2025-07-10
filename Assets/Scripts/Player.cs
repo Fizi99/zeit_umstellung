@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public float zeitsandStartValue = 00;
     public float zeitsandRatePerSec = 1;
     
-    // related to uhranium
+    // Related to uhranium
     [HideInInspector] public float uhranium = 0f;
 
     public float uhrraniumRatePerSec = 1;
@@ -113,11 +113,12 @@ public class Player : MonoBehaviour
         this.uhranium = 0;
 
         // Check if displaying highscore-reached-text (while being in-game)
-        float lastUhraniumLevelSaved = SaveManager.LoadUhranium();
-        if (SaveManager.LoadUhraniumHighscore() < lastUhraniumLevelSaved)
+        //float lastUhraniumLevelSaved = SaveManager.LoadUhranium(); // IMPORTANT: BUGGY, LOADUHRANIUM GIVES ALL UHRANIUM COMBINED, WE WANT THE UHRANIUM OF JUST THIS LEVEL (ONE SESSION)
+        float uhraniumThisSession = uhraniumGain;
+        if (SaveManager.LoadUhraniumHighscore() < uhraniumThisSession)
         {
-            SaveManager.SaveUhraniumHighscore(lastUhraniumLevelSaved);
-            this.gameManager.highscoreTracker.GetComponent<HighscoreTracker>().SetHighscoreDisplayVisibility(true); // NEW
+            SaveManager.SaveUhraniumHighscore(uhraniumThisSession);
+            this.gameManager.highscoreTracker.GetComponent<HighscoreTracker>().SetHighscoreDisplayVisibility(true);
         }
     }
 
