@@ -76,31 +76,7 @@ public class SaveLoadout : MonoBehaviour
 
     void Update()
     {
-        bool anyChanged = false;
-
-        for (int i = 0; i < 4; i++)
-        {
-            List<TurretType> current;
-
-            if (i == gameManager.uiManager.currentLoadoutIndex - 1)
-            {
-                // Aktiver Tab: live aus den Slots lesen
-                current = GetLiveLoadoutFromSlots();
-            }
-            else
-            {
-                // Andere Tabs: aus temporaryLoadouts
-                current = gameManager.uiManager.temporaryLoadouts[i];
-            }
-
-            if (!IsSameLoadout(current, lastSavedLoadouts[i]))
-            {
-                anyChanged = true;
-                break;
-            }
-        }
-
-        UpdateSaveButtonUI(anyChanged);
+        UpdateSaveButtonUI(HasUnsavedChanges());
     }
 
 
@@ -110,5 +86,23 @@ public class SaveLoadout : MonoBehaviour
         for (int i = 0; i < 4; i++)
             result.Add(gameManager.buildManager.emptySlots[i].GetComponent<EmptySlotHover>().turretType);
         return result;
+    }
+
+    public bool HasUnsavedChanges()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            List<TurretType> current;
+
+            if (i == gameManager.uiManager.currentLoadoutIndex - 1)
+                current = GetLiveLoadoutFromSlots();
+            else
+                current = gameManager.uiManager.temporaryLoadouts[i];
+
+            if (!IsSameLoadout(current, lastSavedLoadouts[i]))
+                return true;
+        }
+
+        return false;
     }
 }
