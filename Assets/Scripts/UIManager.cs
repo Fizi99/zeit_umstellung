@@ -680,7 +680,7 @@ public class UIManager : MonoBehaviour
 
         if (this.distanceToStop > this.gameManager.GetDistanceThreshhold())
         {
-            distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m, please get closer to the bus stop.";
+            distanceToStopText.GetComponent<TMP_Text>().text = this.distanceToStop + "m, bitte näher an die Bushaltestelle heran.";
         }
         else
         {
