@@ -24,7 +24,8 @@ public class Player : MonoBehaviour
     private GameManager gameManager;
 
     public bool firstTimePlaying;
-    public bool playTutorial = true;
+    public bool playTutorial;
+    public bool showTutorialEveryTime;
 
     public List<TurretType> chosenLoadout = new List<TurretType>();
 
@@ -41,12 +42,12 @@ public class Player : MonoBehaviour
         if (SaveManager.LoadFirstTimePlaying())
         {
             SaveManager.SavePurchasedTurrets(new List<TurretType>()
-        {
-            TurretType.MISSILE,
-            TurretType.STANDARD,
-            TurretType.LASER,
-            TurretType.DRONEBASE,
-        });
+            {
+                TurretType.MISSILE,
+                TurretType.STANDARD,
+                TurretType.LASER,
+                TurretType.DRONEBASE,
+            });
             SaveManager.SaveUhranium(1000f);
         }
 
@@ -59,8 +60,9 @@ public class Player : MonoBehaviour
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         this.firstTimePlaying = SaveManager.LoadFirstTimePlaying();
-        //Debug.Log("first time?" + this.firstTimePlaying);
-        this.playTutorial = SaveManager.LoadFirstTimePlaying();
+        this.showTutorialEveryTime = SaveManager.LoadToggleTutorialState();
+
+        this.playTutorial = this.firstTimePlaying || this.showTutorialEveryTime;
 
         lives = startLives;
         this.zeitsand = this.zeitsandStartValue;

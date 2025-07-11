@@ -57,6 +57,11 @@ public class TutorialManager : MonoBehaviour
     // start the tutorial if player is playing for first time or explicitly activated tutorial
     public void PlayTutorial()
     {
+        // Check whether the tutorial can be played immediately
+        bool firstTime = SaveManager.LoadFirstTimePlaying();
+        bool showAlways = SaveManager.LoadToggleTutorialState();
+        this.gameManager.player.playTutorial = firstTime || showAlways;
+
         if (this.gameManager.player.playTutorial)
         {
             if (this.gameManager.gameState == GameState.LEVELPLAYING)

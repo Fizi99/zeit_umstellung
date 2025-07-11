@@ -5,6 +5,20 @@ using UnityEngine;
 
 public static class SaveManager
 {
+
+    private const string FreshInstallKey = "FreshInstallDone";
+
+    public static bool IsFreshInstall()
+    {
+        return PlayerPrefs.GetInt(FreshInstallKey, 0) == 0;
+    }
+
+    public static void MarkFreshInstallHandled()
+    {
+        PlayerPrefs.SetInt(FreshInstallKey, 1);
+        PlayerPrefs.Save();
+    }
+
     public static void SaveUhraniumHighscore(float score)
     {
         PlayerPrefs.SetFloat("Highscore", score);
@@ -50,8 +64,16 @@ public static class SaveManager
         return (firstPlay == 1);
     }
 
-    
+    public static void SaveToggleTutorialState(bool enabled)
+    {
+        PlayerPrefs.SetInt("ShowTutorialEveryTime", enabled ? 1 : 0);
+        PlayerPrefs.Save();
+    }
 
+    public static bool LoadToggleTutorialState()
+    {
+        return PlayerPrefs.GetInt("ShowTutorialEveryTime", 0) == 1;
+    }
 
     /*
      * Because PlayerPrefs can only handle primitives, we serialize a list of enum values to a string

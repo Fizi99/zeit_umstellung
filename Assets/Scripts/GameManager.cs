@@ -66,10 +66,11 @@ public class GameManager : MonoBehaviour
         // Reset all persistently saved data if first time started the app on a build
         if (!Application.isEditor)
         {
-            if (PlayerPrefs.GetInt("FirstPlay", 1) == 1)
+            if (SaveManager.IsFreshInstall())
             {
                 PlayerPrefs.DeleteAll();
-                PlayerPrefs.SetInt("FirstPlay", 0);
+                SaveManager.MarkFreshInstallHandled();
+                SaveManager.SaveFirstTimePlaying(true);
                 PlayerPrefs.Save();
             }
         }
@@ -130,17 +131,18 @@ public class GameManager : MonoBehaviour
                 this.backGroundPlane.GetComponent<BackgroundTilePainter>().GenerateBackground(currentEpoch);
                 this.routeManager.UpdateStreetMaterial();
                 highscoreTracker.GetComponent<HighscoreTracker>().SetHighscoreDisplayVisibility(false);
+                this.tutorialManager.PlayTutorial();    
             }
-            
-            this.tutorialManager.PlayTutorial();
-           // this.gameManager.ApplySpritesForEpoch(epoch);
+
             buildManager.SetBuyButtons();
         }
+
         if (gameState == GameState.LEVELEND)
         {
             ClearScene();
             this.player.SaveUhranium();
         }
+
         this.uiManager.UpdateUI();
         this.player.ResetUhraniumGain();
     }

@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private Toggle tutorialToggle;
+    [SerializeField] private Toggle vibrationToggle;
     [SerializeField] private GameObject startLevelButton;
     [SerializeField] private GameObject visualizeLoadoutParent;
     [SerializeField] private List<Sprite> turretSprites;
@@ -257,7 +258,16 @@ public class UIManager : MonoBehaviour
 
     public void ToggleTutorial()
     {
-        this.gameManager.player.playTutorial = this.tutorialToggle.isOn;
+        //this.player.playTutorial = this.tutorialToggle.isOn;
+        SaveManager.SaveToggleTutorialState(this.tutorialToggle.isOn);
+    }
+
+    public void ToggleVibrations()
+    {
+        if (SaveManager.LoadVibrationEnabled() != this.vibrationToggle)
+        {
+            SaveManager.SaveVibrationEnabled(this.vibrationToggle);
+        }
     }
 
     // check if bus information got updated for example to update bus selection buttons or countdown. use value later
