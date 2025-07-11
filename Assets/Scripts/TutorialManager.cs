@@ -141,15 +141,15 @@ public class TutorialManager : MonoBehaviour
         this.gameManager.waveSpawner.SetStopWaveSpawning(true);
 
         // control uhranium
-        this.defaultUhraniumRate = this.gameManager.player.uhrraniumRatePerSec;
-        this.gameManager.player.uhrraniumRatePerSec = 1;
+        this.defaultUhraniumRate = this.gameManager.player.uhraniumRatePerSec;
+        this.gameManager.player.uhraniumRatePerSec = 1;
     }
 
     private void ResetControlledVariables()
     {
         this.gameManager.player.zeitsand = this.defaultzeitsandStartValue;
         this.gameManager.player.zeitsandRatePerSec = this.defaultZeitsandRate;
-        this.gameManager.player.uhrraniumRatePerSec = this.defaultUhraniumRate;
+        this.gameManager.player.uhraniumRatePerSec = this.defaultUhraniumRate;
         this.gameManager.waveSpawner.SetStopWaveSpawning(false);
     }
 }

@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     // Related to uhranium
     [HideInInspector] public float uhranium = 0f;
 
-    public float uhrraniumRatePerSec = 1;
+    public float uhraniumRatePerSec = 1;
     public int savableThreshhold = 10;
     [HideInInspector] public float uhraniumGain = 0; // to display uhranium gain, after it has been reset
 
@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
 
     private void UpdateUhranium()
     {
-        uhranium += Time.deltaTime * uhrraniumRatePerSec;
+        uhranium += Time.deltaTime * uhraniumRatePerSec;
     }
 
     // reset uhranium for example if lvl is finished over button press. this way, not saved uhranium is not saved

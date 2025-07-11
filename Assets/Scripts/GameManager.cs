@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public WaveSpawner waveSpawner;
     [SerializeField] public RouteManager routeManager;
     [SerializeField] public TutorialManager tutorialManager;
+    [SerializeField] public DifficultyManager difficultyManager;
     [SerializeField] public Player player;
     [SerializeField] public buildManager buildManager;
     [SerializeField] public GameObject floatingTextPrefab;
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject highscoreTracker;
     [SerializeField] public GameObject backGroundPlane;
     [SerializeField] public GameObject placeableZoneManager;
+
     public EpochChooser epochChooser = new EpochChooser();
 
     [Header("Container")]
@@ -115,6 +117,7 @@ public class GameManager : MonoBehaviour
 
         if(gameState == GameState.LEVELSELECTION)
         {
+            
             if (this.firstStart)
             {
                 this.uiManager.SearchClosestStopBtnPressed();

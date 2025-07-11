@@ -38,6 +38,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject loadingStreetsIcon;
     [SerializeField] private TMP_Text uhraniumTextPausePanel;
     [SerializeField] private TMP_Text highscoreTextMainMenu;
+    [SerializeField] private GameObject difficultySelectionEasy;
+    [SerializeField] private GameObject difficultySelectionNormal;
+    [SerializeField] private GameObject difficultySelectionHard;
+
 
     [Space(10)]
 
@@ -194,6 +198,67 @@ public class UIManager : MonoBehaviour
         {
             this.loadingStreetsIcon.SetActive(false);
             this.startLevelButton.SetActive(true);
+        }
+    }
+
+    public void SelectDifficulty(string difficulty)
+    {
+        switch (difficulty)
+        {
+            case "Easy":
+                this.gameManager.difficultyManager.ChangeDifficulty(Difficulty.EASY);
+                DifficultyBtnSelected(this.difficultySelectionEasy.GetComponent<Image>());
+                DifficultyBtnDeselect(this.difficultySelectionNormal.GetComponent<Image>());
+                DifficultyBtnDeselect(this.difficultySelectionHard.GetComponent<Image>());
+                break;
+            case "Normal":
+                this.gameManager.difficultyManager.ChangeDifficulty(Difficulty.NORMAL);
+                DifficultyBtnDeselect(this.difficultySelectionEasy.GetComponent<Image>());
+                DifficultyBtnSelected(this.difficultySelectionNormal.GetComponent<Image>());
+                DifficultyBtnDeselect(this.difficultySelectionHard.GetComponent<Image>());
+                break;
+            case "Hard":
+                this.gameManager.difficultyManager.ChangeDifficulty(Difficulty.HARD);
+                DifficultyBtnDeselect(this.difficultySelectionEasy.GetComponent<Image>());
+                DifficultyBtnDeselect(this.difficultySelectionNormal.GetComponent<Image>());
+                DifficultyBtnSelected(this.difficultySelectionHard.GetComponent<Image>());
+                break;
+            default:
+                this.gameManager.difficultyManager.ChangeDifficulty(Difficulty.NORMAL);
+                DifficultyBtnDeselect(this.difficultySelectionEasy.GetComponent<Image>());
+                DifficultyBtnSelected(this.difficultySelectionNormal.GetComponent<Image>());
+                DifficultyBtnDeselect(this.difficultySelectionHard.GetComponent<Image>());
+                break;
+        }
+        
+    }
+
+    private void DifficultyBtnSelected(Image imgComponent)
+    {
+        imgComponent.color = new Color(0.1686275f, 0.454902f, 0.6196079f);
+    }
+
+    private void DifficultyBtnDeselect(Image imgComponent)
+    {
+        imgComponent.color = new Color(1f,1f,1f);
+    }
+
+    private void InitDifficultySelection()
+    {
+        switch (this.gameManager.difficultyManager.currentDifficulty)
+        {
+            case Difficulty.EASY:
+                SelectDifficulty("Easy");
+                break;
+            case Difficulty.NORMAL:
+                SelectDifficulty("Normal");
+                break;
+            case Difficulty.HARD:
+                SelectDifficulty("Hard");
+                break;
+            default:
+                SelectDifficulty("Normal");
+                break;
         }
     }
 
@@ -458,6 +523,7 @@ public class UIManager : MonoBehaviour
         switch (this.gameManager.gameState)
         {
             case GameState.LEVELSELECTION:
+                InitDifficultySelection();
                 GenerateBusSelection();
                 break;
             case GameState.LEVELPLAYING:
