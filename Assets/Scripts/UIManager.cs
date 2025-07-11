@@ -852,7 +852,9 @@ public class UIManager : MonoBehaviour
     {
         // Show a message
         this.gameManager.SpawnFloatingText(whereToDisplay, "MULTIKILL!", Color.yellow);
-        
+
+        HapticManager.Instance.PlayVibration(150, 200); // 150 ms, 200/255 Stärke
+
         // Hitfreeze the screen for more impact
         HitFreeze(0.7f);
 

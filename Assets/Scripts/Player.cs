@@ -108,6 +108,7 @@ public class Player : MonoBehaviour
     {
 
         SaveManager.SaveUhranium(SaveManager.LoadUhranium()+this.uhranium);
+        HapticManager.Instance.PlayVibration(75, 200);
         Debug.Log("current saved uhranium: " + Mathf.FloorToInt(SaveManager.LoadUhranium()).ToString());
         this.uhraniumGain += (int) this.uhranium;
         this.uhranium = 0;
@@ -119,6 +120,7 @@ public class Player : MonoBehaviour
         {
             SaveManager.SaveUhraniumHighscore(uhraniumThisSession);
             this.gameManager.highscoreTracker.GetComponent<HighscoreTracker>().SetHighscoreDisplayVisibility(true);
+            HapticManager.Instance.PlayVibration(150, 200); // 150 ms, 200/255 Stärke
         }
     }
 

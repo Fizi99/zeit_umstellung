@@ -117,4 +117,15 @@ public static class SaveManager
             return new List<TurretType>();
         }
     }
+
+    public static void SaveVibrationEnabled(bool enabled)
+    {
+        PlayerPrefs.SetInt("VibrationEnabled", enabled ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public static bool LoadVibrationEnabled()
+    {
+        return PlayerPrefs.GetInt("VibrationEnabled", 1) == 1;
+    }
 }
