@@ -4981,7 +4981,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 4
   initSpeed: 0.25
-  initHealth: 2
+  initHealth: 1
   healthbar: {fileID: 5962947435821708017}
   isSplitter: 0
   splitAmount: 0

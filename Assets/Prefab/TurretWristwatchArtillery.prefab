@@ -246,7 +246,7 @@ MonoBehaviour:
   isMoving: 0
   speed: 30
   stopAndShootRange: 5
-  fireRate: 1
+  fireRate: 1.15
   bulletPrefab: {fileID: 9084643237093435201, guid: aca2e0cfab43afb4ea6ea0b8c843f206, type: 3}
   firePoint: {x: 0, y: 0, z: 0}
   firePointRight: {x: 0.45, y: 0.7, z: 0}
