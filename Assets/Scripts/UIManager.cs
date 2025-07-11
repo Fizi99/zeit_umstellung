@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
@@ -100,7 +101,8 @@ public class UIManager : MonoBehaviour
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
-        //epochChooser = new EpochChooser();
+        ApplySavedSettingsToUI();
+        ApplySettingsToSystem();
 
         initLoadout();
 
@@ -203,45 +205,70 @@ public class UIManager : MonoBehaviour
 
     public void ToggleScreenShake()
     {
+        SaveManager.SaveToggle(SettingOption.ScreenShake, screenShakeToggle.isOn);
         this.mainCamera.GetComponent<PlayerHitEffect>().SetToggleScreenshake(this.screenShakeToggle.isOn);
     }
 
     public void ToggleVignette()
     {
+        SaveManager.SaveToggle(SettingOption.Vignette, vignetteToggle.isOn);
         this.mainCamera.GetComponent<PlayerHitEffect>().SetToggleVignette(this.vignetteToggle.isOn);
     }
 
     public void TogglePlaceableZonePulse()
     {
+        SaveManager.SaveToggle(SettingOption.Pulse, pulseOnPlacableZoneToggle.isOn);
         this.gameManager.placeableZoneManager.GetComponent<PlaceableZone>().pulseOn = this.pulseOnPlacableZoneToggle.isOn;
     }
 
-    // audio toggle for music sfx and overall
-    public void ToggleSfxMute()
+    public void ToggleAudioMute(bool isOn)
     {
-        if (!this.audioToggle.isOn)
-        {
-            this.audioManager.SfxMute(this.sfxToggle.isOn);
-        }
+        SaveManager.SaveToggle(SettingOption.AudioMute, isOn);
+        ApplyAudioMuteState();
     }
 
-    public void ToggleMusicMute()
+    public void ToggleMusicMute(bool isOn)
     {
-        if (!this.audioToggle.isOn)
-        {
-            this.audioManager.MusicMute(this.musicToggle.isOn);
-        }
+        SaveManager.SaveToggle(SettingOption.MusicMute, isOn);
+        ApplyAudioMuteState();
     }
 
-    public void ToggleAudioMute()
+    public void ToggleSfxMute(bool isOn)
     {
-        this.audioManager.SfxMute(this.audioToggle.isOn);
-        this.audioManager.MusicMute(this.audioToggle.isOn);
+        SaveManager.SaveToggle(SettingOption.SFXMute, isOn);
+        ApplyAudioMuteState();
+    }
+
+    public void ApplyAudioMuteState()
+    {
+        /*bool isAudioOn = SaveManager.LoadToggle(SettingOption.AudioPlay, true);
+        bool isMusicOn = SaveManager.LoadToggle(SettingOption.MusicPlay, true);
+        bool isSfxOn = SaveManager.LoadToggle(SettingOption.SFXPlay, true);*/
+
+        bool isAudioMute = !audioToggle.isOn;
+        bool isMusicMute = !musicToggle.isOn;
+        bool isSfxMute = !sfxToggle.isOn;
+
+        bool shouldPlayMusic = isAudioMute && isMusicMute;
+        bool shouldPlaySfx = isAudioMute && isSfxMute;
+
+        audioManager.MusicMute(!shouldPlayMusic);
+        audioManager.SfxMute(!shouldPlaySfx);
+
+        // Stelle sicher, dass Musik läuft, wenn sie laufen soll
+        if (shouldPlayMusic && !audioManager.musicSource.isPlaying)
+        {
+            audioManager.musicSource.Play(); // <-- erzwingt Musikstart
+            Debug.Log("Force Play()");
+        }
+
+        Debug.Log("Music Muted? " + audioManager.musicSource.mute + " | Music Playing? " + audioManager.musicSource.isPlaying);
     }
 
     // volume slider for all audio, music and sfx. sfx and music volume is multiplied by state of overall audio slider
     public void SliderAudioVolume()
     {
+        SaveManager.SaveVolume(SettingOption.AudioVolume, audioVolumeSlider.value);
         SliderMusicVolume();
         SliderSfxVolume();
     }
@@ -249,11 +276,13 @@ public class UIManager : MonoBehaviour
     public void SliderMusicVolume()
     {
         this.audioManager.MusicVolume(this.musicVolumeSlider.value * this.audioVolumeSlider.value);
+        SaveManager.SaveVolume(SettingOption.MusicVolume, musicVolumeSlider.value);
     }
 
     public void SliderSfxVolume()
     {
         this.audioManager.SfxVolume(this.sfxVolumeSlider.value * this.audioVolumeSlider.value);
+        SaveManager.SaveVolume(SettingOption.SfxVolume, sfxVolumeSlider.value);
     }
 
     public void ToggleTutorial()
@@ -268,6 +297,39 @@ public class UIManager : MonoBehaviour
         {
             SaveManager.SaveVibrationEnabled(this.vibrationToggle);
         }
+    }
+
+    public void ApplySavedSettingsToUI()
+    {
+        screenShakeToggle.isOn = SaveManager.LoadToggle(SettingOption.ScreenShake);
+        vignetteToggle.isOn = SaveManager.LoadToggle(SettingOption.Vignette);
+        pulseOnPlacableZoneToggle.isOn = SaveManager.LoadToggle(SettingOption.Pulse);
+        tutorialToggle.isOn = SaveManager.LoadToggle(SettingOption.ShowTutorialEveryTime, true);
+        vibrationToggle.isOn = SaveManager.LoadToggle(SettingOption.Vibration, true);
+
+        audioToggle.isOn = SaveManager.LoadToggle(SettingOption.AudioMute);
+        sfxToggle.isOn = SaveManager.LoadToggle(SettingOption.SFXMute);
+        musicToggle.isOn = SaveManager.LoadToggle(SettingOption.MusicMute);
+
+        audioVolumeSlider.value = SaveManager.LoadVolume(SettingOption.AudioVolume);
+        sfxVolumeSlider.value = SaveManager.LoadVolume(SettingOption.SfxVolume);
+        musicVolumeSlider.value = SaveManager.LoadVolume(SettingOption.MusicVolume);
+    }
+
+    public void ApplySettingsToSystem()
+    {
+        ToggleScreenShake();
+        ToggleVignette();
+        TogglePlaceableZonePulse();
+        ToggleTutorial();
+        ToggleVibrations();
+
+        audioVolumeSlider.value = SaveManager.LoadVolume(SettingOption.AudioVolume, 1f);
+        musicVolumeSlider.value = SaveManager.LoadVolume(SettingOption.MusicVolume, 0.3f);
+        sfxVolumeSlider.value = SaveManager.LoadVolume(SettingOption.SfxVolume, 0.3f);
+
+        SliderAudioVolume(); // also applies music/sfx slider internally
+        ApplyAudioMuteState();
     }
 
     // check if bus information got updated for example to update bus selection buttons or countdown. use value later

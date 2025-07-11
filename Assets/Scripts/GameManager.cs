@@ -300,7 +300,25 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Resetting all progress ...");
         PlayerPrefs.DeleteAll();
+
+        // Set default values
+        SaveManager.SaveToggle(SettingOption.AudioMute, false);
+        SaveManager.SaveToggle(SettingOption.MusicMute, false);
+        SaveManager.SaveToggle(SettingOption.SFXMute, false);
+        SaveManager.SaveToggle(SettingOption.ScreenShake, true);
+        SaveManager.SaveToggle(SettingOption.Vignette, true);
+        SaveManager.SaveToggle(SettingOption.Pulse, true);
+        SaveManager.SaveToggle(SettingOption.Vibration, true);
+        SaveManager.SaveToggle(SettingOption.ShowTutorialEveryTime, false);
+
+        SaveManager.SaveVolume(SettingOption.AudioVolume, 1.0f);
+        SaveManager.SaveVolume(SettingOption.SfxVolume, 0.3f);
+        SaveManager.SaveVolume(SettingOption.MusicVolume, 0.3f);
+
         PlayerPrefs.Save();
+
+        uiManager.ApplySavedSettingsToUI();     // synchronizes UI with PlayerPrefs
+        uiManager.ApplySettingsToSystem();      // Synchronizes system (tutorial manager, etc.)
         Debug.Log("Highscore is now (after reset): " + PlayerPrefs.GetFloat("Highscore", 0f));
     }
 

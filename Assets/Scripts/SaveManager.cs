@@ -150,4 +150,26 @@ public static class SaveManager
     {
         return PlayerPrefs.GetInt("VibrationEnabled", 1) == 1;
     }
+
+    public static void SaveToggle(SettingOption key, bool value)
+    {
+        PlayerPrefs.SetInt(key.ToString(), value ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public static bool LoadToggle(SettingOption key, bool defaultValue = false)
+    {
+        return PlayerPrefs.GetInt(key.ToString(), defaultValue ? 1 : 0) == 1;
+    }
+
+    public static void SaveVolume(SettingOption key, float value)
+    {
+        PlayerPrefs.SetFloat(key.ToString(), value);
+        PlayerPrefs.Save();
+    }
+
+    public static float LoadVolume(SettingOption key, float defaultValue = 0.3f)
+    {
+        return PlayerPrefs.GetFloat(key.ToString(), defaultValue);
+    }
 }

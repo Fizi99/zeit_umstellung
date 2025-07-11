@@ -4,7 +4,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] public SoundLibrary soundLibrary;
-    [SerializeField] private AudioSource musicSource;
+    [SerializeField] public AudioSource musicSource; // Testweise auf public gestellt (hoffe ich änder es zurück)
     [SerializeField] private AudioSource sfxSource;
     [SerializeField] private AudioSource loopingSfxSource;
 
