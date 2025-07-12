@@ -43,12 +43,11 @@ public class Player : MonoBehaviour
         {
             SaveManager.SavePurchasedTurrets(new List<TurretType>()
             {
-                TurretType.MISSILE,
                 TurretType.STANDARD,
-                TurretType.LASER,
+                TurretType.MISSILE,
                 TurretType.DRONEBASE,
+                TurretType.LASER,
             });
-            SaveManager.SaveUhranium(1000f);
         }
 
 

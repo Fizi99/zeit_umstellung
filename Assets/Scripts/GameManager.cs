@@ -346,12 +346,20 @@ public class GameManager : MonoBehaviour
 
         SaveManager.SavePurchasedTurrets(new List<TurretType>()
             {
-                TurretType.MISSILE,
                 TurretType.STANDARD,
-                TurretType.LASER,
+                TurretType.MISSILE,
                 TurretType.DRONEBASE,
+                TurretType.LASER,
             });
-        if(bombButton != null)
+        player.chosenLoadout = new List<TurretType>()
+            {
+
+                TurretType.STANDARD,
+                TurretType.MISSILE,
+                TurretType.DRONEBASE,
+                TurretType.LASER,
+            };
+        if (bombButton != null)
         {
             bombButton.GetComponent<displayTurretCost>().showPosession(false);
         }
