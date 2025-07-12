@@ -3,7 +3,6 @@ using UnityEngine;
 public class HapticManager : MonoBehaviour
 {
     public static HapticManager Instance;
-    public bool IsVibrationEnabled { get; private set; }
 
     private void Awake()
     {
@@ -11,7 +10,6 @@ public class HapticManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            LoadSettings();
         }
         else
         {
@@ -21,7 +19,7 @@ public class HapticManager : MonoBehaviour
 
     public void PlayVibration(long durationMs = 100, int amplitude = 255)
     {
-        if (!IsVibrationEnabled)
+        if (!SaveManager.LoadToggle(SettingOption.Vibration))
         {
             Debug.Log("Vibration deaktiviert");
             return;
@@ -42,16 +40,5 @@ public class HapticManager : MonoBehaviour
 #else
         Debug.Log($"[SIMULIERT] Vibration: {durationMs}ms @ Amplitude {amplitude}");
 #endif
-    }
-
-    public void SetVibrationEnabled(bool enabled)
-    {
-        IsVibrationEnabled = enabled;
-        SaveManager.SaveToggle(SettingOption.Vibration, enabled);
-    }
-
-    private void LoadSettings()
-    {
-        IsVibrationEnabled = SaveManager.LoadToggle(SettingOption.Vibration); 
     }
 }
