@@ -64,17 +64,6 @@ public static class SaveManager
         return (firstPlay == 1);
     }
 
-    public static void SaveToggleTutorialState(bool enabled)
-    {
-        PlayerPrefs.SetInt("ShowTutorialEveryTime", enabled ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
-    public static bool LoadToggleTutorialState()
-    {
-        return PlayerPrefs.GetInt("ShowTutorialEveryTime", 0) == 1;
-    }
-
     /*
      * Because PlayerPrefs can only handle primitives, we serialize a list of enum values to a string
      * and deserialize it when loading 
@@ -138,17 +127,6 @@ public static class SaveManager
             Debug.Log("loadoutindex out of range");
             return new List<TurretType>();
         }
-    }
-
-    public static void SaveVibrationEnabled(bool enabled)
-    {
-        PlayerPrefs.SetInt("VibrationEnabled", enabled ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
-    public static bool LoadVibrationEnabled()
-    {
-        return PlayerPrefs.GetInt("VibrationEnabled", 1) == 1;
     }
 
     public static void SaveToggle(SettingOption key, bool value)

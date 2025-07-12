@@ -47,11 +47,11 @@ public class HapticManager : MonoBehaviour
     public void SetVibrationEnabled(bool enabled)
     {
         IsVibrationEnabled = enabled;
-        SaveManager.SaveVibrationEnabled(enabled); // <-- dein SaveManager
+        SaveManager.SaveToggle(SettingOption.Vibration, enabled);
     }
 
     private void LoadSettings()
     {
-        IsVibrationEnabled = SaveManager.LoadVibrationEnabled(); // <-- dein SaveManager
+        IsVibrationEnabled = SaveManager.LoadToggle(SettingOption.Vibration); 
     }
 }

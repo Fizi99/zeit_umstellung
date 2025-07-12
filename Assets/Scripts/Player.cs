@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         this.firstTimePlaying = SaveManager.LoadFirstTimePlaying();
-        this.showTutorialEveryTime = SaveManager.LoadToggleTutorialState();
+        this.showTutorialEveryTime = SaveManager.LoadToggle(SettingOption.ShowTutorialEveryTime);
 
         this.playTutorial = this.firstTimePlaying || this.showTutorialEveryTime;
 

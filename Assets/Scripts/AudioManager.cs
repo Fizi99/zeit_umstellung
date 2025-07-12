@@ -22,8 +22,6 @@ public class AudioManager : MonoBehaviour
 
     public void Start()
     {
-        SfxVolume(0.3f);
-        MusicVolume(0.3f);
         PlayMusic(this.soundLibrary.musicMainScore);
     }
 

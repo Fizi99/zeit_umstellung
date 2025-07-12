@@ -91,8 +91,6 @@ public class UIManager : MonoBehaviour
     public Button Arsenal1;
     public int currentLoadoutIndex=1;
 
-    private bool tutorialtoggleSet = false;
-
     public GameState stateBeforeSettingsVisit;
 
     private bool toggleLoadingBusstopIcon = false;
@@ -104,9 +102,6 @@ public class UIManager : MonoBehaviour
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-
-        ApplySavedSettingsToUI();
-        ApplySettingsToSystem();
 
         initLoadout();
 
@@ -289,48 +284,30 @@ public class UIManager : MonoBehaviour
         this.gameManager.placeableZoneManager.GetComponent<PlaceableZone>().pulseOn = this.pulseOnPlacableZoneToggle.isOn;
     }
 
-    public void ToggleAudioMute(bool isOn)
+    public void ToggleAudioMute()
     {
-        SaveManager.SaveToggle(SettingOption.AudioMute, isOn);
-        ApplyAudioMuteState();
+        bool enabled = audioToggle.isOn;
+        SaveManager.SaveToggle(SettingOption.AudioMute, enabled);
+        audioManager.MusicMute(enabled);
+        audioManager.SfxMute(enabled);
+
+        //ApplyAudioMuteState();
     }
 
-    public void ToggleMusicMute(bool isOn)
+    public void ToggleMusicMute()
     {
-        SaveManager.SaveToggle(SettingOption.MusicMute, isOn);
-        ApplyAudioMuteState();
+        bool enabled = musicToggle.isOn;
+        SaveManager.SaveToggle(SettingOption.MusicMute, enabled);
+        audioManager.MusicMute(enabled);
+        //ApplyAudioMuteState();
     }
 
-    public void ToggleSfxMute(bool isOn)
+    public void ToggleSfxMute()
     {
-        SaveManager.SaveToggle(SettingOption.SFXMute, isOn);
-        ApplyAudioMuteState();
-    }
-
-    public void ApplyAudioMuteState()
-    {
-        /*bool isAudioOn = SaveManager.LoadToggle(SettingOption.AudioPlay, true);
-        bool isMusicOn = SaveManager.LoadToggle(SettingOption.MusicPlay, true);
-        bool isSfxOn = SaveManager.LoadToggle(SettingOption.SFXPlay, true);*/
-
-        bool isAudioMute = !audioToggle.isOn;
-        bool isMusicMute = !musicToggle.isOn;
-        bool isSfxMute = !sfxToggle.isOn;
-
-        bool shouldPlayMusic = isAudioMute && isMusicMute;
-        bool shouldPlaySfx = isAudioMute && isSfxMute;
-
-        audioManager.MusicMute(!shouldPlayMusic);
-        audioManager.SfxMute(!shouldPlaySfx);
-
-        // Stelle sicher, dass Musik läuft, wenn sie laufen soll
-        if (shouldPlayMusic && !audioManager.musicSource.isPlaying)
-        {
-            audioManager.musicSource.Play(); // <-- erzwingt Musikstart
-            Debug.Log("Force Play()");
-        }
-
-        Debug.Log("Music Muted? " + audioManager.musicSource.mute + " | Music Playing? " + audioManager.musicSource.isPlaying);
+        bool enabled = sfxToggle.isOn;
+        SaveManager.SaveToggle(SettingOption.SFXMute, enabled);
+        audioManager.SfxMute(enabled);
+        //ApplyAudioMuteState();
     }
 
     // volume slider for all audio, music and sfx. sfx and music volume is multiplied by state of overall audio slider
@@ -355,26 +332,24 @@ public class UIManager : MonoBehaviour
 
     public void ToggleTutorial()
     {
-        //this.player.playTutorial = this.tutorialToggle.isOn;
-        SaveManager.SaveToggleTutorialState(this.tutorialToggle.isOn);
+        SaveManager.SaveToggle(SettingOption.ShowTutorialEveryTime, this.tutorialToggle.isOn);
+        /* Debug.Log("!! Tutorial Toggle isOn: " +  this.tutorialToggle.isOn);
+         Debug.Log("!! tutorialToggle SaveManager: " + SaveManager.LoadToggle(SettingOption.ShowTutorialEveryTime, false));*/
     }
 
-    public void ToggleVibrations()
+    public void ToggleVibrations()  //*
     {
-        if (SaveManager.LoadVibrationEnabled() != this.vibrationToggle)
-        {
-            SaveManager.SaveVibrationEnabled(this.vibrationToggle);
-        }
+        SaveManager.SaveToggle(SettingOption.Vibration, this.vibrationToggle.isOn);
+        /*Debug.Log("!! Vibration Toggle isOn: " + this.vibrationToggle.isOn);
+        Debug.Log("!! vibrationToggle SaveManager: " + SaveManager.LoadToggle(SettingOption.Vibration, true));*/
     }
 
     public void ApplySavedSettingsToUI()
     {
-        this.audioManager.SfxMute(true);
-
         screenShakeToggle.isOn = SaveManager.LoadToggle(SettingOption.ScreenShake);
         vignetteToggle.isOn = SaveManager.LoadToggle(SettingOption.Vignette);
         pulseOnPlacableZoneToggle.isOn = SaveManager.LoadToggle(SettingOption.Pulse);
-        tutorialToggle.isOn = SaveManager.LoadToggle(SettingOption.ShowTutorialEveryTime, true);
+        tutorialToggle.isOn = SaveManager.LoadToggle(SettingOption.ShowTutorialEveryTime, false);
         vibrationToggle.isOn = SaveManager.LoadToggle(SettingOption.Vibration, true);
 
         audioToggle.isOn = SaveManager.LoadToggle(SettingOption.AudioMute);
@@ -384,8 +359,6 @@ public class UIManager : MonoBehaviour
         audioVolumeSlider.value = SaveManager.LoadVolume(SettingOption.AudioVolume);
         sfxVolumeSlider.value = SaveManager.LoadVolume(SettingOption.SfxVolume);
         musicVolumeSlider.value = SaveManager.LoadVolume(SettingOption.MusicVolume);
-
-        this.audioManager.SfxMute(false);
     }
 
     public void ApplySettingsToSystem()
@@ -396,12 +369,17 @@ public class UIManager : MonoBehaviour
         ToggleTutorial();
         ToggleVibrations();
 
-        audioVolumeSlider.value = SaveManager.LoadVolume(SettingOption.AudioVolume, 1f);
+        /*audioVolumeSlider.value = SaveManager.LoadVolume(SettingOption.AudioVolume, 1f);
         musicVolumeSlider.value = SaveManager.LoadVolume(SettingOption.MusicVolume, 0.3f);
-        sfxVolumeSlider.value = SaveManager.LoadVolume(SettingOption.SfxVolume, 0.3f);
+        sfxVolumeSlider.value = SaveManager.LoadVolume(SettingOption.SfxVolume, 0.3f);*/
 
-        SliderAudioVolume(); // also applies music/sfx slider internally
-        ApplyAudioMuteState();
+        SliderAudioVolume();
+
+        // also applies music/sfx slider internally
+        //ApplyAudioMuteState();
+        ToggleAudioMute();
+        ToggleMusicMute();
+        ToggleSfxMute();
     }
 
     public void PlayToggleAudio()
@@ -638,12 +616,6 @@ public class UIManager : MonoBehaviour
                 this.highscoreTextMainMenu.text = $"Highscore: {Mathf.FloorToInt(highscore)}";
                 break;
             case GameState.SETTINGS:
-                // set toggle for tutorial the first time settingsmenu is opened
-                if (!this.tutorialtoggleSet)
-                {
-                    this.tutorialToggle.isOn = this.gameManager.player.firstTimePlaying;
-                    this.tutorialtoggleSet = true;
-                }
                 break;
             case GameState.LEVELEND:
                 UpdateLvlFinishedText();

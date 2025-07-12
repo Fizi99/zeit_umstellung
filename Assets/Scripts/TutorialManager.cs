@@ -59,7 +59,7 @@ public class TutorialManager : MonoBehaviour
     {
         // Check whether the tutorial can be played immediately
         bool firstTime = SaveManager.LoadFirstTimePlaying();
-        bool showAlways = SaveManager.LoadToggleTutorialState();
+        bool showAlways = SaveManager.LoadToggle(SettingOption.ShowTutorialEveryTime);
         this.gameManager.player.playTutorial = firstTime || showAlways;
 
         if (this.gameManager.player.playTutorial)
