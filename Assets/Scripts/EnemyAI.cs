@@ -61,16 +61,22 @@ public class EnemyAI : MonoBehaviour
     {
         speed=initSpeed;
         health = initHealth;
-        if(Random.Range(1, dropProbability)==1){
-            hasDrop = true;
-            dropAmount = (float) (Random.Range(dropMinimum, dropMaximum));
-        }
     }
 
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        if (Random.Range(1, dropProbability) == 1 || gameManager.enemiesSinceLastDrop >= this.dropProbability)
+        {
+            hasDrop = true;
+            dropAmount = (float)(Random.Range(dropMinimum, dropMaximum));
+            gameManager.enemiesSinceLastDrop = 0;
+        }
+        else
+        {
+            gameManager.enemiesSinceLastDrop += 1;
+        }
 
         CreateBlobShadow();
         ChooseSprite();
@@ -245,8 +251,6 @@ public class EnemyAI : MonoBehaviour
                 newEnemy.GetComponent<EnemyAI>().currentTarget = newEnemy.GetComponent<EnemyAI>().targets[waypointIndex];
                 newEnemy.GetComponent<EnemyAI>().waypointIndex = waypointIndex;
                 newEnemy.transform.parent = gameManager.enemyContainer.transform;
-                newEnemy.GetComponent<EnemyAI>().hasDrop = false;
-                newEnemy.GetComponent<EnemyAI>().dropAmount = 0;
 
             }
             //StartCoroutine(waiter());

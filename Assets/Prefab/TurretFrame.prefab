@@ -376,6 +376,8 @@ MonoBehaviour:
   UhraniumAmount: {fileID: 1914980108782395395}
   zeitsymbolImage: {fileID: 4940773418682241266}
   ZeitsandAmount: {fileID: 6079214981370110508}
+  uhraniumSprite: {fileID: 21300000, guid: 155b490c7194e384291c6108fc6e3d21, type: 3}
+  uhraniumColor: {r: 0.23921569, g: 0.7176471, b: 0.5568628, a: 1}
 --- !u!1 &3330153825986578447
 GameObject:
   m_ObjectHideFlags: 0

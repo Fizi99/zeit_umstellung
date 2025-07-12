@@ -32,6 +32,9 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public Image zeitsymbolImage;
     public GameObject ZeitsandAmount;
 
+    public Sprite uhraniumSprite;
+    public Color uhraniumColor;
+
     void Start()
     {
         
@@ -155,6 +158,8 @@ public class displayTurretCost : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 uhraniumPrice = (turret.GetComponent<TurretAI>().uhraniumPrice / 1000).ToString() + "k";
             }
             UhraniumAmount.GetComponent<TMPro.TextMeshProUGUI>().text = uhraniumPrice;
+            this.UhraniumAmount.GetComponent<TMPro.TextMeshProUGUI>().color = this.uhraniumColor;
+            this.UhraniumImage.GetComponent<Image>().sprite = this.uhraniumSprite;
         }
 
         lockImage.SetActive(!isPosessed);

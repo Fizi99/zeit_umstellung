@@ -60,6 +60,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] public List<GameObject> turretPrefabs;
     [SerializeField] private Sprite[] allEpochSpecificSprites;
 
+    [SerializeField] public GameObject bombButton;
+    [SerializeField] public GameObject freezeButton;
+
+
+    [SerializeField] public int enemiesSinceLastDrop = 0;
+
     public Epoch currentEpoch;
 
     private bool firstStart = true;
@@ -319,6 +325,17 @@ public class GameManager : MonoBehaviour
         SaveManager.SaveVolume(SettingOption.AudioVolume, 1.0f);
         SaveManager.SaveVolume(SettingOption.SfxVolume, 0.3f);
         SaveManager.SaveVolume(SettingOption.MusicVolume, 0.3f);
+
+
+        SaveManager.SavePurchasedTurrets(new List<TurretType>()
+            {
+                TurretType.MISSILE,
+                TurretType.STANDARD,
+                TurretType.LASER,
+                TurretType.DRONEBASE,
+            });
+        bombButton.GetComponent<displayTurretCost>().showPosession(false);
+        freezeButton.GetComponent<displayTurretCost>().showPosession(false);
 
         PlayerPrefs.Save();
 
