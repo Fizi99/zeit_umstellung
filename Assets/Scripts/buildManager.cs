@@ -133,7 +133,9 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             }
             if (Input.GetMouseButtonDown(0) && Input.mousePosition.x < 400f)
             {
+                placeableZone.HidePlaceableZone();
                 clearHighlight();
+                setIsBuild(false);
             }
             if (Input.GetMouseButtonDown(0) && 400f < Input.mousePosition.x )
             {
