@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public StreetViewMap streetViewMapGetter;
     [SerializeField] public TMP_InputField busSearchInputField;
     [SerializeField] public UIManager uiManager;
+    [SerializeField] public AudioManager audioManager;
     [SerializeField] public GPSTracker gpsTracker;
     [SerializeField] public WaveSpawner waveSpawner;
     [SerializeField] public RouteManager routeManager;
@@ -134,7 +135,8 @@ public class GameManager : MonoBehaviour
                 this.backGroundPlane.GetComponent<BackgroundTilePainter>().GenerateBackground(currentEpoch);
                 this.routeManager.UpdateStreetMaterial();
                 highscoreTracker.GetComponent<HighscoreTracker>().SetHighscoreDisplayVisibility(false);
-                this.tutorialManager.PlayTutorial();    
+                this.tutorialManager.PlayTutorial();
+                this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxLevelStarted);
             }
 
             buildManager.SetBuyButtons();

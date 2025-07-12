@@ -17,6 +17,7 @@ public class TurretGridFiller : MonoBehaviour
     public List<TurretPrefabMapping> turretMappings;
 
     private GameManager gameManager;
+    private AudioManager audioManager;
     private buildManager BuildManager;
 
     public GameObject DragObject;
@@ -26,6 +27,7 @@ public class TurretGridFiller : MonoBehaviour
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         this.BuildManager = gameManager.buildManager;
         
         //reset purchased turrets: 
@@ -89,6 +91,7 @@ public class TurretGridFiller : MonoBehaviour
                     SaveManager.SavePurchasedTurrets(purchasedTurrets);
                     this.gameManager.uiManager.UpdateUhraniumLoadoutDisplay();
                     displayScript.showPosession(true);
+                        this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxTurretPurchased);
                 }
                 }
                 BuyButton.gameObject.SetActive(false);

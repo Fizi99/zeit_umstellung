@@ -22284,6 +22284,7 @@ MonoBehaviour:
   streetViewMapGetter: {fileID: 1758605627}
   busSearchInputField: {fileID: 1530871556}
   uiManager: {fileID: 772188669}
+  audioManager: {fileID: 1360038436}
   gpsTracker: {fileID: 169364148}
   waveSpawner: {fileID: 576400594}
   routeManager: {fileID: 1404204179}

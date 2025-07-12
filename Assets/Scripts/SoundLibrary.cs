@@ -38,6 +38,13 @@ public class SoundLibrary : ScriptableObject
 
     [Space(10)]
 
+    [Header("Soundeffects Game")]
+    [SerializeField] public AudioClip sfxLevelFinished;
+    [SerializeField] public AudioClip sfxLevelStarted;
+    [SerializeField] public AudioClip sfxHighscoreBroken;
+
+    [Space(10)]
+
     [Header("Soundeffects EnemieDrops")]
     [SerializeField] public AudioClip sfxZeitsandDropped;
     [SerializeField] public AudioClip sfxZeitsandCollected;
@@ -45,5 +52,7 @@ public class SoundLibrary : ScriptableObject
     [Space(10)]
     [Header("Soundeffects UI")]
     [SerializeField] public AudioClip sfxTurretPlaced;
+    [SerializeField] public AudioClip sfxButtonTapped;
+    [SerializeField] public AudioClip sfxTurretPurchased;
 
 }

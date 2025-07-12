@@ -59,6 +59,7 @@ public class SaveUhranium : MonoBehaviour
             this.gameManager.SpawnFloatingText(new Vector3(0, 1, -1), "+" + (int)this.gameManager.player.uhranium, new Color(0.5800107f, 0.9245283f, 0.8310998f));
             this.gameManager.player.SaveUhranium();
             this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxUhraniumSaved);
+
         }
     }
 
@@ -72,11 +73,13 @@ public class SaveUhranium : MonoBehaviour
         {
             this.popupText.SetActive(true);
             this.particleEffect.SetActive(true);
+            this.audioManager.PlayLoopingSoundIfNotPlaying(gameObject, this.audioManager.soundLibrary.sfxUhraniumSavable);
         }
         else
         {
             this.popupText.SetActive(false);
             this.particleEffect.SetActive(false);
+            this.audioManager.StopLoopingSound(gameObject);
         }
     }
 }

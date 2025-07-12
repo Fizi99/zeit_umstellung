@@ -5,6 +5,7 @@ using System.Collections;
 public class HighscoreTracker : MonoBehaviour
 {
     private GameManager gameManager;
+    private AudioManager audioManager;
 
     [SerializeField] private TextMeshProUGUI highscoreText;
 
@@ -30,7 +31,12 @@ public class HighscoreTracker : MonoBehaviour
         {
             // Starte Pulsieren nur, wenn sichtbar
             if (pulseCoroutine == null)
+            {
                 pulseCoroutine = StartCoroutine(PulseAnimation());
+                this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxHighscoreBroken);
+            }
+               
+
         }
         else
         {
