@@ -17,6 +17,7 @@ public class HighscoreTracker : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         highscoreText.gameObject.SetActive(false);
     }
 
