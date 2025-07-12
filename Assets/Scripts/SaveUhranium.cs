@@ -79,7 +79,7 @@ public class SaveUhranium : MonoBehaviour
         {
             this.popupText.SetActive(false);
             this.particleEffect.SetActive(false);
-            this.audioManager.StopLoopingSound(gameObject);
+            this.audioManager.FadeOutAndStop(gameObject);
         }
     }
 }
