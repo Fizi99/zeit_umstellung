@@ -54,5 +54,7 @@ public class SoundLibrary : ScriptableObject
     [SerializeField] public AudioClip sfxTurretPlaced;
     [SerializeField] public AudioClip sfxButtonTapped;
     [SerializeField] public AudioClip sfxTurretPurchased;
+    [SerializeField] public AudioClip sfxUIError;
+    [SerializeField] public AudioClip sfxUIToggle;
 
 }

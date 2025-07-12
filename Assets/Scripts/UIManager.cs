@@ -400,6 +400,16 @@ public class UIManager : MonoBehaviour
         ApplyAudioMuteState();
     }
 
+    public void PlayToggleAudio()
+    {
+        this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxUIToggle);
+    }
+
+    public void PlayBtnAudio()
+    {
+        this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxButtonTapped);
+    }
+
     // check if bus information got updated for example to update bus selection buttons or countdown. use value later
     private void CheckForBusInfoUpdate()
     {
