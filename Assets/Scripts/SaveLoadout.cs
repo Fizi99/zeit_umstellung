@@ -6,12 +6,14 @@ using TMPro;
 public class SaveLoadout : MonoBehaviour
 {
     private GameManager gameManager;
+    private AudioManager audioManager;
 
     private List<List<TurretType>> lastSavedLoadouts = new List<List<TurretType>>(); //*
 
     void Start()
     {
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         UpdateLastSavedLoadouts();
 
@@ -45,6 +47,8 @@ public class SaveLoadout : MonoBehaviour
                     lastSavedLoadouts[loadoutIndex] = new List<TurretType>(gameManager.uiManager.temporaryLoadouts[loadoutIndex]);
                 }
             }
+
+            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxButtonTapped);
 
             //update dropdown visualization
             this.gameManager.player.chosenLoadout = SaveManager.LoadLoadout(this.gameManager.uiManager.dropdown.value+1); 

@@ -237,7 +237,7 @@ public class UIManager : MonoBehaviour
 
     private void DifficultyBtnSelected(GameObject go)
     {
-        go.GetComponent<Image>().color = new Color(0.1686275f, 0.454902f, 0.6196079f);
+        go.GetComponent<Image>().color = new Color(0.1333f, 0.623529f, 0.658823f);
         go.GetComponentInChildren<TMP_Text>().color = new Color(1f, 1f, 1f);
         
     }
@@ -369,6 +369,8 @@ public class UIManager : MonoBehaviour
 
     public void ApplySavedSettingsToUI()
     {
+        this.audioManager.SfxMute(true);
+
         screenShakeToggle.isOn = SaveManager.LoadToggle(SettingOption.ScreenShake);
         vignetteToggle.isOn = SaveManager.LoadToggle(SettingOption.Vignette);
         pulseOnPlacableZoneToggle.isOn = SaveManager.LoadToggle(SettingOption.Pulse);
@@ -382,6 +384,8 @@ public class UIManager : MonoBehaviour
         audioVolumeSlider.value = SaveManager.LoadVolume(SettingOption.AudioVolume);
         sfxVolumeSlider.value = SaveManager.LoadVolume(SettingOption.SfxVolume);
         musicVolumeSlider.value = SaveManager.LoadVolume(SettingOption.MusicVolume);
+
+        this.audioManager.SfxMute(false);
     }
 
     public void ApplySettingsToSystem()
@@ -398,6 +402,16 @@ public class UIManager : MonoBehaviour
 
         SliderAudioVolume(); // also applies music/sfx slider internally
         ApplyAudioMuteState();
+    }
+
+    public void PlayToggleAudio()
+    {
+        this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxUIToggle);
+    }
+
+    public void PlayBtnAudio()
+    {
+        this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxButtonTapped);
     }
 
     // check if bus information got updated for example to update bus selection buttons or countdown. use value later
