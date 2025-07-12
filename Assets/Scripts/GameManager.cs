@@ -110,8 +110,9 @@ public class GameManager : MonoBehaviour
     public void ChangeGameState(GameState gameState)
     {
         this.gameState = gameState;
+        this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxButtonTapped);
 
-        if(gameState == GameState.MAINMENU)
+        if (gameState == GameState.MAINMENU)
         {
             //this.uiManager
         }
