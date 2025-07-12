@@ -4999,7 +4999,7 @@ MonoBehaviour:
   waypointIndex: 0
   cost: 30
   randomWeight: 50
-  dropProbability: 10
+  dropProbability: 15
   dropAmount: 0
   dropMaximum: 10
   dropMinimum: 5

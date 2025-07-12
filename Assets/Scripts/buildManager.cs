@@ -144,7 +144,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 if (Physics.Raycast(ray, out hit))
                 {
                     Vector3 spawnPosition = hit.point;
-                    Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.03f);
+                    Collider[] collidersHit = Physics.OverlapSphere(spawnPosition, 0.1f);
                     foreach (Collider collider in collidersHit)
                     {
                         if (collider.tag == "Drop")
@@ -271,7 +271,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             setIsBuild(true);
         }
 
-        if(gameManager.gameState == GameState.LEVELPLAYING && isBuildPossible && buttonScript.turret.GetComponent<TurretAI>().buildingCost <= gameManager.player.zeitsand)
+        if(gameManager.gameState == GameState.LEVELPLAYING && isBuildPossible)
         {
             Debug.Log("Start drag");
             Vector3 mousePosition = Input.mousePosition;
@@ -308,7 +308,10 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                     //    || 400f < Input.mousePosition.x || Input.mousePosition.y < Screen.height || 0 < Input.mousePosition.y)
                     //if (collider.tag == "Turret" || collider.tag == "Busstop")
 
-                    if (collider.tag == "Turret" || collider.tag == "Busstop")
+                    if (collider.tag == "Turret" && collider.gameObject.GetComponent<TurretAI>().name != TurretType.DYNAMITE)
+                    {
+                        turretOverlap = true;
+                    }else if (collider.tag == "Busstop")
                     {
                         turretOverlap = true;
                     }
@@ -390,7 +393,11 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                         bool turretOverlap = false;
                         foreach (Collider collider in collidersHit)
                         {
-                            if (collider.tag == "Turret" || collider.tag == "Busstop")
+                            if (collider.tag == "Turret" && collider.gameObject.GetComponent<TurretAI>().name != TurretType.DYNAMITE)
+                            {
+                                turretOverlap = true;
+                            }
+                            else if (collider.tag == "Busstop")
                             {
                                 turretOverlap = true;
                             }

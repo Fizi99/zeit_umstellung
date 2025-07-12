@@ -65,6 +65,14 @@ public class TurretGridFiller : MonoBehaviour
             bool isPosessed = SaveManager.LoadPurchasedTurrets().Contains(mapping.data.turretType);
             displayScript.showPosession(isPosessed);
 
+            if(mapping.data.turretType == TurretType.DYNAMITE)
+            {
+                gameManager.bombButton = displayScript.gameObject;
+            }else if(mapping.data.turretType == TurretType.FREEZE)
+            {
+                gameManager.freezeButton = displayScript.gameObject;
+            }
+
             Button selectBtn = frame.GetComponent<Button>();
             selectBtn.onClick.AddListener(() =>
             {
