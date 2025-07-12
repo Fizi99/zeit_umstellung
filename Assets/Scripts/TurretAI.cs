@@ -290,9 +290,15 @@ public class TurretAI : MonoBehaviour
                 break;
         }
 
-        if(name == TurretType.LASER)
+        if (name == TurretType.LASER && Time.timeScale > 0) 
         {
             this.audioManager.PlayLoopingSoundIfNotPlaying(gameObject, clip);
+            return;
+        }
+
+        if (name == TurretType.LASER && Time.timeScale <= 0)
+        {
+            this.audioManager.StopLoopingSound(gameObject);
             return;
         }
 
@@ -316,6 +322,7 @@ public class TurretAI : MonoBehaviour
         //}
         if (useAmount <= 0)
         {
+            this.audioManager.FadeOutAndStop(gameObject);
             Destroy(gameObject);
             return;
         }

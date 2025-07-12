@@ -112,6 +112,20 @@ public class AudioManager : MonoBehaviour
         activeLoopingSounds[obj] = source;
     }
 
+    public void StopAllLoopingSounds()
+    {
+        List<GameObject> keys = new List<GameObject>();
+        foreach(KeyValuePair<GameObject, AudioSource> kvPair in activeLoopingSounds)
+        {
+            keys.Add(kvPair.Key);
+        }
+
+        foreach(GameObject go in keys)
+        {
+            StopLoopingSound(go);
+        }
+    }
+
     public void StopLoopingSound(GameObject obj)
     {
         if (activeLoopingSounds.TryGetValue(obj, out AudioSource source))

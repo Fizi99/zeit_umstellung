@@ -450,8 +450,14 @@ public class UIManager : MonoBehaviour
         }
         string text = "";
         TimeSpan timeSpan = (System.DateTimeOffset.FromUnixTimeSeconds(this.selectedBus.realtime).LocalDateTime - System.DateTime.Now);
+
+        if (this.gameManager.gameState == GameState.LEVELPLAYING && timeSpan.TotalSeconds <= 5)
+        {
+            this.audioManager.PlayLoopingSoundIfNotPlaying(gameObject, this.audioManager.soundLibrary.sfxCountdown);
+        }
+
         // handle countdown if bus already departed
-        if (timeSpan.Seconds < 0)
+        if (timeSpan.TotalSeconds <= 0)
         {
             // if player is playing and bus departs, finish level, else dont allow levelstart
             if (this.gameManager.gameState == GameState.LEVELPLAYING)
@@ -466,6 +472,7 @@ public class UIManager : MonoBehaviour
                 }
 
                 this.gameManager.ChangeGameState(GameState.LEVELEND);
+                this.audioManager.StopLoopingSound(gameObject);
             }
             //else
             //{
@@ -480,6 +487,8 @@ public class UIManager : MonoBehaviour
             //foreach (TMP_Text countdownDisplay in this.countdown)
             //    countdownDisplay.fontSize = 36;
         }
+
+      
 
         // show countdown
         foreach (TMP_Text countdownDisplay in this.countdown)
@@ -983,6 +992,7 @@ public class UIManager : MonoBehaviour
     public void FreezeTime()
     {
         Time.timeScale = 0;
+        this.audioManager.StopAllLoopingSounds();
         mainCamera.GetComponent<PlayerHitEffect>().PauseShake();
     }
 
@@ -1012,7 +1022,7 @@ public class UIManager : MonoBehaviour
         HapticManager.Instance.PlayVibration(150, 200); // 150 ms, 200/255 Stärke
 
         // Hitfreeze the screen for more impact
-        HitFreeze(0.7f);
+        HitFreeze(0.3f);
 
         // Drop some extra zeitsand
         float dropDuration = 10;
