@@ -173,7 +173,7 @@ public class TurretAI : MonoBehaviour
         if (name == TurretType.LASER && target == null)
         {
             gameObject.GetComponent<LineRenderer>().enabled = false;
-            this.audioManager.StopLoopingSound(gameObject);
+            this.audioManager.FadeOutAndStop(gameObject);
         }
 
         if (target != null)

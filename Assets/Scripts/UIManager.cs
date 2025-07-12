@@ -679,6 +679,7 @@ public class UIManager : MonoBehaviour
     {
         // Update UI
         this.gameManager.ChangeGameState(GameState.UPGRADING);
+        
     }
 
     public void NavigateToLevelSelection()

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -118,6 +119,38 @@ public class AudioManager : MonoBehaviour
             if (source != null && source.isPlaying)
                 source.Stop();
         }
+
+        activeLoopingSounds.Remove(obj);
+    }
+
+    public void FadeOutAndStop(GameObject obj, float duration = 0.5f)
+    {
+        if (activeLoopingSounds.TryGetValue(obj, out AudioSource source))
+        {
+            if (source != null && source.isPlaying)
+            {
+                StartCoroutine(FadeOutCoroutine(obj, source, duration));
+            }
+        }
+    }
+
+    private IEnumerator FadeOutCoroutine(GameObject obj, AudioSource source, float duration)
+    {
+        float startVolume = source.volume;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            source.volume = Mathf.Lerp(startVolume, 0f, t);
+            yield return null;
+        }
+
+        source.Stop();
+        source.volume = startVolume; // zurücksetzen für spätere Wiederverwendung
+        source.clip = null;
+        source.loop = false;
 
         activeLoopingSounds.Remove(obj);
     }
