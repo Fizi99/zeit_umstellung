@@ -354,6 +354,7 @@ public class buildManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                     emptySlots[i].GetComponent<EmptySlotHover>().changedDragObject = changedDragObject;
                         emptySlots[i].GetComponent<EmptySlotHover>().turretType = currentTurretType;
                         this.gameManager.uiManager.shownLoadout[i] = currentTurretType;
+                        this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxTurretPlaced);
                     }
                     else
                     {

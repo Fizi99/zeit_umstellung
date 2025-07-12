@@ -42,6 +42,7 @@ public class SoundLibrary : ScriptableObject
     [SerializeField] public AudioClip sfxLevelFinished;
     [SerializeField] public AudioClip sfxLevelStarted;
     [SerializeField] public AudioClip sfxHighscoreBroken;
+    [SerializeField] public AudioClip sfxCountdown;
 
     [Space(10)]
 
