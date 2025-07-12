@@ -209,40 +209,43 @@ public class UIManager : MonoBehaviour
         {
             case "Easy":
                 this.gameManager.difficultyManager.ChangeDifficulty(Difficulty.EASY);
-                DifficultyBtnSelected(this.difficultySelectionEasy.GetComponent<Image>());
-                DifficultyBtnDeselect(this.difficultySelectionNormal.GetComponent<Image>());
-                DifficultyBtnDeselect(this.difficultySelectionHard.GetComponent<Image>());
+                DifficultyBtnSelected(this.difficultySelectionEasy);
+                DifficultyBtnDeselect(this.difficultySelectionNormal);
+                DifficultyBtnDeselect(this.difficultySelectionHard);
                 break;
             case "Normal":
                 this.gameManager.difficultyManager.ChangeDifficulty(Difficulty.NORMAL);
-                DifficultyBtnDeselect(this.difficultySelectionEasy.GetComponent<Image>());
-                DifficultyBtnSelected(this.difficultySelectionNormal.GetComponent<Image>());
-                DifficultyBtnDeselect(this.difficultySelectionHard.GetComponent<Image>());
+                DifficultyBtnDeselect(this.difficultySelectionEasy);
+                DifficultyBtnSelected(this.difficultySelectionNormal);
+                DifficultyBtnDeselect(this.difficultySelectionHard);
                 break;
             case "Hard":
                 this.gameManager.difficultyManager.ChangeDifficulty(Difficulty.HARD);
-                DifficultyBtnDeselect(this.difficultySelectionEasy.GetComponent<Image>());
-                DifficultyBtnDeselect(this.difficultySelectionNormal.GetComponent<Image>());
-                DifficultyBtnSelected(this.difficultySelectionHard.GetComponent<Image>());
+                DifficultyBtnDeselect(this.difficultySelectionEasy);
+                DifficultyBtnDeselect(this.difficultySelectionNormal);
+                DifficultyBtnSelected(this.difficultySelectionHard);
                 break;
             default:
                 this.gameManager.difficultyManager.ChangeDifficulty(Difficulty.NORMAL);
-                DifficultyBtnDeselect(this.difficultySelectionEasy.GetComponent<Image>());
-                DifficultyBtnSelected(this.difficultySelectionNormal.GetComponent<Image>());
-                DifficultyBtnDeselect(this.difficultySelectionHard.GetComponent<Image>());
+                DifficultyBtnDeselect(this.difficultySelectionEasy);
+                DifficultyBtnSelected(this.difficultySelectionNormal);
+                DifficultyBtnDeselect(this.difficultySelectionHard);
                 break;
         }
         
     }
 
-    private void DifficultyBtnSelected(Image imgComponent)
+    private void DifficultyBtnSelected(GameObject go)
     {
-        imgComponent.color = new Color(0.1686275f, 0.454902f, 0.6196079f);
+        go.GetComponent<Image>().color = new Color(0.1686275f, 0.454902f, 0.6196079f);
+        go.GetComponentInChildren<TMP_Text>().color = new Color(1f, 1f, 1f);
+        
     }
 
-    private void DifficultyBtnDeselect(Image imgComponent)
+    private void DifficultyBtnDeselect(GameObject go)
     {
-        imgComponent.color = new Color(1f,1f,1f);
+        go.GetComponent<Image>().color = new Color(1f,1f,1f);
+        go.GetComponentInChildren<TMP_Text>().color = new Color(0f, 0f, 0f);
     }
 
     private void InitDifficultySelection()
