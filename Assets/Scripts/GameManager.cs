@@ -351,8 +351,14 @@ public class GameManager : MonoBehaviour
                 TurretType.LASER,
                 TurretType.DRONEBASE,
             });
-        bombButton.GetComponent<displayTurretCost>().showPosession(false);
-        freezeButton.GetComponent<displayTurretCost>().showPosession(false);
+        if(bombButton != null)
+        {
+            bombButton.GetComponent<displayTurretCost>().showPosession(false);
+        }
+        if(freezeButton != null)
+        {
+            freezeButton.GetComponent<displayTurretCost>().showPosession(false);
+        }
 
         PlayerPrefs.Save();
 
