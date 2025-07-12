@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject highscoreTracker;
     [SerializeField] public GameObject backGroundPlane;
     [SerializeField] public GameObject placeableZoneManager;
+    [SerializeField] public GameObject trophy;
 
     public EpochChooser epochChooser = new EpochChooser();
 
@@ -85,6 +87,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         this.gameState = GameState.MAINMENU;
+        CheckForTrophyDisplay();
         InvokeRepeating("UpdateBusInformation", 1, 5);
         // get busstop location based
         
@@ -114,10 +117,11 @@ public class GameManager : MonoBehaviour
 
         if (gameState == GameState.MAINMENU)
         {
-            //this.uiManager
+            // If the player has all turrets that are listed inside TurretType (except DRONE), show the trophy
+            CheckForTrophyDisplay();
         }
 
-        if(gameState == GameState.LEVELSELECTION)
+        if (gameState == GameState.LEVELSELECTION)
         {
             
             if (this.firstStart)
@@ -196,6 +200,18 @@ public class GameManager : MonoBehaviour
     public void UpdateBusStopGameObject(GameObject newBusStop)
     {
         this.busStopGO = newBusStop;
+    }
+
+    public void CheckForTrophyDisplay()
+    {
+        var purchasedTurrets = SaveManager.LoadPurchasedTurrets();
+        TurretType excludeThisTurret = TurretType.DRONE;
+        var allPurchasableTurrets = Enum.GetValues(typeof(TurretType))
+                             .Cast<TurretType>()
+                             .Where(f => f != excludeThisTurret)
+                             .ToHashSet();
+        bool showTrophy = allPurchasableTurrets.SetEquals(purchasedTurrets);
+        trophy.SetActive(showTrophy);
     }
 
     public void SpawnFloatingText(Vector3 pos, string text, Color color)
