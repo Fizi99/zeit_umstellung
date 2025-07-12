@@ -3904,7 +3904,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Schwer
+  m_text: SCHWER
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2f7801b2fae45704687bc332fce83b5f, type: 2}
   m_sharedMaterial: {fileID: 6324744969897955746, guid: 2f7801b2fae45704687bc332fce83b5f, type: 2}
@@ -23944,7 +23944,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Schwierigkeitsgrad
+  m_text: Schwierigkeit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 99753683513d0eb49a16064d29951dd9, type: 2}
   m_sharedMaterial: {fileID: 3482744820468022697, guid: 99753683513d0eb49a16064d29951dd9, type: 2}
@@ -25685,7 +25685,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Normal
+  m_text: NORMAL
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2f7801b2fae45704687bc332fce83b5f, type: 2}
   m_sharedMaterial: {fileID: 6324744969897955746, guid: 2f7801b2fae45704687bc332fce83b5f, type: 2}
@@ -26201,6 +26201,11 @@ PrefabInstance:
     - target: {fileID: 388683705690236270, guid: ebfa4e653695a7349b40ddfa65c65fa2, type: 3}
       propertyPath: m_OverrideSorting
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 880405658343815923, guid: ebfa4e653695a7349b40ddfa65c65fa2, type: 3}
+      propertyPath: m_text
+      value: "Die Schwierigkeit beeinflusst die Rate, mit der du Zeitsand und Uhranium
+        erh\xE4ltst."
       objectReference: {fileID: 0}
     - target: {fileID: 5876985413448139867, guid: ebfa4e653695a7349b40ddfa65c65fa2, type: 3}
       propertyPath: m_Name
@@ -28321,7 +28326,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Leicht
+  m_text: LEICHT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2f7801b2fae45704687bc332fce83b5f, type: 2}
   m_sharedMaterial: {fileID: 6324744969897955746, guid: 2f7801b2fae45704687bc332fce83b5f, type: 2}
