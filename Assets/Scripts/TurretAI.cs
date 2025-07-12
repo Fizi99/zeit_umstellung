@@ -173,6 +173,7 @@ public class TurretAI : MonoBehaviour
         if (name == TurretType.LASER && target == null)
         {
             gameObject.GetComponent<LineRenderer>().enabled = false;
+            this.audioManager.StopLoopingSound(gameObject);
         }
 
         if (target != null)
@@ -287,6 +288,12 @@ public class TurretAI : MonoBehaviour
 
             default:
                 break;
+        }
+
+        if(name == TurretType.LASER)
+        {
+            this.audioManager.PlayLoopingSoundIfNotPlaying(gameObject, clip);
+            return;
         }
 
         if (clip != null)

@@ -6,9 +6,18 @@ public class AudioManager : MonoBehaviour
     [SerializeField] public SoundLibrary soundLibrary;
     [SerializeField] public AudioSource musicSource; // Testweise auf public gestellt (hoffe ich änder es zurück)
     [SerializeField] private AudioSource sfxSource;
-    [SerializeField] private AudioSource loopingSfxSource;
+    [SerializeField] private GameObject loopingSfxSourceContainer;
 
-    private Dictionary<AudioClip, AudioSource> activeLoopingSfx = new Dictionary<AudioClip, AudioSource>();
+    [SerializeField] private GameObject audioSourcePrefab;
+    private List<AudioSource> audioSourcePool = new List<AudioSource>();
+
+    private Dictionary<GameObject, AudioSource> activeLoopingSounds = new Dictionary<GameObject, AudioSource>();
+
+
+    private float musicVolume = 0.3f;
+    private float sfxVolume = 0.3f;
+    private bool musicMute = false;
+    private bool sfxMute = false;
 
     public void Start()
     {
@@ -22,23 +31,36 @@ public class AudioManager : MonoBehaviour
     public void SfxVolume(float volume)
     {
         this.sfxSource.volume = volume;
-        this.loopingSfxSource.volume = volume;
+        //this.loopingSfxSource.volume = volume;
+        this.sfxVolume = volume;
+        foreach(AudioSource source in audioSourcePool)
+        {
+            source.volume = volume;
+        }
     }
 
     public void MusicVolume(float volume)
     {
         this.musicSource.volume = volume;
+        this.musicVolume = volume;
     }
 
     public void SfxMute(bool mute)
     {
         this.sfxSource.mute = mute;
-        this.loopingSfxSource.mute = mute;
+        //this.loopingSfxSource.mute = mute;
+        this.sfxMute = mute;
+
+        foreach (AudioSource source in audioSourcePool)
+        {
+            source.mute = mute;
+        }
     }
 
     public void MusicMute(bool mute)
     {
         this.musicSource.mute = mute;
+        this.musicMute = mute;
     }
     public void PlaySfx(AudioClip audio)
     {
@@ -49,6 +71,57 @@ public class AudioManager : MonoBehaviour
     /// //////////////TODO: looping audio
     /// </summary>
     /// <param name="audio"></param>
+    /// 
+    public bool IsLoopingSoundPlaying(GameObject obj, AudioClip clip)
+    {
+        if (activeLoopingSounds.TryGetValue(obj, out AudioSource source))
+        {
+            return source != null && source.isPlaying && source.clip == clip;
+        }
+        return false;
+    }
+
+    private AudioSource GetAvailableAudioSource()
+    {
+        foreach (var source in audioSourcePool)
+        {
+            if (!source.isPlaying)
+                return source;
+        }
+
+        var newSource = Instantiate(audioSourcePrefab, transform).GetComponent<AudioSource>();
+        audioSourcePool.Add(newSource);
+        newSource.transform.parent = loopingSfxSourceContainer.transform;
+        return newSource;
+    }
+
+    public void PlayLoopingSoundIfNotPlaying(GameObject obj, AudioClip clip)
+    {
+        if (IsLoopingSoundPlaying(obj, clip))
+            return;
+
+        AudioSource source = GetAvailableAudioSource();
+        source.clip = clip;
+        source.volume = this.sfxVolume;
+        source.mute = this.sfxMute;
+        source.loop = true;
+        //source.transform.position = obj.transform.position; // optional für 3D-Sound
+        source.Play();
+
+        activeLoopingSounds[obj] = source;
+    }
+
+    public void StopLoopingSound(GameObject obj)
+    {
+        if (activeLoopingSounds.TryGetValue(obj, out AudioSource source))
+        {
+            if (source != null && source.isPlaying)
+                source.Stop();
+        }
+
+        activeLoopingSounds.Remove(obj);
+    }
+    /*
     public void PlayLoopingSfx(AudioClip audio)
     {
         if (audio == null) return;
@@ -77,7 +150,7 @@ public class AudioManager : MonoBehaviour
             Destroy(source);
             activeLoopingSfx.Remove(audio);
         }
-    }
+    }*/
     /// <summary>
     /// //////////////TODO:  looping audio
     /// </summary>
