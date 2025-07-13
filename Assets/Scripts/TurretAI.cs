@@ -322,7 +322,7 @@ public class TurretAI : MonoBehaviour
         //}
         if (useAmount <= 0)
         {
-            this.audioManager.FadeOutAndStop(gameObject);
+            
             Destroy(gameObject);
             return;
         }
@@ -456,5 +456,10 @@ public class TurretAI : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, range);
 
+    }
+
+    private void OnDestroy()
+    {
+        this.audioManager.FadeOutAndStop(gameObject);
     }
 }
