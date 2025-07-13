@@ -161,10 +161,14 @@ public class GameManager : MonoBehaviour
             this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxLevelFinished);
             ClearScene();
             this.player.SaveUhranium();
-            this.player.ResetUhraniumGain(); // HIERHIN VERSCHOBEN
         }
 
         this.uiManager.UpdateUI();
+
+        if(gameState == GameState.LEVELEND)
+        {
+            this.player.ResetUhraniumGain();
+        }
         //this.player.ResetUhraniumGain();
     }
 
