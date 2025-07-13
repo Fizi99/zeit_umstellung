@@ -346,6 +346,7 @@ public class UIManager : MonoBehaviour
 
     public void ApplySavedSettingsToUI()
     {
+        this.audioManager.SfxMute(true);
         screenShakeToggle.isOn = SaveManager.LoadToggle(SettingOption.ScreenShake);
         vignetteToggle.isOn = SaveManager.LoadToggle(SettingOption.Vignette);
         pulseOnPlacableZoneToggle.isOn = SaveManager.LoadToggle(SettingOption.Pulse);
@@ -359,6 +360,10 @@ public class UIManager : MonoBehaviour
         audioVolumeSlider.value = SaveManager.LoadVolume(SettingOption.AudioVolume);
         sfxVolumeSlider.value = SaveManager.LoadVolume(SettingOption.SfxVolume);
         musicVolumeSlider.value = SaveManager.LoadVolume(SettingOption.MusicVolume);
+        if (!audioToggle.isOn)
+        {
+            this.audioManager.SfxMute(sfxToggle.isOn);
+        }
     }
 
     public void ApplySettingsToSystem()
