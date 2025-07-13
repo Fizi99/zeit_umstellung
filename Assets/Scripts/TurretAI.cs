@@ -175,8 +175,17 @@ public class TurretAI : MonoBehaviour
             gameObject.GetComponent<LineRenderer>().enabled = false;
             this.audioManager.FadeOutAndStop(gameObject);
         }
+        if ( bulletPrefab.tag != "Drone" && bulletPrefab.GetComponent<bulletAI>().shootSelf)
+        {
+            if (fireCountdown <= 0f)
+            {
+                Shoot();
+                fireCountdown = 1f / fireRate;
+            }
 
-        if (target != null)
+            fireCountdown -= Time.deltaTime;
+        }
+        else if (target != null)
         {
             Vector3 dir = target.position - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(dir);
@@ -248,7 +257,11 @@ public class TurretAI : MonoBehaviour
         }
         currentBullet.transform.parent = this.gameManager.turretContainer.transform;
         bulletAI bullet = currentBullet.GetComponent<bulletAI>();
-        if (bullet != null)
+        if (bullet != null && bulletPrefab.tag != "Drone" && bulletPrefab.GetComponent<bulletAI>().shootSelf )
+        {
+            bullet.SetBulletTarget(transform);
+        }
+        else if (bullet != null && !bulletPrefab.GetComponent<bulletAI>().shootSelf) 
         {
             bullet.SetBulletTarget(target);
         }
