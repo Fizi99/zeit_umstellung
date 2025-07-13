@@ -83,6 +83,7 @@ public class TurretGridFiller : MonoBehaviour
                 if (!SaveManager.LoadPurchasedTurrets().Contains(mapping.data.turretType)) 
                 {
                     BuyButton.gameObject.SetActive(true);
+
                 }
             });
 

@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour
 
         if (gameState == GameState.LEVELEND)
         {
+            this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxLevelFinished);
             ClearScene();
             this.player.SaveUhranium();
         }

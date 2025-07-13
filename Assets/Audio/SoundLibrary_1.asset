@@ -28,7 +28,7 @@ MonoBehaviour:
   sfxUhraniumSaved: {fileID: 8300000, guid: eaa4fa5e57dd5964c90008ec577d1a23, type: 3}
   sfxUhraniumSavable: {fileID: 8300000, guid: 27eaba69fb3c2c443bc498e1632296fc, type: 3}
   sfxLevelFinished: {fileID: 8300000, guid: c7e49d067196832489d2460ac69288ae, type: 3}
-  sfxLevelStarted: {fileID: 8300000, guid: 944a97632e3b8054b8afdb5fbd51f27c, type: 3}
+  sfxLevelStarted: {fileID: 8300000, guid: 3a720256b8b784e4f908be00cbe30391, type: 3}
   sfxHighscoreBroken: {fileID: 8300000, guid: bca4ea37569a5d147a87d81f0a0b50df, type: 3}
   sfxCountdown: {fileID: 8300000, guid: a47d6bf34e28049489ac9ad13db778db, type: 3}
   sfxZeitsandDropped: {fileID: 8300000, guid: 4edbc284c24fcf346a33ab369876ca4f, type: 3}
