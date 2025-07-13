@@ -339,7 +339,7 @@ public class UIManager : MonoBehaviour
 
     public void ToggleVibrations()  //*
     {
-        SaveManager.SaveToggle(SettingOption.Vibration, this.vibrationToggle.isOn);
+        //SaveManager.SaveToggle(SettingOption.Vibration, this.vibrationToggle.isOn);
         /*Debug.Log("!! Vibration Toggle isOn: " + this.vibrationToggle.isOn);
         Debug.Log("!! vibrationToggle SaveManager: " + SaveManager.LoadToggle(SettingOption.Vibration, true));*/
     }
@@ -347,11 +347,11 @@ public class UIManager : MonoBehaviour
     public void ApplySavedSettingsToUI()
     {
         this.audioManager.SfxMute(true);
-        screenShakeToggle.isOn = SaveManager.LoadToggle(SettingOption.ScreenShake);
-        vignetteToggle.isOn = SaveManager.LoadToggle(SettingOption.Vignette);
-        pulseOnPlacableZoneToggle.isOn = SaveManager.LoadToggle(SettingOption.Pulse);
+        screenShakeToggle.isOn = SaveManager.LoadToggle(SettingOption.ScreenShake, true);
+        vignetteToggle.isOn = SaveManager.LoadToggle(SettingOption.Vignette, true);
+        pulseOnPlacableZoneToggle.isOn = SaveManager.LoadToggle(SettingOption.Pulse, true);
         tutorialToggle.isOn = SaveManager.LoadToggle(SettingOption.ShowTutorialEveryTime, false);
-        vibrationToggle.isOn = SaveManager.LoadToggle(SettingOption.Vibration, true);
+        //vibrationToggle.isOn = SaveManager.LoadToggle(SettingOption.Vibration, true);
 
         audioToggle.isOn = SaveManager.LoadToggle(SettingOption.AudioMute);
         sfxToggle.isOn = SaveManager.LoadToggle(SettingOption.SFXMute);
@@ -372,7 +372,7 @@ public class UIManager : MonoBehaviour
         ToggleVignette();
         TogglePlaceableZonePulse();
         ToggleTutorial();
-        ToggleVibrations();
+        //ToggleVibrations();
 
         /*audioVolumeSlider.value = SaveManager.LoadVolume(SettingOption.AudioVolume, 1f);
         musicVolumeSlider.value = SaveManager.LoadVolume(SettingOption.MusicVolume, 0.3f);
@@ -995,8 +995,6 @@ public class UIManager : MonoBehaviour
     {
         // Show a message
         this.gameManager.SpawnFloatingText(whereToDisplay, "MULTIKILL!", Color.yellow);
-
-        HapticManager.Instance.PlayVibration(150, 200); // 150 ms, 200/255 Stärke
 
         // Hitfreeze the screen for more impact
         HitFreeze(0.3f);
