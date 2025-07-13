@@ -127,6 +127,7 @@ public class GameManager : MonoBehaviour
         {
             // If the player has all turrets that are listed inside TurretType (except DRONE), show the trophy
             CheckForTrophyDisplay();
+            this.player.ResetUhraniumGain();
         }
 
         if (gameState == GameState.LEVELSELECTION)
@@ -160,10 +161,11 @@ public class GameManager : MonoBehaviour
             this.audioManager.PlaySfx(this.audioManager.soundLibrary.sfxLevelFinished);
             ClearScene();
             this.player.SaveUhranium();
+            this.player.ResetUhraniumGain(); // HIERHIN VERSCHOBEN
         }
 
         this.uiManager.UpdateUI();
-        this.player.ResetUhraniumGain();
+        //this.player.ResetUhraniumGain();
     }
 
     // Remove all enemies and turrets from scene
