@@ -97,7 +97,7 @@ MonoBehaviour:
   blobShadowOffset: {x: 0, y: -0.1, z: 0}
   blobShadowScale: {x: 1, y: 1, z: 1}
   blobShadowRotation: {x: 0, y: 0, z: 0}
-  uhraniumPrice: 0
+  uhraniumPrice: 5000
 --- !u!212 &-8325835882095180303
 SpriteRenderer:
   m_ObjectHideFlags: 0

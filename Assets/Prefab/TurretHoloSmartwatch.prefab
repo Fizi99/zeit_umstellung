@@ -338,7 +338,7 @@ MonoBehaviour:
   enemyTag: Enemy
   isSingleUse: 1
   useTimeInsteadOfAmmo: 1
-  initUseAmount: 31
+  initUseAmount: 30
   useAmount: 1
   buildingCost: 15
   useBar: {fileID: 465384694533584046}

@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 public class HapticManager : MonoBehaviour
 {
@@ -42,3 +42,4 @@ public class HapticManager : MonoBehaviour
 #endif
     }
 }
+*/
